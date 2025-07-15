@@ -132,69 +132,69 @@ export default function Page() {
         }
     };
 
-    return ( 
-        <div className="min-h-screen bg-black text-white overflow-hidden" data-oid="6_hqpu9">
+    return (
+        <div className="min-h-screen bg-black text-white overflow-hidden" data-oid="ljm7-yz">
             {/* Animated background */}
             <div
                 className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black"
-                data-oid="565vvq0"
+                data-oid="yv7mw77"
             >
                 <div
                     className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.1),transparent_50%)]"
-                    data-oid="w4dkiqa"
+                    data-oid="chbwtpw"
                 ></div>
                 <div
                     className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl animate-pulse"
-                    data-oid="bvx_3no"
+                    data-oid="0dbg2mt"
                 ></div>
                 <div
                     className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-400/5 rounded-full blur-3xl animate-pulse delay-1000"
-                    data-oid="012ie95"
+                    data-oid="izqb2s."
                 ></div>
             </div>
 
-            <div className="relative z-10" data-oid="w_jr07n">
+            <div className="relative z-10" data-oid="0k0lg8h">
                 {/* Header */}
                 <header
                     className={`backdrop-blur-xl bg-black/20 border-b border-green-500/20 transition-all duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
-                    data-oid="vgvxmak"
+                    data-oid="_dte5p7"
                 >
-                    <div className="max-w-7xl mx-auto px-6 py-6" data-oid="-1htjeh">
-                        <div className="flex items-center justify-between" data-oid="pfa:kt9">
-                            <div className="flex items-center space-x-4" data-oid=".e0hxms">
+                    <div className="max-w-7xl mx-auto px-6 py-6" data-oid="mq:wv_o">
+                        <div className="flex items-center justify-between" data-oid="y_3bft-">
+                            <div className="flex items-center space-x-4" data-oid="3rbkga8">
                                 <div
                                     className="w-10 h-10 bg-gradient-to-r from-green-400 to-green-600 rounded-lg flex items-center justify-center"
-                                    data-oid=":cqk-td"
+                                    data-oid="m1d.b7j"
                                 >
                                     <span
                                         className="text-black font-bold text-xl"
-                                        data-oid="plew0if"
+                                        data-oid="t-e71:z"
                                     >
                                         W
                                     </span>
                                 </div>
-                                <div data-oid="j1r1-i1">
+                                <div data-oid="3h.zki8">
                                     <h1
                                         className="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent"
-                                        data-oid="ibwxfr9"
+                                        data-oid="g9.wl96"
                                     >
                                         Solana Wallet Inventory
                                     </h1>
-                                    <p className="text-gray-400 text-sm" data-oid="wgp498i">
+                                    <p className="text-gray-400 text-sm" data-oid="ui.qto3">
                                         Comprehensive wallet ecosystem dashboard
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-4" data-oid="uctrn9z">
+                            <div className="flex items-center space-x-4" data-oid="jmgj-xv">
                                 <button
                                     className="px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 hover:bg-green-500/20 transition-all duration-300"
-                                    data-oid="lfp-6vj"
+                                    data-oid="fohx_vq"
                                 >
                                     API Access
                                 </button>
                                 <button
                                     className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 rounded-lg text-black font-medium hover:from-green-400 hover:to-green-500 transition-all duration-300"
-                                    data-oid="y:2at4c"
+                                    data-oid="1jri8rv"
                                 >
                                     Embed Widget
                                 </button>
@@ -206,28 +206,28 @@ export default function Page() {
                 {/* Controls */}
                 <div
                     className={`max-w-7xl mx-auto px-6 py-8 transition-all duration-1000 delay-300 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                    data-oid="sa-s464"
+                    data-oid="-y281:k"
                 >
                     <div
                         className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 mb-8"
-                        data-oid="38klh5k"
+                        data-oid="l0p-a:l"
                     >
-                        <div className="flex flex-col lg:flex-row gap-6" data-oid="r6h838g">
+                        <div className="flex flex-col lg:flex-row gap-6" data-oid="jesa-g6">
                             {/* Search */}
-                            <div className="flex-1" data-oid="-qb7h6q">
-                                <div className="relative" data-oid="29l20mk">
+                            <div className="flex-1" data-oid="mhio0s3">
+                                <div className="relative" data-oid="rxmukg8">
                                     <input
                                         type="text"
                                         placeholder="Search wallets or features..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="w-full bg-black/30 border border-green-500/30 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-400/20 transition-all duration-300"
-                                        data-oid="26q:00t"
+                                        data-oid="2olh4jr"
                                     />
 
                                     <div
                                         className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-400"
-                                        data-oid="wtjjo-e"
+                                        data-oid="i1fj799"
                                     >
                                         🔍
                                     </div>
@@ -235,7 +235,7 @@ export default function Page() {
                             </div>
 
                             {/* Category Filter */}
-                            <div className="flex flex-wrap gap-2" data-oid="5ikl1fs">
+                            <div className="flex flex-wrap gap-2" data-oid="vcnnbk5">
                                 {categories.map((category) => (
                                     <button
                                         key={category.id}
@@ -245,10 +245,10 @@ export default function Page() {
                                                 ? 'bg-green-500/20 border-green-400 text-green-400'
                                                 : 'bg-black/20 border-white/10 text-gray-400 hover:border-green-500/50 hover:text-green-400'
                                         }`}
-                                        data-oid="4lna.k4"
+                                        data-oid="gei4dcu"
                                     >
-                                        <span data-oid="gh_wqbo">{category.icon}</span>
-                                        <span className="text-sm font-medium" data-oid="f.43exi">
+                                        <span data-oid="6ffmqwn">{category.icon}</span>
+                                        <span className="text-sm font-medium" data-oid="crt2t6o">
                                             {category.name}
                                         </span>
                                     </button>
@@ -258,7 +258,7 @@ export default function Page() {
                     </div>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8" data-oid="9sd38fd">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8" data-oid="nc:_9nd">
                         {[
                             { label: 'Total Wallets', value: wallets.length, icon: '💼' },
                             {
@@ -280,24 +280,24 @@ export default function Page() {
                             <div
                                 key={index}
                                 className={`backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/10 rounded-xl border border-white/10 p-6 transition-all duration-1000 delay-${(index + 1) * 100} ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                                data-oid="09wnkdt"
+                                data-oid="vl4d6x9"
                             >
                                 <div
                                     className="flex items-center justify-between"
-                                    data-oid="daavm79"
+                                    data-oid="2nytt1l"
                                 >
-                                    <div data-oid=":25rgc8">
-                                        <p className="text-gray-400 text-sm" data-oid=":oxexnc">
+                                    <div data-oid="9paiazm">
+                                        <p className="text-gray-400 text-sm" data-oid="mi2dm7i">
                                             {stat.label}
                                         </p>
                                         <p
                                             className="text-2xl font-bold text-green-400"
-                                            data-oid=".ky7ye8"
+                                            data-oid="pbo8__y"
                                         >
                                             {stat.value}
                                         </p>
                                     </div>
-                                    <div className="text-2xl" data-oid="4se1_.0">
+                                    <div className="text-2xl" data-oid="y226ana">
                                         {stat.icon}
                                     </div>
                                 </div>
@@ -308,69 +308,69 @@ export default function Page() {
                     {/* Wallet Grid */}
                     <div
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                        data-oid="-e2fdv:"
+                        data-oid="w_m7fw3"
                     >
                         {filteredWallets.map((wallet, index) => (
                             <div
                                 key={wallet.name}
                                 className={`backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/10 rounded-2xl border border-white/10 p-6 hover:border-green-500/50 hover:bg-white/10 transition-all duration-500 group cursor-pointer transform hover:scale-105 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                                 style={{ transitionDelay: `${index * 100}ms` }}
-                                data-oid="22fcb__"
+                                data-oid="ugir3nw"
                             >
                                 {/* Header */}
                                 <div
                                     className="flex items-start justify-between mb-4"
-                                    data-oid="d_352o1"
+                                    data-oid="ys0axhu"
                                 >
-                                    <div className="flex items-center space-x-3" data-oid="wntab16">
+                                    <div className="flex items-center space-x-3" data-oid="_5mtdzy">
                                         <div
                                             className="w-12 h-12 bg-gradient-to-br from-green-400/20 to-green-600/20 rounded-xl flex items-center justify-center text-2xl border border-green-500/30"
-                                            data-oid="pi2oxcd"
+                                            data-oid=":hi469k"
                                         >
                                             {wallet.logo}
                                         </div>
-                                        <div data-oid="5pj2:4l">
+                                        <div data-oid="q7ebr6y">
                                             <h3
                                                 className="text-xl font-bold text-white group-hover:text-green-400 transition-colors duration-300"
-                                                data-oid="2wpq0_e"
+                                                data-oid="a:91x-z"
                                             >
                                                 {wallet.name}
                                             </h3>
                                             <div
                                                 className="flex items-center space-x-2 mt-1"
-                                                data-oid="dnlpg9h"
+                                                data-oid="dnruy:b"
                                             >
                                                 <div
                                                     className="flex items-center space-x-1"
-                                                    data-oid=":3q-0_k"
+                                                    data-oid="w6w8kvf"
                                                 >
                                                     <div
                                                         className="w-2 h-2 bg-green-400 rounded-full animate-pulse"
-                                                        data-oid="fa-7by9"
+                                                        data-oid="uyc78cq"
                                                     ></div>
                                                     <span
                                                         className="text-xs text-green-400"
-                                                        data-oid="xhmriid"
+                                                        data-oid="jz.slz6"
                                                     >
                                                         Active
                                                     </span>
                                                 </div>
                                                 <div
                                                     className={`px-2 py-1 rounded-full text-xs ${getSecurityColor(wallet.security)}`}
-                                                    data-oid="latfsla"
+                                                    data-oid="28vd5-l"
                                                 >
                                                     {wallet.security} Security
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="text-right" data-oid="gevchyi">
-                                        <div className="text-sm text-gray-400" data-oid="lhlfydf">
+                                    <div className="text-right" data-oid="ex86sjk">
+                                        <div className="text-sm text-gray-400" data-oid="9pyir.7">
                                             Popularity
                                         </div>
                                         <div
                                             className="text-lg font-bold text-green-400"
-                                            data-oid="divgw:t"
+                                            data-oid="y1ncy70"
                                         >
                                             {wallet.popularity}%
                                         </div>
@@ -380,22 +380,22 @@ export default function Page() {
                                 {/* Description */}
                                 <p
                                     className="text-gray-300 text-sm mb-4 leading-relaxed"
-                                    data-oid="y_pnv.m"
+                                    data-oid="z5lk5:4"
                                 >
                                     {wallet.description}
                                 </p>
 
                                 {/* Platforms */}
-                                <div className="mb-4" data-oid="676ka_x">
-                                    <div className="text-xs text-gray-400 mb-2" data-oid="9yhc765">
+                                <div className="mb-4" data-oid="u:j8yd3">
+                                    <div className="text-xs text-gray-400 mb-2" data-oid="t10yuv6">
                                         PLATFORMS
                                     </div>
-                                    <div className="flex flex-wrap gap-2" data-oid="r5.mh7:">
+                                    <div className="flex flex-wrap gap-2" data-oid="1naf6jm">
                                         {wallet.platforms.map((platform) => (
                                             <span
                                                 key={platform}
                                                 className="px-2 py-1 bg-black/30 border border-green-500/30 rounded-lg text-xs text-green-400"
-                                                data-oid="6mna_8t"
+                                                data-oid="e4me5ap"
                                             >
                                                 {platform}
                                             </span>
@@ -404,16 +404,16 @@ export default function Page() {
                                 </div>
 
                                 {/* Features */}
-                                <div className="mb-4" data-oid="w.ikqg6">
-                                    <div className="text-xs text-gray-400 mb-2" data-oid="et9t9rk">
+                                <div className="mb-4" data-oid="ng7fd_g">
+                                    <div className="text-xs text-gray-400 mb-2" data-oid="2d8fx4d">
                                         KEY FEATURES
                                     </div>
-                                    <div className="flex flex-wrap gap-1" data-oid="bsp5vck">
+                                    <div className="flex flex-wrap gap-1" data-oid="o5cmnp8">
                                         {wallet.features.map((feature) => (
                                             <span
                                                 key={feature}
                                                 className="px-2 py-1 bg-white/5 border border-white/10 rounded text-xs text-gray-300 hover:border-green-500/50 hover:text-green-400 transition-all duration-300"
-                                                data-oid="4sctv_4"
+                                                data-oid="r2emruk"
                                             >
                                                 {feature}
                                             </span>
@@ -422,22 +422,22 @@ export default function Page() {
                                 </div>
 
                                 {/* Popularity Bar */}
-                                <div className="mb-4" data-oid="h.b1.-x">
+                                <div className="mb-4" data-oid="jyf3yzz">
                                     <div
                                         className="flex justify-between text-xs text-gray-400 mb-1"
-                                        data-oid="1ypf6p_"
+                                        data-oid="q5xu6z7"
                                     >
-                                        <span data-oid=":.vpsvh">Market Adoption</span>
-                                        <span data-oid="o6x-.k9">{wallet.popularity}%</span>
+                                        <span data-oid="7yxryvl">Market Adoption</span>
+                                        <span data-oid="iw.jain">{wallet.popularity}%</span>
                                     </div>
                                     <div
                                         className="w-full bg-black/30 rounded-full h-2"
-                                        data-oid="0_ft3:m"
+                                        data-oid="b2:pzg4"
                                     >
                                         <div
                                             className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full transition-all duration-1000 ease-out"
                                             style={{ width: `${wallet.popularity}%` }}
-                                            data-oid="xue067t"
+                                            data-oid="i8k2r2m"
                                         ></div>
                                     </div>
                                 </div>
@@ -445,7 +445,7 @@ export default function Page() {
                                 {/* Action Button */}
                                 <button
                                     className="w-full py-2 bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-500/30 rounded-xl text-green-400 hover:from-green-500/20 hover:to-green-600/20 hover:border-green-400 transition-all duration-300 text-sm font-medium"
-                                    data-oid="xrptfi0"
+                                    data-oid="-8bmbx8"
                                 >
                                     View Details
                                 </button>
@@ -456,86 +456,86 @@ export default function Page() {
                     {/* Legend */}
                     <div
                         className="mt-12 backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6"
-                        data-oid="m_xbxl9"
+                        data-oid=":ixyfht"
                     >
-                        <h3 className="text-lg font-bold text-green-400 mb-4" data-oid="_44.phz">
+                        <h3 className="text-lg font-bold text-green-400 mb-4" data-oid="mklyoyf">
                             Legend & Information
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6" data-oid=":f:p1x9">
-                            <div data-oid="yvknrxn">
-                                <h4 className="text-white font-medium mb-2" data-oid="q4yb_tc">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6" data-oid="8ngpoy:">
+                            <div data-oid="oprgwqb">
+                                <h4 className="text-white font-medium mb-2" data-oid="pau4_31">
                                     Security Levels
                                 </h4>
-                                <div className="space-y-2 text-sm" data-oid="bfvy3o9">
-                                    <div className="flex items-center space-x-2" data-oid="vgvyvpb">
+                                <div className="space-y-2 text-sm" data-oid="vq21_ys">
+                                    <div className="flex items-center space-x-2" data-oid="e0zmw06">
                                         <div
                                             className="w-3 h-3 bg-green-400 rounded-full"
-                                            data-oid="k9b74fa"
+                                            data-oid="hw2g74p"
                                         ></div>
-                                        <span className="text-gray-300" data-oid="lkis805">
+                                        <span className="text-gray-300" data-oid="kn67ye:">
                                             High - Hardware wallet support, audited code
                                         </span>
                                     </div>
-                                    <div className="flex items-center space-x-2" data-oid="zri3hkk">
+                                    <div className="flex items-center space-x-2" data-oid=".uehsw4">
                                         <div
                                             className="w-3 h-3 bg-yellow-400 rounded-full"
-                                            data-oid="g_t.owi"
+                                            data-oid=".zt9mkc"
                                         ></div>
-                                        <span className="text-gray-300" data-oid=".yp6vcv">
+                                        <span className="text-gray-300" data-oid="p1nza3b">
                                             Medium - Standard security practices
                                         </span>
                                     </div>
-                                    <div className="flex items-center space-x-2" data-oid="dx_r7jg">
+                                    <div className="flex items-center space-x-2" data-oid="pir_vjh">
                                         <div
                                             className="w-3 h-3 bg-red-400 rounded-full"
-                                            data-oid="2jmvec_"
+                                            data-oid="pvjkdkp"
                                         ></div>
-                                        <span className="text-gray-300" data-oid="z5c8vu5">
+                                        <span className="text-gray-300" data-oid="757g:k0">
                                             Low - Basic security implementation
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div data-oid="t2n55vp">
-                                <h4 className="text-white font-medium mb-2" data-oid="bj5tn:b">
+                            <div data-oid="o_c_jky">
+                                <h4 className="text-white font-medium mb-2" data-oid="u0arghx">
                                     Platform Types
                                 </h4>
-                                <div className="space-y-2 text-sm" data-oid="er2m797">
-                                    <div className="flex items-center space-x-2" data-oid="myea5xs">
-                                        <span data-oid="1u3n-bz">🌐</span>
-                                        <span className="text-gray-300" data-oid="2e5rgsz">
+                                <div className="space-y-2 text-sm" data-oid="zgqbe0e">
+                                    <div className="flex items-center space-x-2" data-oid="m8obje0">
+                                        <span data-oid="9fgalkt">🌐</span>
+                                        <span className="text-gray-300" data-oid=".m6rqma">
                                             Browser Extension
                                         </span>
                                     </div>
-                                    <div className="flex items-center space-x-2" data-oid="u8fwqf1">
-                                        <span data-oid="v1klk5:">📱</span>
-                                        <span className="text-gray-300" data-oid="olglr9-">
+                                    <div className="flex items-center space-x-2" data-oid="vwr6a8p">
+                                        <span data-oid="swriff7">📱</span>
+                                        <span className="text-gray-300" data-oid="a6971h5">
                                             Mobile Application
                                         </span>
                                     </div>
-                                    <div className="flex items-center space-x-2" data-oid="z:w0fbg">
-                                        <span data-oid="rxq4im0">💻</span>
-                                        <span className="text-gray-300" data-oid="byfw9a4">
+                                    <div className="flex items-center space-x-2" data-oid="s5-l-k.">
+                                        <span data-oid="h657wkl">💻</span>
+                                        <span className="text-gray-300" data-oid="40p11k7">
                                             Desktop Application
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div data-oid="43ufwvv">
-                                <h4 className="text-white font-medium mb-2" data-oid="vyjmggr">
+                            <div data-oid="_:v23e4">
+                                <h4 className="text-white font-medium mb-2" data-oid="psjddy7">
                                     Integration
                                 </h4>
-                                <div className="space-y-2 text-sm" data-oid="k4-_jzi">
-                                    <div className="text-gray-300" data-oid="53zkua:">
+                                <div className="space-y-2 text-sm" data-oid="z5n5ke9">
+                                    <div className="text-gray-300" data-oid="w_tj85r">
                                         • Embeddable widget available
                                     </div>
-                                    <div className="text-gray-300" data-oid="wbx8eul">
+                                    <div className="text-gray-300" data-oid="bbt_63u">
                                         • REST API for developers
                                     </div>
-                                    <div className="text-gray-300" data-oid="nor5mae">
+                                    <div className="text-gray-300" data-oid="kyp88hq">
                                         • Real-time updates
                                     </div>
-                                    <div className="text-gray-300" data-oid="lv_rj0_">
+                                    <div className="text-gray-300" data-oid="7a89uwr">
                                         • Custom filtering options
                                     </div>
                                 </div>
@@ -547,39 +547,39 @@ export default function Page() {
                 {/* Footer */}
                 <footer
                     className="backdrop-blur-xl bg-black/20 border-t border-green-500/20 mt-16"
-                    data-oid="2:0wsiv"
+                    data-oid="pfihukh"
                 >
-                    <div className="max-w-7xl mx-auto px-6 py-8" data-oid="unk27rr">
+                    <div className="max-w-7xl mx-auto px-6 py-8" data-oid="y:dvmkp">
                         <div
                             className="flex flex-col md:flex-row justify-between items-center"
-                            data-oid=":0e78tz"
+                            data-oid="j-tcz5j"
                         >
-                            <div className="text-gray-400 text-sm" data-oid="ha4eq_:">
+                            <div className="text-gray-400 text-sm" data-oid="0a7o5e-">
                                 © 2024 Solana Wallet Inventory. Built for builders, merchants, and
                                 users.
                             </div>
                             <div
                                 className="flex items-center space-x-6 mt-4 md:mt-0"
-                                data-oid="31bq77z"
+                                data-oid="0d1fhg5"
                             >
                                 <a
                                     href="#"
                                     className="text-gray-400 hover:text-green-400 transition-colors duration-300"
-                                    data-oid="6y1x30u"
+                                    data-oid="vhn2gmt"
                                 >
                                     API Docs
                                 </a>
                                 <a
                                     href="#"
                                     className="text-gray-400 hover:text-green-400 transition-colors duration-300"
-                                    data-oid="ko:404_"
+                                    data-oid="c6zpxiq"
                                 >
                                     Submit Wallet
                                 </a>
                                 <a
                                     href="#"
                                     className="text-gray-400 hover:text-green-400 transition-colors duration-300"
-                                    data-oid="fx964e."
+                                    data-oid="mo0xnmr"
                                 >
                                     Contact
                                 </a>
