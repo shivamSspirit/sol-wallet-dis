@@ -10,6 +10,7 @@ export default function Page() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [wallets, setWallets] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [expandedCard, setExpandedCard] = useState(null);
 
     useEffect(() => {
         setIsLoaded(true);
@@ -161,6 +162,12 @@ export default function Page() {
 
     const filteredWallets = wallets.filter((wallet) => {
         const matchesCategory = selectedCategory === 'all' || wallet.category === selectedCategory;
+
+        // Special handling for Solana Pay search
+        if (searchTerm.toLowerCase() === 'solana pay') {
+            return wallet.solanaPayQR === 'Yes' && matchesCategory;
+        }
+
         const matchesSearch =
             wallet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             wallet.platforms.some((platform) =>
@@ -324,6 +331,32 @@ export default function Page() {
                                         </span>
                                     </button>
                                 ))}
+
+                                {/* Quick Filter for Solana Pay */}
+                                <button
+                                    onClick={() => {
+                                        if (searchTerm === 'solana pay') {
+                                            setSearchTerm('');
+                                        } else {
+                                            setSearchTerm('solana pay');
+                                            setSelectedCategory('all');
+                                        }
+                                    }}
+                                    className={`px-4 py-2 rounded-xl border transition-all duration-300 flex items-center space-x-2 ${
+                                        searchTerm === 'solana pay'
+                                            ? 'bg-green-500/20 border-green-400 text-green-400'
+                                            : 'bg-black/20 border-white/10 text-gray-400 hover:border-green-500/50 hover:text-green-400'
+                                    }`}
+                                    data-oid="solana-pay-filter"
+                                >
+                                    <span data-oid="solana-pay-icon">💳</span>
+                                    <span
+                                        className="text-sm font-medium"
+                                        data-oid="solana-pay-text"
+                                    >
+                                        Solana Pay
+                                    </span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -479,134 +512,115 @@ export default function Page() {
                                     </div>
                                 </div>
 
-                                {/* Custody Model */}
-                                <div className="mb-4" data-oid="custody-model">
+                                {/* Key Info Row - Clean and Minimal */}
+                                <div
+                                    className="mb-4 flex items-center justify-between"
+                                    data-oid="key-info-row"
+                                >
                                     <div
-                                        className="text-xs text-gray-400 mb-2"
-                                        data-oid="custody-label"
+                                        className="flex items-center space-x-3"
+                                        data-oid="custody-and-pay"
                                     >
-                                        CUSTODY MODEL
-                                    </div>
-                                    <div
-                                        className="flex items-center space-x-2"
-                                        data-oid="custody-content"
-                                    >
+                                        {/* Custody Model - Compact */}
                                         <span
-                                            className={`px-2 py-1 rounded-lg text-xs font-medium ${
+                                            className={`px-2 py-1 rounded-md text-xs font-medium ${
                                                 wallet.custodyModel === 'Self-custody'
-                                                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                                    ? 'bg-green-500/20 text-green-400'
                                                     : wallet.custodyModel === 'MPC'
-                                                      ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                                                      : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                                                      ? 'bg-yellow-500/20 text-yellow-400'
+                                                      : 'bg-red-500/20 text-red-400'
                                             }`}
                                             data-oid="custody-badge"
                                         >
                                             {wallet.custodyModel}
                                         </span>
-                                    </div>
-                                </div>
 
-                                {/* Key Features Grid */}
-                                <div className="mb-4" data-oid="features-grid">
-                                    <div
-                                        className="text-xs text-gray-400 mb-2"
-                                        data-oid="features-label"
-                                    >
-                                        KEY FEATURES
-                                    </div>
-                                    <div
-                                        className="grid grid-cols-2 gap-2 text-xs"
-                                        data-oid="features-content"
-                                    >
-                                        <div
-                                            className={`flex items-center space-x-1 ${wallet.inAppDexSwap ? 'text-green-400' : 'text-gray-500'}`}
-                                            data-oid="dex-swap"
-                                        >
-                                            <span data-oid="dex-icon">
-                                                {wallet.inAppDexSwap ? '✅' : '❌'}
-                                            </span>
-                                            <span data-oid="dex-text">DEX Swap</span>
-                                        </div>
-                                        <div
-                                            className={`flex items-center space-x-1 ${wallet.nftGallery ? 'text-green-400' : 'text-gray-500'}`}
-                                            data-oid="nft-gallery"
-                                        >
-                                            <span data-oid="nft-icon">
-                                                {wallet.nftGallery ? '✅' : '❌'}
-                                            </span>
-                                            <span data-oid="nft-text">NFT Gallery</span>
-                                        </div>
-                                        <div
-                                            className={`flex items-center space-x-1 ${wallet.inAppStaking ? 'text-green-400' : 'text-gray-500'}`}
-                                            data-oid="staking"
-                                        >
-                                            <span data-oid="staking-icon">
-                                                {wallet.inAppStaking ? '✅' : '❌'}
-                                            </span>
-                                            <span data-oid="staking-text">Staking</span>
-                                        </div>
-                                        <div
-                                            className={`flex items-center space-x-1 ${wallet.fiatOnOffRamp ? 'text-green-400' : 'text-gray-500'}`}
-                                            data-oid="fiat-ramp"
-                                        >
-                                            <span data-oid="fiat-icon">
-                                                {wallet.fiatOnOffRamp ? '✅' : '❌'}
-                                            </span>
-                                            <span data-oid="fiat-text">Fiat Ramp</span>
-                                        </div>
-                                        <div
-                                            className={`flex items-center space-x-1 ${wallet.pushNotifications ? 'text-green-400' : 'text-gray-500'}`}
-                                            data-oid="notifications"
-                                        >
-                                            <span data-oid="notif-icon">
-                                                {wallet.pushNotifications ? '✅' : '❌'}
-                                            </span>
-                                            <span data-oid="notif-text">Push Notifications</span>
-                                        </div>
-                                        <div
-                                            className={`flex items-center space-x-1 ${wallet.multiChain ? 'text-green-400' : 'text-gray-500'}`}
-                                            data-oid="multi-chain"
-                                        >
-                                            <span data-oid="chain-icon">
-                                                {wallet.multiChain ? '✅' : '❌'}
-                                            </span>
-                                            <span data-oid="chain-text">Multi-Chain</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Solana Pay QR - Critical Feature */}
-                                <div className="mb-4" data-oid="solana-pay">
-                                    <div
-                                        className="text-xs text-gray-400 mb-2"
-                                        data-oid="solana-pay-label"
-                                    >
-                                        SOLANA PAY QR (CRITICAL)
-                                    </div>
-                                    <div
-                                        className="flex items-center space-x-2"
-                                        data-oid="solana-pay-content"
-                                    >
-                                        <span
-                                            className={`px-3 py-1 rounded-lg text-xs font-bold border-2 ${
-                                                wallet.solanaPayQR === 'Yes'
-                                                    ? 'bg-green-500/20 text-green-300 border-green-400'
-                                                    : wallet.solanaPayQR === 'Partial'
-                                                      ? 'bg-yellow-500/20 text-yellow-300 border-yellow-400'
-                                                      : 'bg-red-500/20 text-red-300 border-red-400'
-                                            }`}
-                                            data-oid="solana-pay-badge"
-                                        >
-                                            {wallet.solanaPayQR}
-                                        </span>
+                                        {/* Solana Pay QR - Critical Feature Badge */}
                                         {wallet.solanaPayQR === 'Yes' && (
                                             <span
-                                                className="text-xs text-green-400 animate-pulse"
-                                                data-oid="solana-pay-star"
+                                                className="px-2 py-1 bg-green-500/20 text-green-400 rounded-md text-xs font-medium flex items-center space-x-1"
+                                                data-oid="solana-pay-badge"
                                             >
-                                                ⭐ Critical Feature
+                                                <span data-oid="pay-icon">💳</span>
+                                                <span data-oid="pay-text">Solana Pay</span>
                                             </span>
                                         )}
+                                    </div>
+
+                                    {/* Feature Count Indicator */}
+                                    <div className="text-xs text-gray-400" data-oid="feature-count">
+                                        {
+                                            [
+                                                wallet.inAppDexSwap,
+                                                wallet.nftGallery,
+                                                wallet.inAppStaking,
+                                                wallet.fiatOnOffRamp,
+                                                wallet.pushNotifications,
+                                                wallet.multiChain,
+                                            ].filter(Boolean).length
+                                        }
+                                        /6 features
+                                    </div>
+                                </div>
+
+                                {/* Feature Icons Row - Visual and Clean */}
+                                <div className="mb-4" data-oid="feature-icons">
+                                    <div
+                                        className="flex items-center justify-between"
+                                        data-oid="feature-icons-row"
+                                    >
+                                        <div
+                                            className="flex items-center space-x-3"
+                                            data-oid="feature-icons-left"
+                                        >
+                                            <div
+                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.inAppDexSwap ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
+                                                title="DEX Swap"
+                                                data-oid="dex-icon"
+                                            >
+                                                🔄
+                                            </div>
+                                            <div
+                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.nftGallery ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
+                                                title="NFT Gallery"
+                                                data-oid="nft-icon"
+                                            >
+                                                🖼️
+                                            </div>
+                                            <div
+                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.inAppStaking ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
+                                                title="Staking"
+                                                data-oid="staking-icon"
+                                            >
+                                                🏦
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="flex items-center space-x-3"
+                                            data-oid="feature-icons-right"
+                                        >
+                                            <div
+                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.fiatOnOffRamp ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
+                                                title="Fiat On/Off Ramp"
+                                                data-oid="fiat-icon"
+                                            >
+                                                💰
+                                            </div>
+                                            <div
+                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.pushNotifications ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
+                                                title="Push Notifications"
+                                                data-oid="notifications-icon"
+                                            >
+                                                🔔
+                                            </div>
+                                            <div
+                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.multiChain ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
+                                                title="Multi-Chain"
+                                                data-oid="multichain-icon"
+                                            >
+                                                🔗
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -631,12 +645,164 @@ export default function Page() {
                                     </div>
                                 </div>
 
+                                {/* Expandable Details Section */}
+                                {expandedCard === wallet.name && (
+                                    <div
+                                        className="mb-4 p-4 bg-black/20 rounded-xl border border-green-500/20"
+                                        data-oid="expanded-details"
+                                    >
+                                        <div
+                                            className="grid grid-cols-1 gap-4"
+                                            data-oid="details-grid"
+                                        >
+                                            {/* Detailed Features */}
+                                            <div data-oid="detailed-features">
+                                                <h4
+                                                    className="text-sm font-medium text-green-400 mb-2"
+                                                    data-oid="features-title"
+                                                >
+                                                    Feature Details
+                                                </h4>
+                                                <div
+                                                    className="grid grid-cols-2 gap-2 text-xs"
+                                                    data-oid="features-detailed"
+                                                >
+                                                    <div
+                                                        className={`flex items-center justify-between p-2 rounded ${wallet.inAppDexSwap ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
+                                                        data-oid="dex-detail"
+                                                    >
+                                                        <span data-oid="dex-label">DEX Swap</span>
+                                                        <span data-oid="dex-status">
+                                                            {wallet.inAppDexSwap ? '✅' : '❌'}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        className={`flex items-center justify-between p-2 rounded ${wallet.nftGallery ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
+                                                        data-oid="nft-detail"
+                                                    >
+                                                        <span data-oid="nft-label">
+                                                            NFT Gallery
+                                                        </span>
+                                                        <span data-oid="nft-status">
+                                                            {wallet.nftGallery ? '✅' : '❌'}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        className={`flex items-center justify-between p-2 rounded ${wallet.inAppStaking ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
+                                                        data-oid="staking-detail"
+                                                    >
+                                                        <span data-oid="staking-label">
+                                                            Staking
+                                                        </span>
+                                                        <span data-oid="staking-status">
+                                                            {wallet.inAppStaking ? '✅' : '❌'}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        className={`flex items-center justify-between p-2 rounded ${wallet.fiatOnOffRamp ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
+                                                        data-oid="fiat-detail"
+                                                    >
+                                                        <span data-oid="fiat-label">Fiat Ramp</span>
+                                                        <span data-oid="fiat-status">
+                                                            {wallet.fiatOnOffRamp ? '✅' : '❌'}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        className={`flex items-center justify-between p-2 rounded ${wallet.pushNotifications ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
+                                                        data-oid="notifications-detail"
+                                                    >
+                                                        <span data-oid="notifications-label">
+                                                            Push Notifications
+                                                        </span>
+                                                        <span data-oid="notifications-status">
+                                                            {wallet.pushNotifications ? '✅' : '❌'}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        className={`flex items-center justify-between p-2 rounded ${wallet.multiChain ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
+                                                        data-oid="multichain-detail"
+                                                    >
+                                                        <span data-oid="multichain-label">
+                                                            Multi-Chain
+                                                        </span>
+                                                        <span data-oid="multichain-status">
+                                                            {wallet.multiChain ? '✅' : '❌'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Solana Pay Details */}
+                                            <div data-oid="solana-pay-details">
+                                                <h4
+                                                    className="text-sm font-medium text-green-400 mb-2"
+                                                    data-oid="solana-pay-title"
+                                                >
+                                                    Solana Pay QR Support
+                                                </h4>
+                                                <div
+                                                    className="flex items-center space-x-2"
+                                                    data-oid="solana-pay-detail"
+                                                >
+                                                    <span
+                                                        className={`px-3 py-1 rounded-lg text-xs font-bold ${
+                                                            wallet.solanaPayQR === 'Yes'
+                                                                ? 'bg-green-500/20 text-green-300'
+                                                                : wallet.solanaPayQR === 'Partial'
+                                                                  ? 'bg-yellow-500/20 text-yellow-300'
+                                                                  : 'bg-red-500/20 text-red-300'
+                                                        }`}
+                                                        data-oid="solana-pay-status"
+                                                    >
+                                                        {wallet.solanaPayQR}
+                                                    </span>
+                                                    {wallet.solanaPayQR === 'Yes' && (
+                                                        <span
+                                                            className="text-xs text-green-400"
+                                                            data-oid="critical-badge"
+                                                        >
+                                                            ⭐ Critical Feature
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Additional Info */}
+                                            <div data-oid="additional-info">
+                                                <h4
+                                                    className="text-sm font-medium text-green-400 mb-2"
+                                                    data-oid="additional-title"
+                                                >
+                                                    Additional Information
+                                                </h4>
+                                                <div
+                                                    className="space-y-1 text-xs text-gray-300"
+                                                    data-oid="additional-content"
+                                                >
+                                                    <div data-oid="open-source">
+                                                        Open Source:{' '}
+                                                        {wallet.openSource ? 'Yes' : 'No'}
+                                                    </div>
+                                                    <div data-oid="security-level">
+                                                        Security Level: {wallet.security}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Action Button */}
                                 <button
+                                    onClick={() =>
+                                        setExpandedCard(
+                                            expandedCard === wallet.name ? null : wallet.name,
+                                        )
+                                    }
                                     className="w-full py-2 bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-500/30 rounded-xl text-green-400 hover:from-green-500/20 hover:to-green-600/20 hover:border-green-400 transition-all duration-300 text-sm font-medium"
                                     data-oid="-8bmbx8"
                                 >
-                                    View Details
+                                    {expandedCard === wallet.name ? 'Hide Details' : 'View Details'}
                                 </button>
                             </div>
                         ))}
@@ -701,10 +867,7 @@ export default function Page() {
                                 </div>
                             </div>
                             <div data-oid="solana-pay-legend">
-                                <h4
-                                    className="text-white font-medium mb-2"
-                                    data-oid="solana-pay-title"
-                                >
+                                <h4 className="text-white font-medium mb-2" data-oid="8_zzokc">
                                     Solana Pay QR Support
                                 </h4>
                                 <div className="space-y-2 text-sm" data-oid="solana-pay-items">
@@ -735,10 +898,7 @@ export default function Page() {
                                 </div>
                             </div>
                             <div data-oid="features-legend">
-                                <h4
-                                    className="text-white font-medium mb-2"
-                                    data-oid="features-title"
-                                >
+                                <h4 className="text-white font-medium mb-2" data-oid="8uipsoy">
                                     Key Features
                                 </h4>
                                 <div className="space-y-2 text-sm" data-oid="features-items">
