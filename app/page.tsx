@@ -445,43 +445,6 @@ export default function Page() {
                                             >
                                                 {wallet.name}
                                             </h3>
-                                            <div
-                                                className="flex items-center space-x-2 mt-1"
-                                                data-oid="dnruy:b"
-                                            >
-                                                <div
-                                                    className="flex items-center space-x-1"
-                                                    data-oid="w6w8kvf"
-                                                >
-                                                    <div
-                                                        className="w-2 h-2 bg-green-400 rounded-full animate-pulse"
-                                                        data-oid="uyc78cq"
-                                                    ></div>
-                                                    <span
-                                                        className="text-xs text-green-400"
-                                                        data-oid="jz.slz6"
-                                                    >
-                                                        Active
-                                                    </span>
-                                                </div>
-                                                <div
-                                                    className={`px-2 py-1 rounded-full text-xs ${getSecurityColor(wallet.security)}`}
-                                                    data-oid="28vd5-l"
-                                                >
-                                                    {wallet.security} Security
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="text-right" data-oid="ex86sjk">
-                                        <div className="text-sm text-gray-400" data-oid="9pyir.7">
-                                            Popularity
-                                        </div>
-                                        <div
-                                            className="text-lg font-bold text-green-400"
-                                            data-oid="y1ncy70"
-                                        >
-                                            {wallet.popularity}%
                                         </div>
                                     </div>
                                 </div>
@@ -621,27 +584,6 @@ export default function Page() {
                                                 🔗
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                {/* Popularity Bar */}
-                                <div className="mb-4" data-oid="jyf3yzz">
-                                    <div
-                                        className="flex justify-between text-xs text-gray-400 mb-1"
-                                        data-oid="q5xu6z7"
-                                    >
-                                        <span data-oid="7yxryvl">Market Adoption</span>
-                                        <span data-oid="iw.jain">{wallet.popularity}%</span>
-                                    </div>
-                                    <div
-                                        className="w-full bg-black/30 rounded-full h-2"
-                                        data-oid="b2:pzg4"
-                                    >
-                                        <div
-                                            className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full transition-all duration-1000 ease-out"
-                                            style={{ width: `${wallet.popularity}%` }}
-                                            data-oid="i8k2r2m"
-                                        ></div>
                                     </div>
                                 </div>
 
