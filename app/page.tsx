@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import CSVDisplay from './components/CsvDisplay';
 import WalletManager from './components/WalletManager';
+import Image from 'next/image';
 
 export default function Page() {
     const [selectedCategory, setSelectedCategory] = useState('all');
@@ -11,6 +12,8 @@ export default function Page() {
     const [wallets, setWallets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [expandedCard, setExpandedCard] = useState(null);
+
+    console.log('wallets', wallets);
 
     useEffect(() => {
         setIsLoaded(true);
@@ -23,6 +26,7 @@ export default function Page() {
             const result = await response.json();
 
             if (response.ok && result.data) {
+                console.log('result.data', result.data);
                 // Transform CSV data to match our component structure
                 const transformedWallets = result.data
                     .filter((wallet) => wallet.Name && wallet.Name.trim() !== '') // Filter out empty rows
@@ -47,6 +51,7 @@ export default function Page() {
                         description: wallet.Notes || `${wallet.Name} wallet`,
                         security: getSecurityLevel(wallet.Category),
                         popularity: getPopularityScore(wallet.Name),
+                        imageLogo: wallet.Logos,
                     }));
 
                 setWallets(transformedWallets);
@@ -436,7 +441,14 @@ export default function Page() {
                                             className="w-12 h-12 bg-gradient-to-br from-green-400/20 to-green-600/20 rounded-xl flex items-center justify-center text-2xl border border-green-500/30"
                                             data-oid=":hi469k"
                                         >
-                                            {wallet.logo}
+                                            <WalletAvatar
+                                                walletName={wallet.name}
+                                                imageUrl={wallet.imageLogo}
+                                                bgColor="bg-blue-600"
+                                                size={48}
+                                                className="w-full h-full object-cover rounded-xl shadow-lg border-2 border-white/10"
+                                                data-oid="hd5.0sn"
+                                            />
                                         </div>
                                         <div data-oid="q7ebr6y">
                                             <h3
@@ -501,11 +513,29 @@ export default function Page() {
                                         {/* Solana Pay QR - Critical Feature Badge */}
                                         {wallet.solanaPayQR === 'Yes' && (
                                             <span
-                                                className="px-2 py-1 bg-green-500/20 text-green-400 rounded-md text-xs font-medium flex items-center space-x-1"
+                                                className="solana-pay-badge flex items-center space-x-2 px-3 py-1 rounded-lg text-xs font-semibold relative overflow-hidden cursor-pointer group"
                                                 data-oid="solana-pay-badge"
                                             >
-                                                <span data-oid="pay-icon">💳</span>
-                                                <span data-oid="pay-text">Solana Pay</span>
+                                                {/* Animated Glow */}
+                                                <span
+                                                    className="absolute inset-0 z-0 bg-gradient-to-r from-green-400/30 via-green-500/40 to-green-400/30 blur-lg opacity-70 animate-glow"
+                                                    data-oid="80xhy2t"
+                                                />
+
+                                                {/* Animated Icon */}
+                                                <span
+                                                    className="relative z-10 text-green-400 text-base animate-bounce-slow group-hover:animate-shimmer"
+                                                    data-oid="pay-icon"
+                                                >
+                                                    💳
+                                                </span>
+                                                {/* Text */}
+                                                <span
+                                                    className="relative z-10 text-green-100 group-hover:text-green-400 transition-colors duration-300"
+                                                    data-oid="pay-text"
+                                                >
+                                                    Solana Pay
+                                                </span>
                                             </span>
                                         )}
                                     </div>
@@ -946,6 +976,52 @@ export default function Page() {
                     </div>
                 </footer>
             </div>
+        </div>
+    );
+}
+
+function WalletAvatar({
+    walletName,
+    imageUrl,
+    size = 48,
+    bgColor = 'bg-gradient-to-br from-blue-500 to-purple-600',
+    textColor = 'text-white',
+    className = '',
+}) {
+    const getInitial = (name) => {
+        if (!name) return '?';
+        return name.charAt(0).toUpperCase();
+    };
+
+    const avatarStyle = {
+        width: size,
+        height: size,
+        fontSize: size * 0.4,
+        minWidth: size,
+        minHeight: size,
+    };
+
+    return (
+        <div className="relative" data-oid="_w.9:lt">
+            {imageUrl ? (
+                <Image
+                    src={imageUrl}
+                    alt={walletName || 'Wallet'}
+                    width={size}
+                    height={size}
+                    className={`w-full h-full object-cover rounded-xl ${className}`}
+                    style={avatarStyle}
+                    data-oid="177dbts"
+                />
+            ) : (
+                <div
+                    className={`rounded-full ${bgColor} ${textColor} flex items-center justify-center font-bold select-none ${className}`}
+                    style={avatarStyle}
+                    data-oid="vz:6frx"
+                >
+                    {getInitial(walletName)}
+                </div>
+            )}
         </div>
     );
 }
