@@ -255,14 +255,46 @@ export default function Page() {
                                 <div
                   className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center"
                   data-oid="cqgbdws">
-
-                                    <span
-                    className="text-white font-bold text-xl"
-                    data-oid="inr7u74">
-
-                                        W
-                                    </span>
-                                </div>
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      viewBox="0 0 50 50" 
+                      className="
+                        w-6 
+                        h-6 
+                        transform 
+                        transition-all 
+                        duration-500 
+                        group-hover:rotate-12 
+                        group-hover:scale-110
+                      "
+                    >
+                      {/* Wallet Matrix Symbol */}
+                      <path 
+                        d="M10 25 L25 10 L40 25 L25 40 Z" 
+                        fill="none" 
+                        stroke="white" 
+                        strokeWidth="3" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        className="
+                          group-hover:stroke-[#7e3af2] 
+                          transition-colors 
+                          duration-500
+                        "
+                      />
+                      <circle 
+                        cx="25" 
+                        cy="25" 
+                        r="3" 
+                        fill="white"
+                        className="
+                          group-hover:fill-[#7e3af2] 
+                          transition-colors 
+                          duration-500
+                        "
+                      />
+                    </svg>
+                </div>
                 <div data-oid="j7p104i">
                                     <h1
                     className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent print:text-slate-900"
