@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import CSVDisplay from './components/CsvDisplay';
-import WalletManager from './components/WalletManager';
-import Image from 'next/image';
+import { useState, useEffect } from "react";
+import CSVDisplay from "./components/CsvDisplay";
+import WalletManager from "./components/WalletManager";
+import Image from "next/image";
 
 export default function Page() {
-    const [selectedCategory, setSelectedCategory] = useState('all');
-    const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
     const [isLoaded, setIsLoaded] = useState(false);
     const [wallets, setWallets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [expandedCard, setExpandedCard] = useState(null);
 
-    console.log('wallets', wallets);
+  console.log("wallets", wallets);
 
     useEffect(() => {
         setIsLoaded(true);
@@ -22,100 +22,101 @@ export default function Page() {
 
     const fetchWalletData = async () => {
         try {
-            const response = await fetch('/api/csv-data');
+      const response = await fetch("/api/csv-data");
             const result = await response.json();
 
             if (response.ok && result.data) {
-                console.log('result.data', result.data);
+        console.log("result.data", result.data);
                 // Transform CSV data to match our component structure
-                const transformedWallets = result.data
-                    .filter((wallet) => wallet.Name && wallet.Name.trim() !== '') // Filter out empty rows
+        const transformedWallets = result.data.
+        filter((wallet) => wallet.Name && wallet.Name.trim() !== "") // Filter out empty rows
                     .map((wallet) => ({
                         name: wallet.Name,
                         category: getCategoryFromPlatforms(wallet.Platforms),
-                        platforms: wallet.Platforms
-                            ? wallet.Platforms.split(';').map((p) => p.trim())
-                            : [],
-                        custodyModel: wallet['Custody Model'] || 'Unknown',
-                        inAppDexSwap: wallet['In-app DEX Swap'] === 'Yes',
-                        nftGallery: wallet['NFT Gallery'] === 'Yes',
-                        inAppStaking: wallet['In-app Staking'] === 'Yes',
+          platforms: wallet.Platforms ?
+          wallet.Platforms.split(";").map((p) => p.trim()) :
+          [],
+          custodyModel: wallet["Custody Model"] || "Unknown",
+          inAppDexSwap: wallet["In-app DEX Swap"] === "Yes",
+          nftGallery: wallet["NFT Gallery"] === "Yes",
+          inAppStaking: wallet["In-app Staking"] === "Yes",
                         fiatOnOffRamp:
-                            wallet['Fiat On/Off Ramp'] === 'Yes' ||
-                            wallet['Fiat On/Off Ramp'] === 'Partial',
-                        pushNotifications: wallet['Push Notifications'] === 'Yes',
-                        solanaPayQR: wallet['Solana Pay QR'] || 'No',
-                        multiChain: wallet['Multi-Chain'] === 'Yes',
-                        openSource: wallet['Open Source'] === 'Yes',
+          wallet["Fiat On/Off Ramp"] === "Yes" ||
+          wallet["Fiat On/Off Ramp"] === "Partial",
+          pushNotifications: wallet["Push Notifications"] === "Yes",
+          solanaPayQR: wallet["Solana Pay QR"] || "No",
+          multiChain: wallet["Multi-Chain"] === "Yes",
+          openSource: wallet["Open Source"] === "Yes",
                         logo: getWalletLogo(wallet.Name),
                         description: wallet.Notes || `${wallet.Name} wallet`,
                         security: getSecurityLevel(wallet.Category),
                         popularity: getPopularityScore(wallet.Name),
                         imageLogo: wallet.Logos,
+          website: wallet.Website
                     }));
 
                 setWallets(transformedWallets);
             }
         } catch (error) {
-            console.error('Error fetching wallet data:', error);
+      console.error("Error fetching wallet data:", error);
         } finally {
             setLoading(false);
         }
     };
 
     const getCategoryFromPlatforms = (platforms) => {
-        if (!platforms) return 'other';
+    if (!platforms) return "other";
         const platformStr = platforms.toLowerCase();
         if (
-            platformStr.includes('chrome') ||
-            platformStr.includes('firefox') ||
-            platformStr.includes('edge')
-        ) {
-            return 'browser';
+    platformStr.includes("chrome") ||
+    platformStr.includes("firefox") ||
+    platformStr.includes("edge"))
+    {
+      return "browser";
         }
-        if (platformStr.includes('ios') || platformStr.includes('android')) {
-            return 'mobile';
+    if (platformStr.includes("ios") || platformStr.includes("android")) {
+      return "mobile";
         }
-        if (platformStr.includes('desktop')) {
-            return 'desktop';
+    if (platformStr.includes("desktop")) {
+      return "desktop";
         }
-        if (platformStr.includes('hardware')) {
-            return 'hardware';
+    if (platformStr.includes("hardware")) {
+      return "hardware";
         }
-        return 'other';
+    return "other";
     };
 
     const getWalletLogo = (name) => {
         const logoMap = {
-            Phantom: '👻',
-            Solflare: '🔥',
-            Backpack: '🎒',
-            Glow: '✨',
-            Exodus: '🚀',
-            'Trust Wallet': '🛡️',
-            'Coinbase Wallet': '🔵',
-            'Atomic Wallet': '⚛️',
-            'Brave Wallet': '🦁',
-            Ledger: '🔐',
-            Trezor: '🔒',
-            SafePal: '🛡️',
-            Keystone: '🗝️',
-            Tangem: '💳',
-            MetaMask: '🦊',
-            Binance: '🟡',
-            OKX: '⭕',
-            Coin98: '🌐',
-            'Math Wallet': '📊',
-            Guarda: '🛡️',
-            TokenPocket: '💰',
-            Enkrypt: '🔐',
-            Robinhood: '🏹',
-            Torus: '🌀',
-            Tiplink: '🔗',
-            Fuse: '⚡',
-            Helium: '📡',
-            Bitget: '📈',
-            Jupiter: '🪐',
+      Phantom: "👻",
+      Solflare: "🔥",
+      Backpack: "🎒",
+      Glow: "✨",
+      Exodus: "🚀",
+      "Trust Wallet": "🛡️",
+      "Coinbase Wallet": "🔵",
+      "Atomic Wallet": "⚛️",
+      "Brave Wallet": "🦁",
+      Ledger: "🔐",
+      Trezor: "🔒",
+      SafePal: "🛡️",
+      Keystone: "🗝️",
+      Tangem: "💳",
+      MetaMask: "🦊",
+      Binance: "🟡",
+      OKX: "⭕",
+      Coin98: "🌐",
+      "Math Wallet": "📊",
+      Guarda: "🛡️",
+      TokenPocket: "💰",
+      Enkrypt: "🔐",
+      Robinhood: "🏹",
+      Torus: "🌀",
+      Tiplink: "🔗",
+      Fuse: "⚡",
+      Helium: "📡",
+      Bitget: "📈",
+      Jupiter: "🪐"
         };
 
         for (const [key, emoji] of Object.entries(logoMap)) {
@@ -123,29 +124,29 @@ export default function Page() {
                 return emoji;
             }
         }
-        return '💼'; // Default wallet icon
+    return "💼"; // Default wallet icon
     };
 
     const getSecurityLevel = (category) => {
-        if (category === 'Cold Wallet') return 'High';
-        if (category === 'Hot Wallet') return 'Medium';
-        return 'Medium';
+    if (category === "Cold Wallet") return "High";
+    if (category === "Hot Wallet") return "Medium";
+    return "Medium";
     };
 
     const getPopularityScore = (name) => {
         const popularityMap = {
             Phantom: 95,
             Solflare: 88,
-            'Trust Wallet': 85,
+      "Trust Wallet": 85,
             Exodus: 80,
             Backpack: 75,
             Coin98: 70,
             Glow: 65,
-            'Atomic Wallet': 75,
-            'Coinbase Wallet': 80,
+      "Atomic Wallet": 75,
+      "Coinbase Wallet": 80,
             Ledger: 90,
             Trezor: 85,
-            MetaMask: 70,
+      MetaMask: 70
         };
 
         for (const [key, score] of Object.entries(popularityMap)) {
@@ -157,26 +158,26 @@ export default function Page() {
     };
 
     const categories = [
-        { id: 'all', name: 'All Wallets', icon: '🌟' },
-        { id: 'browser', name: 'Browser Extension', icon: '🌐' },
-        { id: 'mobile', name: 'Mobile App', icon: '📱' },
-        { id: 'desktop', name: 'Desktop App', icon: '💻' },
-        { id: 'hardware', name: 'Hardware Wallet', icon: '🔐' },
-        { id: 'other', name: 'Other', icon: '⚙️' },
-    ];
+  { id: "all", name: "All Wallets", icon: "🌟" },
+  { id: "browser", name: "Browser Extension", icon: "🌐" },
+  { id: "mobile", name: "Mobile App", icon: "📱" },
+  { id: "desktop", name: "Desktop App", icon: "💻" },
+  { id: "hardware", name: "Hardware Wallet", icon: "🔐" }];
+
 
     const filteredWallets = wallets.filter((wallet) => {
-        const matchesCategory = selectedCategory === 'all' || wallet.category === selectedCategory;
+    const matchesCategory =
+    selectedCategory === "all" || wallet.category === selectedCategory;
 
         // Special handling for Solana Pay search
-        if (searchTerm.toLowerCase() === 'solana pay') {
-            return wallet.solanaPayQR === 'Yes' && matchesCategory;
+    if (searchTerm.toLowerCase() === "solana pay") {
+      return wallet.solanaPayQR === "Yes" && matchesCategory;
         }
 
         const matchesSearch =
             wallet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             wallet.platforms.some((platform) =>
-                platform.toLowerCase().includes(searchTerm.toLowerCase()),
+    platform.toLowerCase().includes(searchTerm.toLowerCase())
             ) ||
             wallet.custodyModel.toLowerCase().includes(searchTerm.toLowerCase()) ||
             wallet.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -185,100 +186,112 @@ export default function Page() {
 
     const getSecurityColor = (security) => {
         switch (security) {
-            case 'High':
-                return 'text-green-400 bg-green-400/10';
-            case 'Medium':
-                return 'text-yellow-400 bg-yellow-400/10';
-            case 'Low':
-                return 'text-red-400 bg-red-400/10';
+      case "High":
+        return "text-green-400 bg-green-400/10";
+      case "Medium":
+        return "text-yellow-400 bg-yellow-400/10";
+      case "Low":
+        return "text-red-400 bg-red-400/10";
             default:
-                return 'text-gray-400 bg-gray-400/10';
+        return "text-gray-400 bg-gray-400/10";
         }
     };
 
     if (loading) {
         return (
             <div
-                className="min-h-screen bg-black text-white flex items-center justify-center"
-                data-oid="loading-screen"
-            >
-                <div className="text-center" data-oid="loading-content">
+        className="min-h-screen bg-gray-900 text-white flex items-center justify-center"
+        data-oid="rp5-884">
+
+        <div className="text-center" data-oid="1_uki0o">
                     <div
-                        className="w-16 h-16 border-4 border-green-500/30 border-t-green-500 rounded-full animate-spin mx-auto mb-4"
-                        data-oid="loading-spinner"
-                    ></div>
-                    <p className="text-green-400 text-lg" data-oid="loading-text">
+            className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-4"
+            data-oid="k1ll:4w">
+          </div>
+          <p className="text-purple-400 text-lg" data-oid="et94.fa">
                         Loading wallet data...
                     </p>
                 </div>
-            </div>
-        );
+      </div>);
+
     }
 
     return (
-        <div className="min-h-screen bg-black text-white overflow-hidden" data-oid="ljm7-yz">
-            {/* Animated background */}
+    <div
+      className="min-h-screen bg-gray-900 text-white overflow-x-hidden print:bg-white"
+      data-oid="7b1mj:z">
+
+      {/* Animated background - hidden in print */}
             <div
-                className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black"
-                data-oid="yv7mw77"
-            >
+        className="fixed inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 print:hidden"
+        data-oid="lf5j-wj">
+
                 <div
-                    className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.1),transparent_50%)]"
-                    data-oid="chbwtpw"
-                ></div>
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.1),transparent_50%)]"
+          data-oid="xxl97z2">
+        </div>
                 <div
-                    className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl animate-pulse"
-                    data-oid="0dbg2mt"
-                ></div>
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
+          data-oid="w417dql">
+        </div>
                 <div
-                    className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-400/5 rounded-full blur-3xl animate-pulse delay-1000"
-                    data-oid="izqb2s."
-                ></div>
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse delay-1000"
+          data-oid="w:-vv8a">
+        </div>
             </div>
 
-            <div className="relative z-10" data-oid="0k0lg8h">
+      <div className="relative z-10" data-oid="g8:iw-:">
                 {/* Header */}
                 <header
-                    className={`backdrop-blur-xl bg-black/20 border-b border-green-500/20 transition-all duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
-                    data-oid="_dte5p7"
-                >
-                    <div className="max-w-7xl mx-auto px-6 py-6" data-oid="mq:wv_o">
-                        <div className="flex items-center justify-between" data-oid="y_3bft-">
-                            <div className="flex items-center space-x-4" data-oid="3rbkga8">
+          className={`backdrop-blur-xl bg-gray-800/80 border-b border-gray-700 transition-all duration-1000 print:bg-white print:border-slate-300 ${isLoaded ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}
+          data-oid="ufe677_">
+
+          <div className="max-w-7xl mx-auto px-6 py-6" data-oid="23sye-1">
+            <div
+              className="flex items-center justify-between"
+              data-oid="dmp:-02">
+
+              <div className="flex items-center space-x-4" data-oid="h0g3vd3">
                                 <div
-                                    className="w-10 h-10 bg-gradient-to-r from-green-400 to-green-600 rounded-lg flex items-center justify-center"
-                                    data-oid="m1d.b7j"
-                                >
+                  className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center"
+                  data-oid="cqgbdws">
+
                                     <span
-                                        className="text-black font-bold text-xl"
-                                        data-oid="t-e71:z"
-                                    >
+                    className="text-white font-bold text-xl"
+                    data-oid="inr7u74">
+
                                         W
                                     </span>
                                 </div>
-                                <div data-oid="3h.zki8">
+                <div data-oid="j7p104i">
                                     <h1
-                                        className="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent"
-                                        data-oid="g9.wl96"
-                                    >
+                    className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent print:text-slate-900"
+                    data-oid="se2fn1r">
+
                                         Solana Wallet Inventory
                                     </h1>
-                                    <p className="text-gray-400 text-sm" data-oid="ui.qto3">
+                  <p
+                    className="text-gray-400 text-sm print:text-slate-700"
+                    data-oid="d:3udu0">
+
                                         Comprehensive wallet ecosystem dashboard
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-4" data-oid="jmgj-xv">
+              <div
+                className="flex items-center space-x-4 print:hidden"
+                data-oid="hmwl_mm">
+
                                 <button
-                                    className="px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 hover:bg-green-500/20 transition-all duration-300"
-                                    data-oid="fohx_vq"
-                                >
+                  className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-300"
+                  data-oid="bhhac8m">
+
                                     API Access
                                 </button>
                                 <button
-                                    className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 rounded-lg text-black font-medium hover:from-green-400 hover:to-green-500 transition-all duration-300"
-                                    data-oid="1jri8rv"
-                                >
+                  className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg text-white font-medium hover:from-purple-400 hover:to-indigo-500 transition-all duration-300"
+                  data-oid="7m2i5i_">
+
                                     Embed Widget
                                 </button>
                             </div>
@@ -288,77 +301,77 @@ export default function Page() {
 
                 {/* Controls */}
                 <div
-                    className={`max-w-7xl mx-auto px-6 py-8 transition-all duration-1000 delay-300 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                    data-oid="-y281:k"
-                >
+          className={`max-w-7xl mx-auto px-6 py-8 transition-all duration-1000 delay-300 print:py-4 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          data-oid="0-du3cf">
+
                     <div
-                        className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6 mb-8"
-                        data-oid="l0p-a:l"
-                    >
-                        <div className="flex flex-col lg:flex-row gap-6" data-oid="jesa-g6">
+            className="backdrop-blur-xl bg-gray-800/60 rounded-2xl border border-gray-700 p-6 mb-8 print:bg-white print:border-slate-300 print:mb-4"
+            data-oid="1vb06ac">
+
+            <div
+              className="flex flex-col lg:flex-row gap-6 print:hidden"
+              data-oid="t2nq-s1">
+
                             {/* Search */}
-                            <div className="flex-1" data-oid="mhio0s3">
-                                <div className="relative" data-oid="rxmukg8">
+              <div className="flex-1" data-oid="efv7mf1">
+                <div className="relative" data-oid="y14yhie">
                                     <input
                                         type="text"
                                         placeholder="Search wallets or features..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="w-full bg-black/30 border border-green-500/30 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-400/20 transition-all duration-300"
-                                        data-oid="2olh4jr"
-                                    />
+                    className="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+                    data-oid="e0a_np0" />
+
 
                                     <div
-                                        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-400"
-                                        data-oid="i1fj799"
-                                    >
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400"
+                    data-oid="4.n83yy">
+
                                         🔍
                                     </div>
                                 </div>
                             </div>
 
                             {/* Category Filter */}
-                            <div className="flex flex-wrap gap-2" data-oid="vcnnbk5">
-                                {categories.map((category) => (
+              <div className="flex flex-wrap gap-2" data-oid="bodks2.">
+                {categories.map((category) =>
                                     <button
                                         key={category.id}
                                         onClick={() => setSelectedCategory(category.id)}
                                         className={`px-4 py-2 rounded-xl border transition-all duration-300 flex items-center space-x-2 ${
-                                            selectedCategory === category.id
-                                                ? 'bg-green-500/20 border-green-400 text-green-400'
-                                                : 'bg-black/20 border-white/10 text-gray-400 hover:border-green-500/50 hover:text-green-400'
-                                        }`}
-                                        data-oid="gei4dcu"
-                                    >
-                                        <span data-oid="6ffmqwn">{category.icon}</span>
-                                        <span className="text-sm font-medium" data-oid="crt2t6o">
+                  selectedCategory === category.id ?
+                  "bg-purple-500/20 border-purple-400 text-purple-300" :
+                  "bg-gray-700/50 border-gray-600 text-gray-300 hover:border-purple-500/50 hover:text-purple-300"}`
+                  }
+                  data-oid="ro62zaz">
+
+                    <span data-oid="euk2h10">{category.icon}</span>
+                    <span className="text-sm font-medium" data-oid="fp20hhj">
                                             {category.name}
                                         </span>
                                     </button>
-                                ))}
+                )}
 
                                 {/* Quick Filter for Solana Pay */}
                                 <button
                                     onClick={() => {
-                                        if (searchTerm === 'solana pay') {
-                                            setSearchTerm('');
+                    if (searchTerm === "solana pay") {
+                      setSearchTerm("");
                                         } else {
-                                            setSearchTerm('solana pay');
-                                            setSelectedCategory('all');
+                      setSearchTerm("solana pay");
+                      setSelectedCategory("all");
                                         }
                                     }}
                                     className={`px-4 py-2 rounded-xl border transition-all duration-300 flex items-center space-x-2 ${
-                                        searchTerm === 'solana pay'
-                                            ? 'bg-green-500/20 border-green-400 text-green-400'
-                                            : 'bg-black/20 border-white/10 text-gray-400 hover:border-green-500/50 hover:text-green-400'
-                                    }`}
-                                    data-oid="solana-pay-filter"
-                                >
-                                    <span data-oid="solana-pay-icon">💳</span>
-                                    <span
-                                        className="text-sm font-medium"
-                                        data-oid="solana-pay-text"
-                                    >
+                  searchTerm === "solana pay" ?
+                  "bg-purple-500/20 border-purple-400 text-purple-300" :
+                  "bg-gray-700/50 border-gray-600 text-gray-300 hover:border-purple-500/50 hover:text-purple-300"}`
+                  }
+                  data-oid="xxm04f_">
+
+                  <span data-oid="oy6g.5h">💳</span>
+                  <span className="text-sm font-medium" data-oid="-pqmgxr">
                                         Solana Pay
                                     </span>
                                 </button>
@@ -367,562 +380,225 @@ export default function Page() {
                     </div>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8" data-oid="nc:_9nd">
+          <div
+            className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8 print:mb-4"
+            data-oid="bo1xkje">
+
                         {[
-                            { label: 'Total Wallets', value: wallets.length, icon: '💼' },
+            { label: "Total Wallets", value: wallets.length, icon: "💼" },
                             {
-                                label: 'Browser Extensions',
-                                value: wallets.filter((w) => w.category === 'browser').length,
-                                icon: '🌐',
+              label: "Browser Extensions",
+              value: wallets.filter((w) => w.category === "browser").length,
+              icon: "🌐"
                             },
                             {
-                                label: 'Mobile Apps',
-                                value: wallets.filter((w) => w.category === 'mobile').length,
-                                icon: '📱',
+              label: "Mobile Apps",
+              value: wallets.filter((w) => w.category === "mobile").length,
+              icon: "📱"
                             },
                             {
-                                label: 'Hardware Wallets',
-                                value: wallets.filter((w) => w.category === 'hardware').length,
-                                icon: '🔐',
+              label: "Hardware Wallets",
+              value: wallets.filter((w) => w.category === "hardware").length,
+              icon: "🔐"
                             },
                             {
-                                label: 'Solana Pay Support',
-                                value: wallets.filter((w) => w.solanaPayQR === 'Yes').length,
-                                icon: '💳',
-                            },
-                        ].map((stat, index) => (
+              label: "Solana Pay Support",
+              value: wallets.filter((w) => w.solanaPayQR === "Yes").length,
+              icon: "💳"
+            }].
+            map((stat, index) =>
                             <div
                                 key={index}
-                                className={`backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/10 rounded-xl border border-white/10 p-6 transition-all duration-1000 delay-${(index + 1) * 100} ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                                data-oid="vl4d6x9"
-                            >
+              className={`backdrop-blur-xl bg-gray-800/60 rounded-xl border border-gray-700 p-6 transition-all duration-1000 delay-${(index + 1) * 100} print:bg-white print:border-slate-300 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+              data-oid="5xd2y8t">
+
                                 <div
                                     className="flex items-center justify-between"
-                                    data-oid="2nytt1l"
-                                >
-                                    <div data-oid="9paiazm">
-                                        <p className="text-gray-400 text-sm" data-oid="mi2dm7i">
+                data-oid="nlodcwg">
+
+                  <div data-oid="frwjxi.">
+                    <p
+                    className="text-gray-400 text-sm print:text-slate-700"
+                    data-oid="idso9kw">
+
                                             {stat.label}
                                         </p>
                                         <p
-                                            className="text-2xl font-bold text-green-400"
-                                            data-oid="pbo8__y"
-                                        >
+                    className="text-2xl font-bold text-purple-400 print:text-slate-900"
+                    data-oid="vzrjv_w">
+
                                             {stat.value}
                                         </p>
                                     </div>
-                                    <div className="text-2xl" data-oid="y226ana">
+                  <div className="text-2xl" data-oid="r_l41w9">
                                         {stat.icon}
                                     </div>
                                 </div>
                             </div>
-                        ))}
+            )}
                     </div>
 
                     {/* Wallet Grid */}
                     <div
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                        data-oid="w_m7fw3"
-                    >
-                        {filteredWallets.map((wallet, index) => (
-                            <div
+            data-oid="ys8wlky">
+
+            {filteredWallets.map((wallet, index) =>
+            <WalletCard
                                 key={wallet.name}
-                                className={`backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/10 rounded-2xl border border-white/10 p-6 hover:border-green-500/50 hover:bg-white/10 transition-all duration-500 group cursor-pointer transform hover:scale-105 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                                style={{ transitionDelay: `${index * 100}ms` }}
-                                data-oid="ugir3nw"
-                            >
-                                {/* Header */}
-                                <div
-                                    className="flex items-start justify-between mb-4"
-                                    data-oid="ys0axhu"
-                                >
-                                    <div className="flex items-center space-x-3" data-oid="_5mtdzy">
-                                        <div
-                                            className="w-12 h-12 bg-gradient-to-br from-green-400/20 to-green-600/20 rounded-xl flex items-center justify-center text-2xl border border-green-500/30"
-                                            data-oid=":hi469k"
-                                        >
-                                            <WalletAvatar
-                                                walletName={wallet.name}
-                                                imageUrl={wallet.imageLogo}
-                                                bgColor="bg-blue-600"
-                                                size={48}
-                                                className="w-full h-full object-cover rounded-xl shadow-lg border-2 border-white/10"
-                                                data-oid="hd5.0sn"
-                                            />
-                                        </div>
-                                        <div data-oid="q7ebr6y">
-                                            <h3
-                                                className="text-xl font-bold text-white group-hover:text-green-400 transition-colors duration-300"
-                                                data-oid="a:91x-z"
-                                            >
-                                                {wallet.name}
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
+              wallet={wallet}
+              index={index}
+              isLoaded={isLoaded}
+              expandedCard={expandedCard}
+              setExpandedCard={setExpandedCard}
+              data-oid=".3s79ag" />
 
-                                {/* Description */}
-                                <p
-                                    className="text-gray-300 text-sm mb-4 leading-relaxed"
-                                    data-oid="z5lk5:4"
-                                >
-                                    {wallet.description}
-                                </p>
-
-                                {/* Platforms */}
-                                <div className="mb-4" data-oid="u:j8yd3">
-                                    <div className="text-xs text-gray-400 mb-2" data-oid="t10yuv6">
-                                        PLATFORMS
-                                    </div>
-                                    <div className="flex flex-wrap gap-2" data-oid="1naf6jm">
-                                        {wallet.platforms.map((platform) => (
-                                            <span
-                                                key={platform}
-                                                className="px-2 py-1 bg-black/30 border border-green-500/30 rounded-lg text-xs text-green-400"
-                                                data-oid="e4me5ap"
-                                            >
-                                                {platform}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Key Info Row - Clean and Minimal */}
-                                <div
-                                    className="mb-4 flex items-center justify-between"
-                                    data-oid="key-info-row"
-                                >
-                                    <div
-                                        className="flex items-center space-x-3"
-                                        data-oid="custody-and-pay"
-                                    >
-                                        {/* Custody Model - Compact */}
-                                        <span
-                                            className={`px-2 py-1 rounded-md text-xs font-medium ${
-                                                wallet.custodyModel === 'Self-custody'
-                                                    ? 'bg-green-500/20 text-green-400'
-                                                    : wallet.custodyModel === 'MPC'
-                                                      ? 'bg-yellow-500/20 text-yellow-400'
-                                                      : 'bg-red-500/20 text-red-400'
-                                            }`}
-                                            data-oid="custody-badge"
-                                        >
-                                            {wallet.custodyModel}
-                                        </span>
-
-                                        {/* Solana Pay QR - Critical Feature Badge */}
-                                        {wallet.solanaPayQR === 'Yes' && (
-                                            <span
-                                                className="solana-pay-badge flex items-center space-x-2 px-3 py-1 rounded-lg text-xs font-semibold relative overflow-hidden cursor-pointer group"
-                                                data-oid="solana-pay-badge"
-                                            >
-                                                {/* Animated Glow */}
-                                                <span
-                                                    className="absolute inset-0 z-0 bg-gradient-to-r from-green-400/30 via-green-500/40 to-green-400/30 blur-lg opacity-70 animate-glow"
-                                                    data-oid="80xhy2t"
-                                                />
-
-                                                {/* Animated Icon */}
-                                                <span
-                                                    className="relative z-10 text-green-400 text-base animate-bounce-slow group-hover:animate-shimmer"
-                                                    data-oid="pay-icon"
-                                                >
-                                                    💳
-                                                </span>
-                                                {/* Text */}
-                                                <span
-                                                    className="relative z-10 text-green-100 group-hover:text-green-400 transition-colors duration-300"
-                                                    data-oid="pay-text"
-                                                >
-                                                    Solana Pay
-                                                </span>
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {/* Feature Count Indicator */}
-                                    <div className="text-xs text-gray-400" data-oid="feature-count">
-                                        {
-                                            [
-                                                wallet.inAppDexSwap,
-                                                wallet.nftGallery,
-                                                wallet.inAppStaking,
-                                                wallet.fiatOnOffRamp,
-                                                wallet.pushNotifications,
-                                                wallet.multiChain,
-                                            ].filter(Boolean).length
-                                        }
-                                        /6 features
-                                    </div>
-                                </div>
-
-                                {/* Feature Icons Row - Visual and Clean */}
-                                <div className="mb-4" data-oid="feature-icons">
-                                    <div
-                                        className="flex items-center justify-between"
-                                        data-oid="feature-icons-row"
-                                    >
-                                        <div
-                                            className="flex items-center space-x-3"
-                                            data-oid="feature-icons-left"
-                                        >
-                                            <div
-                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.inAppDexSwap ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
-                                                title="DEX Swap"
-                                                data-oid="dex-icon"
-                                            >
-                                                🔄
-                                            </div>
-                                            <div
-                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.nftGallery ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
-                                                title="NFT Gallery"
-                                                data-oid="nft-icon"
-                                            >
-                                                🖼️
-                                            </div>
-                                            <div
-                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.inAppStaking ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
-                                                title="Staking"
-                                                data-oid="staking-icon"
-                                            >
-                                                🏦
-                                            </div>
-                                        </div>
-                                        <div
-                                            className="flex items-center space-x-3"
-                                            data-oid="feature-icons-right"
-                                        >
-                                            <div
-                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.fiatOnOffRamp ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
-                                                title="Fiat On/Off Ramp"
-                                                data-oid="fiat-icon"
-                                            >
-                                                💰
-                                            </div>
-                                            <div
-                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.pushNotifications ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
-                                                title="Push Notifications"
-                                                data-oid="notifications-icon"
-                                            >
-                                                🔔
-                                            </div>
-                                            <div
-                                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${wallet.multiChain ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-500'}`}
-                                                title="Multi-Chain"
-                                                data-oid="multichain-icon"
-                                            >
-                                                🔗
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Expandable Details Section */}
-                                {expandedCard === wallet.name && (
-                                    <div
-                                        className="mb-4 p-4 bg-black/20 rounded-xl border border-green-500/20"
-                                        data-oid="expanded-details"
-                                    >
-                                        <div
-                                            className="grid grid-cols-1 gap-4"
-                                            data-oid="details-grid"
-                                        >
-                                            {/* Detailed Features */}
-                                            <div data-oid="detailed-features">
-                                                <h4
-                                                    className="text-sm font-medium text-green-400 mb-2"
-                                                    data-oid="features-title"
-                                                >
-                                                    Feature Details
-                                                </h4>
-                                                <div
-                                                    className="grid grid-cols-2 gap-2 text-xs"
-                                                    data-oid="features-detailed"
-                                                >
-                                                    <div
-                                                        className={`flex items-center justify-between p-2 rounded ${wallet.inAppDexSwap ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
-                                                        data-oid="dex-detail"
-                                                    >
-                                                        <span data-oid="dex-label">DEX Swap</span>
-                                                        <span data-oid="dex-status">
-                                                            {wallet.inAppDexSwap ? '✅' : '❌'}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={`flex items-center justify-between p-2 rounded ${wallet.nftGallery ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
-                                                        data-oid="nft-detail"
-                                                    >
-                                                        <span data-oid="nft-label">
-                                                            NFT Gallery
-                                                        </span>
-                                                        <span data-oid="nft-status">
-                                                            {wallet.nftGallery ? '✅' : '❌'}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={`flex items-center justify-between p-2 rounded ${wallet.inAppStaking ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
-                                                        data-oid="staking-detail"
-                                                    >
-                                                        <span data-oid="staking-label">
-                                                            Staking
-                                                        </span>
-                                                        <span data-oid="staking-status">
-                                                            {wallet.inAppStaking ? '✅' : '❌'}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={`flex items-center justify-between p-2 rounded ${wallet.fiatOnOffRamp ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
-                                                        data-oid="fiat-detail"
-                                                    >
-                                                        <span data-oid="fiat-label">Fiat Ramp</span>
-                                                        <span data-oid="fiat-status">
-                                                            {wallet.fiatOnOffRamp ? '✅' : '❌'}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={`flex items-center justify-between p-2 rounded ${wallet.pushNotifications ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
-                                                        data-oid="notifications-detail"
-                                                    >
-                                                        <span data-oid="notifications-label">
-                                                            Push Notifications
-                                                        </span>
-                                                        <span data-oid="notifications-status">
-                                                            {wallet.pushNotifications ? '✅' : '❌'}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={`flex items-center justify-between p-2 rounded ${wallet.multiChain ? 'bg-green-500/10' : 'bg-gray-500/10'}`}
-                                                        data-oid="multichain-detail"
-                                                    >
-                                                        <span data-oid="multichain-label">
-                                                            Multi-Chain
-                                                        </span>
-                                                        <span data-oid="multichain-status">
-                                                            {wallet.multiChain ? '✅' : '❌'}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {/* Solana Pay Details */}
-                                            <div data-oid="solana-pay-details">
-                                                <h4
-                                                    className="text-sm font-medium text-green-400 mb-2"
-                                                    data-oid="solana-pay-title"
-                                                >
-                                                    Solana Pay QR Support
-                                                </h4>
-                                                <div
-                                                    className="flex items-center space-x-2"
-                                                    data-oid="solana-pay-detail"
-                                                >
-                                                    <span
-                                                        className={`px-3 py-1 rounded-lg text-xs font-bold ${
-                                                            wallet.solanaPayQR === 'Yes'
-                                                                ? 'bg-green-500/20 text-green-300'
-                                                                : wallet.solanaPayQR === 'Partial'
-                                                                  ? 'bg-yellow-500/20 text-yellow-300'
-                                                                  : 'bg-red-500/20 text-red-300'
-                                                        }`}
-                                                        data-oid="solana-pay-status"
-                                                    >
-                                                        {wallet.solanaPayQR}
-                                                    </span>
-                                                    {wallet.solanaPayQR === 'Yes' && (
-                                                        <span
-                                                            className="text-xs text-green-400"
-                                                            data-oid="critical-badge"
-                                                        >
-                                                            ⭐ Critical Feature
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            {/* Additional Info */}
-                                            <div data-oid="additional-info">
-                                                <h4
-                                                    className="text-sm font-medium text-green-400 mb-2"
-                                                    data-oid="additional-title"
-                                                >
-                                                    Additional Information
-                                                </h4>
-                                                <div
-                                                    className="space-y-1 text-xs text-gray-300"
-                                                    data-oid="additional-content"
-                                                >
-                                                    <div data-oid="open-source">
-                                                        Open Source:{' '}
-                                                        {wallet.openSource ? 'Yes' : 'No'}
-                                                    </div>
-                                                    <div data-oid="security-level">
-                                                        Security Level: {wallet.security}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Action Button */}
-                                <button
-                                    onClick={() =>
-                                        setExpandedCard(
-                                            expandedCard === wallet.name ? null : wallet.name,
-                                        )
-                                    }
-                                    className="w-full py-2 bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-500/30 rounded-xl text-green-400 hover:from-green-500/20 hover:to-green-600/20 hover:border-green-400 transition-all duration-300 text-sm font-medium"
-                                    data-oid="-8bmbx8"
-                                >
-                                    {expandedCard === wallet.name ? 'Hide Details' : 'View Details'}
-                                </button>
-                            </div>
-                        ))}
+            )}
                     </div>
 
                     {/* Legend */}
                     <div
                         className="mt-12 backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6"
-                        data-oid=":ixyfht"
-                    >
-                        <h3 className="text-lg font-bold text-green-400 mb-4" data-oid="mklyoyf">
+            data-oid="i26yexu">
+
+            <h3
+              className="text-lg font-bold text-green-400 mb-4"
+              data-oid="ymo.to-">
+
                             Legend & Information
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6" data-oid="8ngpoy:">
-                            <div data-oid="custody-legend">
-                                <h4
-                                    className="text-white font-medium mb-2"
-                                    data-oid="custody-title"
-                                >
+            <div
+              className="grid grid-cols-1 md:grid-cols-4 gap-6"
+              data-oid="z-r.87i">
+
+              <div data-oid="yd3.a_1">
+                <h4 className="text-white font-medium mb-2" data-oid="f8jxwt_">
                                     Custody Models
                                 </h4>
-                                <div className="space-y-2 text-sm" data-oid="custody-items">
+                <div className="space-y-2 text-sm" data-oid="gtvewpv">
                                     <div
                                         className="flex items-center space-x-2"
-                                        data-oid="self-custody"
-                                    >
+                    data-oid="0aoeu0h">
+
                                         <div
                                             className="w-3 h-3 bg-green-400 rounded-full"
-                                            data-oid="self-custody-dot"
-                                        ></div>
-                                        <span
-                                            className="text-gray-300"
-                                            data-oid="self-custody-text"
-                                        >
+                      data-oid="v3905b.">
+                    </div>
+                    <span className="text-gray-300" data-oid=":w11x0z">
                                             Self-custody - You control your keys
                                         </span>
                                     </div>
                                     <div
                                         className="flex items-center space-x-2"
-                                        data-oid="mpc-custody"
-                                    >
+                    data-oid="m40cf6j">
+
                                         <div
                                             className="w-3 h-3 bg-yellow-400 rounded-full"
-                                            data-oid="mpc-custody-dot"
-                                        ></div>
-                                        <span className="text-gray-300" data-oid="mpc-custody-text">
+                      data-oid="o15ms0:">
+                    </div>
+                    <span className="text-gray-300" data-oid="1tk5sg_">
                                             MPC - Multi-party computation
                                         </span>
                                     </div>
                                     <div
                                         className="flex items-center space-x-2"
-                                        data-oid="custodial"
-                                    >
+                    data-oid="43t1_p1">
+
                                         <div
                                             className="w-3 h-3 bg-red-400 rounded-full"
-                                            data-oid="custodial-dot"
-                                        ></div>
-                                        <span className="text-gray-300" data-oid="custodial-text">
+                      data-oid="hrtbi-y">
+                    </div>
+                    <span className="text-gray-300" data-oid="56t-gme">
                                             Custodial - Third-party holds keys
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div data-oid="solana-pay-legend">
-                                <h4 className="text-white font-medium mb-2" data-oid="8_zzokc">
+              <div data-oid="8a78g:8">
+                <h4 className="text-white font-medium mb-2" data-oid="7xtaes-">
                                     Solana Pay QR Support
                                 </h4>
-                                <div className="space-y-2 text-sm" data-oid="solana-pay-items">
-                                    <div className="flex items-center space-x-2" data-oid="pay-yes">
-                                        <span data-oid="pay-yes-icon">✅</span>
-                                        <span className="text-green-300" data-oid="pay-yes-text">
+                <div className="space-y-2 text-sm" data-oid="5tagzs_">
+                  <div
+                    className="flex items-center space-x-2"
+                    data-oid=":q13ytm">
+
+                    <span data-oid="1fffew9">✅</span>
+                    <span className="text-green-300" data-oid="t68dayp">
                                             Yes - Full support
                                         </span>
                                     </div>
                                     <div
                                         className="flex items-center space-x-2"
-                                        data-oid="pay-partial"
-                                    >
-                                        <span data-oid="pay-partial-icon">⚠️</span>
-                                        <span
-                                            className="text-yellow-300"
-                                            data-oid="pay-partial-text"
-                                        >
+                    data-oid="mfgv._1">
+
+                    <span data-oid="an7qqoc">⚠️</span>
+                    <span className="text-yellow-300" data-oid="tbfe4ft">
                                             Partial - Limited support
                                         </span>
                                     </div>
-                                    <div className="flex items-center space-x-2" data-oid="pay-no">
-                                        <span data-oid="pay-no-icon">❌</span>
-                                        <span className="text-red-300" data-oid="pay-no-text">
+                  <div
+                    className="flex items-center space-x-2"
+                    data-oid="dmus58e">
+
+                    <span data-oid="bbd:z2e">❌</span>
+                    <span className="text-red-300" data-oid=".p:n57t">
                                             No - Not supported
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div data-oid="features-legend">
-                                <h4 className="text-white font-medium mb-2" data-oid="8uipsoy">
+              <div data-oid=".ef:b_-">
+                <h4 className="text-white font-medium mb-2" data-oid="80r0lai">
                                     Key Features
                                 </h4>
-                                <div className="space-y-2 text-sm" data-oid="features-items">
-                                    <div className="text-gray-300" data-oid="feature-dex">
+                <div className="space-y-2 text-sm" data-oid="9ja1xb2">
+                  <div className="text-gray-300" data-oid="47ax51l">
                                         • In-app DEX swap
                                     </div>
-                                    <div className="text-gray-300" data-oid="feature-nft">
+                  <div className="text-gray-300" data-oid="_frznpz">
                                         • NFT gallery support
                                     </div>
-                                    <div className="text-gray-300" data-oid="feature-staking">
+                  <div className="text-gray-300" data-oid="1_27d7j">
                                         • In-app staking
                                     </div>
-                                    <div className="text-gray-300" data-oid="feature-fiat">
+                  <div className="text-gray-300" data-oid=".9yz2_y">
                                         • Fiat on/off ramps
                                     </div>
-                                    <div className="text-gray-300" data-oid="feature-notifications">
+                  <div className="text-gray-300" data-oid="v2ndn22">
                                         • Push notifications
                                     </div>
                                 </div>
                             </div>
-                            <div data-oid="platform-legend">
-                                <h4
-                                    className="text-white font-medium mb-2"
-                                    data-oid="platform-title"
-                                >
+              <div data-oid="yq7lj7y">
+                <h4 className="text-white font-medium mb-2" data-oid="sgdtw0u">
                                     Platform Types
                                 </h4>
-                                <div className="space-y-2 text-sm" data-oid="platform-items">
+                <div className="space-y-2 text-sm" data-oid="ucb8g1m">
                                     <div
                                         className="flex items-center space-x-2"
-                                        data-oid="platform-browser"
-                                    >
-                                        <span data-oid="browser-icon">🌐</span>
-                                        <span className="text-gray-300" data-oid="browser-text">
+                    data-oid="cnyzxut">
+
+                    <span data-oid="4_r:i9n">🌐</span>
+                    <span className="text-gray-300" data-oid="1qn-z4c">
                                             Browser Extension
                                         </span>
                                     </div>
                                     <div
                                         className="flex items-center space-x-2"
-                                        data-oid="platform-mobile"
-                                    >
-                                        <span data-oid="mobile-icon">📱</span>
-                                        <span className="text-gray-300" data-oid="mobile-text">
+                    data-oid="ddn-18z">
+
+                    <span data-oid="r5-br-v">📱</span>
+                    <span className="text-gray-300" data-oid="tn84qn9">
                                             Mobile Application
                                         </span>
                                     </div>
                                     <div
                                         className="flex items-center space-x-2"
-                                        data-oid="platform-hardware"
-                                    >
-                                        <span data-oid="hardware-icon">🔐</span>
-                                        <span className="text-gray-300" data-oid="hardware-text">
+                    data-oid="mp.y.4c">
+
+                    <span data-oid="kdtl1:t">🔐</span>
+                    <span className="text-gray-300" data-oid="q7_1udf">
                                             Hardware Wallet
                                         </span>
                                     </div>
@@ -935,40 +611,40 @@ export default function Page() {
                 {/* Footer */}
                 <footer
                     className="backdrop-blur-xl bg-black/20 border-t border-green-500/20 mt-16"
-                    data-oid="pfihukh"
-                >
-                    <div className="max-w-7xl mx-auto px-6 py-8" data-oid="y:dvmkp">
+          data-oid="r.f5344">
+
+          <div className="max-w-7xl mx-auto px-6 py-8" data-oid="mm8tzsw">
                         <div
                             className="flex flex-col md:flex-row justify-between items-center"
-                            data-oid="j-tcz5j"
-                        >
-                            <div className="text-gray-400 text-sm" data-oid="0a7o5e-">
-                                © 2024 Solana Wallet Inventory. Built for builders, merchants, and
-                                users.
+              data-oid="fxjyoin">
+
+              <div className="text-gray-400 text-sm" data-oid="wn7x1e5">
+                © 2025 Solana Wallet Inventory. Built for builders, merchants,
+                and users.
                             </div>
                             <div
                                 className="flex items-center space-x-6 mt-4 md:mt-0"
-                                data-oid="0d1fhg5"
-                            >
+                data-oid="4wkpdsr">
+
                                 <a
                                     href="#"
                                     className="text-gray-400 hover:text-green-400 transition-colors duration-300"
-                                    data-oid="vhn2gmt"
-                                >
+                  data-oid="oyp-g7b">
+
                                     API Docs
                                 </a>
                                 <a
                                     href="#"
                                     className="text-gray-400 hover:text-green-400 transition-colors duration-300"
-                                    data-oid="c6zpxiq"
-                                >
+                  data-oid="4x6awnt">
+
                                     Submit Wallet
                                 </a>
                                 <a
                                     href="#"
                                     className="text-gray-400 hover:text-green-400 transition-colors duration-300"
-                                    data-oid="mo0xnmr"
-                                >
+                  data-oid="56vzj7x">
+
                                     Contact
                                 </a>
                             </div>
@@ -976,52 +652,366 @@ export default function Page() {
                     </div>
                 </footer>
             </div>
+    </div>);
+
+}
+
+/**
+ * WalletAvatar always fills the size of its parent div.
+ * To control the avatar size, set width/height on the parent.
+ * Example: <div className="w-16 h-16"><WalletAvatar ... /></div>
+ */
+function WalletAvatar({
+    walletName,
+    imageUrl,
+  bgColor = "bg-gradient-to-br from-blue-500 to-purple-600",
+  textColor = "text-white"
+
+
+
+
+
+}: {walletName: string;imageUrl?: string;bgColor?: string;textColor?: string;}) {
+  const getInitial = (name: string) => {
+    if (!name) return "?";
+        return name.charAt(0).toUpperCase();
+    };
+
+    return (
+    <div
+      className="relative w-full h-full rounded-xl overflow-hidden"
+      data-oid="0m8tsyl">
+
+      {imageUrl ?
+                <Image
+                    src={imageUrl}
+        alt={walletName || "Wallet"}
+        fill
+        className="object-cover"
+        data-oid="1d6sk:p" /> :
+
+
+                <div
+        className={`w-full h-full rounded-full ${bgColor} ${textColor} flex items-center justify-center font-bold select-none`}
+        style={{ fontSize: "2em" }}
+        data-oid="q507zf9">
+
+                    {getInitial(walletName)}
+                </div>
+      }
+    </div>);
+
+}
+
+/**
+ * Modern, clean wallet card component with fixed layout and rich dark theme
+ */
+function WalletCard({
+  wallet,
+  index,
+  isLoaded,
+  expandedCard,
+  setExpandedCard
+}: {wallet: any;index: number;isLoaded: boolean;expandedCard: string | null;setExpandedCard: (name: string | null) => void;}) {
+  return (
+    <div
+      className={`
+        bg-slate-800/95 border border-slate-700/60 backdrop-blur-sm
+        rounded-2xl shadow-2xl hover:shadow-purple-500/10
+        transition-all duration-300 ease-in-out
+        hover:border-purple-500/40 hover:bg-slate-800/80
+        print:shadow-none print:border-slate-300 print:bg-white
+        h-[429px] flex flex-col group
+        ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}
+      `}
+      style={{ transitionDelay: `${index * 100}ms` }}
+      data-oid="dke03ba">
+
+      {/* Header */}
+      <div className="p-4 pb-1 flex-shrink-0" data-oid="xf74t3x">
+        <div className="flex items-center justify-between mb-6" data-oid="39fq:cp">
+          {/* Left: Avatar */}
+          <div className="w-14 h-14 flex-shrink-0">
+            <div className="w-full h-full rounded-full ring-2 ring-slate-700 shadow bg-slate-900 overflow-hidden">
+              <WalletAvatar
+                walletName={wallet.name}
+                imageUrl={wallet.imageLogo}
+                bgColor="bg-gradient-to-br from-purple-500 to-indigo-600"
+                textColor="text-white"
+                data-oid="np5xvm9" />
+            </div>
+          </div>
+          {/* Center: Name and badges */}
+          <div className="flex-1 min-w-0 px-4">
+            <h3 className="text-xl font-bold text-white truncate mb-1 print:text-slate-900" data-oid="aocl2mb">
+              {wallet.name}
+            </h3>
+            <div className="flex items-center space-x-2" data-oid="ny.0duz">
+              <CustodyBadge custodyModel={wallet.custodyModel} data-oid="flvq:gg" />
+              {/* {wallet.solanaPayQR === "Yes" && <SolanaPayBadge data-oid="1-0x2en" />} */}
+            </div>
+          </div>
+          {/* Right: Link icon */}
+          <a
+            href={wallet.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-400 hover:text-cyan-300 transition-all duration-300 
+                       ml-2 flex items-center justify-center 
+                       group relative"
+            title="Open website"
+            data-oid="wallet-link"
+            style={{ minWidth: 32, minHeight: 32 }}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="w-7 h-7 
+                         group-hover:text-cyan-300 
+                         group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]
+                         transition-all duration-300 ease-in-out" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+              />
+            </svg>
+            <span 
+              className="absolute inset-0 rounded-full opacity-0 
+                         group-hover:opacity-20 
+                         bg-cyan-500 
+                         animate-ping 
+                         transition-opacity duration-300 ease-in-out"
+            ></span>
+          </a>
+      
+            
+        </div>
+      </div>
+
+      {/* Platforms Section - flex-shrink-0, single line, horizontal scroll if needed */}
+      <div className="px-6 pt-1 pb-2 flex-shrink-0" data-oid="2.s097g">
+        <div className="text-xs font-bold text-slate-300 mb-1 uppercase tracking-wider" data-oid="34vk_oq">
+          Platforms
+        </div>
+        <div className="flex flex-row gap-2 overflow-x-auto whitespace-nowrap scrollbar-none" style={{WebkitOverflowScrolling: 'touch'}} data-oid="r9lad9o">
+          {wallet.platforms.slice(0, 4).map((platform: string) =>
+            <PlatformIcon key={platform} platform={platform} data-oid="_iwpoa:" />
+          )}
+          {wallet.platforms.length > 4 &&
+            <div className="px-3 py-1.5 bg-slate-700/80 rounded-lg text-xs text-slate-300 font-medium inline-block" data-oid="1g0ankh">
+              +{wallet.platforms.length - 4}
+            </div>
+          }
+        </div>
+      </div>
+
+
+       {/* Solana Pay QR - flex-shrink-0 */}
+       <div className="px-6 pt-1 pb-2 mt-2 flex-shrink-0">
+        <div className="bg-gradient-to-r from-slate-700/60 to-slate-600/60 border border-slate-600/80 rounded-xl p-4 backdrop-blur-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                <span className="text-base">💳</span>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-slate-200">Solana Pay QR</div>
+                <div className="text-xs text-slate-400">Payment Integration</div>
+              </div>
+            </div>
+            <SolanaPayStatus status={wallet.solanaPayQR} />
+          </div>
+        </div>
+      </div>
+
+      {/* Features Grid - flex-shrink-0 */}
+      <div className="px-6 pt-1 pb-1 flex-shrink-0" data-oid="8:1iwau">
+        <div className="text-xs font-bold text-slate-300 mb-1 uppercase tracking-wider" data-oid="8riozi4">
+          Features
+        </div>
+        <div className="grid grid-cols-3 gap-3" data-oid="t7tqh8_">
+          <FeatureItem icon="🔄" label="DEX" enabled={wallet.inAppDexSwap} compact data-oid="8j04_lc" />
+          <FeatureItem icon="🖼️" label="NFT" enabled={wallet.nftGallery} compact data-oid="ymwgj6m" />
+          <FeatureItem icon="🏦" label="Stake" enabled={wallet.inAppStaking} compact data-oid="ft88s5v" />
+          <FeatureItem icon="💰" label="Fiat" enabled={wallet.fiatOnOffRamp} compact data-oid="oix:yny" />
+          <FeatureItem icon="🔔" label="Push" enabled={wallet.pushNotifications} compact data-oid="6xgzxfg" />
+          <FeatureItem icon="🔗" label="Multichain" enabled={wallet.multiChain} compact data-oid="vow4nvj" />
+        </div>
+      </div>
+
+     
+
+      {/* Notes - single line, always at bottom, no scroll */}
+      <div className="px-6 pt-1 pb-2 flex-shrink-0">
+        <div className="bg-slate-700/40 rounded-xl px-1 py-2 border border-slate-600/60 backdrop-blur-sm flex items-center h-8">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="w-5 h-5 mr-1 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
+            />
+          </svg>
+          <p className="text-sm text-slate-300 leading-relaxed truncate whitespace-nowrap overflow-hidden w-full text-start" data-oid="3iqffc:">
+            {wallet.description || `${wallet.name} is a cryptocurrency wallet supporting various features and platforms.`}
+          </p>
+        </div>
+      </div>
         </div>
     );
 }
 
-function WalletAvatar({
-    walletName,
-    imageUrl,
-    size = 48,
-    bgColor = 'bg-gradient-to-br from-blue-500 to-purple-600',
-    textColor = 'text-white',
-    className = '',
-}) {
-    const getInitial = (name) => {
-        if (!name) return '?';
-        return name.charAt(0).toUpperCase();
-    };
+/**
+ * Custody model badge component
+ */
+function CustodyBadge({ custodyModel }: {custodyModel: string;}) {
+  const getStyles = (model: string) => {
+    switch (model) {
+      case "Self-custody":
+        return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
+      case "MPC":
+        return "bg-amber-500/20 text-amber-300 border-amber-500/30";
+      default:
+        return "bg-red-500/20 text-red-300 border-red-500/30";
+    }
+  };
 
-    const avatarStyle = {
-        width: size,
-        height: size,
-        fontSize: size * 0.4,
-        minWidth: size,
-        minHeight: size,
-    };
+  return (
+    <span
+      className={`px-2 py-0.5 rounded-md text-xs font-medium border ${getStyles(custodyModel)}`}
+      data-oid="o9:y::9">
 
+      {custodyModel}
+    </span>);
+
+}
+
+/**
+ * Solana Pay badge component
+ */
+function SolanaPayBadge() {
+  return (
+    <span
+      className="px-2 py-0.5 rounded-md text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30"
+      data-oid="yh:d5n8">
+
+      Solana Pay
+    </span>);
+
+}
+
+/**
+ * Platform icon component
+ */
+function PlatformIcon({ platform }: {platform: string;}) {
+  const getIcon = (platform: string) => {
+    const p = platform.toLowerCase();
+    if (p.includes("ios")) return "📱";
+    if (p.includes("android")) return "🤖";
+    if (p.includes("chrome") || p.includes("firefox") || p.includes("edge"))
+    return "🌐";
+    if (p.includes("desktop") || p.includes("windows") || p.includes("mac"))
+    return "💻";
+    if (p.includes("hardware")) return "🔐";
+    return "📦";
+  };
+
+  return (
+    <div
+      className="flex items-center space-x-1 px-2 py-1 bg-gray-700 rounded-md text-xs text-gray-300 border border-gray-600"
+      title={platform}
+      data-oid="q1o4c7c">
+
+      <span className="text-sm" data-oid="hpuvmkr">
+        {getIcon(platform)}
+      </span>
+      <span className="truncate max-w-16" data-oid="kanq97_">
+        {platform}
+      </span>
+    </div>);
+
+}
+
+/**
+ * Feature item component
+ */
+function FeatureItem({
+  icon,
+  label,
+  enabled,
+  compact = false
+}: {icon: string;label: string;enabled: boolean;compact?: boolean;}) {
+  if (compact) {
     return (
-        <div className="relative" data-oid="_w.9:lt">
-            {imageUrl ? (
-                <Image
-                    src={imageUrl}
-                    alt={walletName || 'Wallet'}
-                    width={size}
-                    height={size}
-                    className={`w-full h-full object-cover rounded-xl ${className}`}
-                    style={avatarStyle}
-                    data-oid="177dbts"
-                />
-            ) : (
-                <div
-                    className={`rounded-full ${bgColor} ${textColor} flex items-center justify-center font-bold select-none ${className}`}
-                    style={avatarStyle}
-                    data-oid="vz:6frx"
-                >
-                    {getInitial(walletName)}
-                </div>
-            )}
-        </div>
+      <div
+        className={`
+        flex flex-row items-center justify-center gap-2 p-2 rounded-lg text-center h-full
+        ${
+        enabled ?
+        "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" :
+        "bg-gray-700/50 text-gray-500 border border-gray-600"}
+      `}
+        data-oid="48u-joc">
+        <span className="text-sm" data-oid="rbs6vud">
+          {icon}
+        </span>
+        <span className="text-xs font-medium leading-tight" data-oid="-e:202x">
+          {label}
+        </span>
+      </div>
     );
+  }
+  return (
+    <div className="flex items-center justify-between py-2" data-oid="i7x98ra">
+      <div className="flex items-center space-x-2" data-oid="28lhl95">
+        <span className="text-sm" data-oid="gtggzei">
+          {icon}
+        </span>
+        <span className="text-sm text-gray-300" data-oid="0.lt8se">
+          {label}
+        </span>
+      </div>
+      <span
+        className={`text-sm ${enabled ? "text-emerald-400" : "text-gray-500"}`}
+        data-oid="lrfati2">
+        {enabled ? "✅" : "❌"}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Solana Pay status component
+ */
+function SolanaPayStatus({ status }: {status: string;}) {
+  const getStyles = (status: string) => {
+    switch (status) {
+      case "Yes":
+        return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
+      case "Partial":
+        return "bg-amber-500/20 text-amber-300 border-amber-500/30";
+      default:
+        return "bg-red-500/20 text-red-300 border-red-500/30";
+    }
+  };
+
+  return (
+    <span
+      className={`px-2 py-1 rounded-md text-xs font-semibold border ${getStyles(status)}`}
+      data-oid="8d61n8w">
+
+      {status}
+    </span>);
+
 }

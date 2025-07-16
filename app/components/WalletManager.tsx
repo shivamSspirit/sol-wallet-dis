@@ -117,8 +117,8 @@ export default function WalletManager() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-64" data-oid="a-up31_">
-                <div className="text-lg" data-oid="q93quen">
+            <div className="flex justify-center items-center h-64" data-oid="c1d:0ps">
+                <div className="text-lg" data-oid="4:3nld6">
                     Loading wallet data...
                 </div>
             </div>
@@ -126,23 +126,23 @@ export default function WalletManager() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto p-6" data-oid="kl7imgo">
-            <div className="flex justify-between items-center mb-6" data-oid="8uhye0m">
-                <h1 className="text-3xl font-bold" data-oid="p.l1y7.">
+        <div className="max-w-6xl mx-auto p-6" data-oid="-1.5_h1">
+            <div className="flex justify-between items-center mb-6" data-oid="4mgtkm.">
+                <h1 className="text-3xl font-bold" data-oid="h7yl317">
                     Wallet Manager
                 </h1>
-                <div className="space-x-2" data-oid="vscrjbh">
+                <div className="space-x-2" data-oid=".kdyf83">
                     <button
                         onClick={() => setShowForm(!showForm)}
                         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                        data-oid="eag1t1w"
+                        data-oid="wa_6c24"
                     >
                         {showForm ? 'Cancel' : 'Add New Wallet'}
                     </button>
                     <button
                         onClick={fetchWallets}
                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                        data-oid=".acr_2y"
+                        data-oid="1v-0o4c"
                     >
                         Refresh
                     </button>
@@ -152,24 +152,24 @@ export default function WalletManager() {
             {error && (
                 <div
                     className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-                    data-oid="qfm_rek"
+                    data-oid="-gljh09"
                 >
-                    <strong data-oid="pyu-1.c">Error:</strong> {error}
+                    <strong data-oid="dudbyek">Error:</strong> {error}
                 </div>
             )}
 
             {/* Add Wallet Form */}
             {showForm && (
-                <div className="mb-8 bg-gray-50 p-6 rounded-lg" data-oid="dwzupkz">
-                    <h2 className="text-xl font-semibold mb-4" data-oid="5j4c14h">
+                <div className="mb-8 bg-gray-50 p-6 rounded-lg" data-oid="x0cjq:0">
+                    <h2 className="text-xl font-semibold mb-4" data-oid="3y-qbi6">
                         Add New Wallet
                     </h2>
-                    <form onSubmit={handleSubmit} className="space-y-4" data-oid="t6t-5ot">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-oid="r4ximx-">
-                            <div data-oid="qd3qm5i">
+                    <form onSubmit={handleSubmit} className="space-y-4" data-oid="5kqeiq5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-oid="hwgqp7g">
+                            <div data-oid="o42awk-">
                                 <label
                                     className="block text-sm font-medium mb-1"
-                                    data-oid="f2pzx50"
+                                    data-oid="qkv-z7k"
                                 >
                                     Wallet Address *
                                 </label>
@@ -181,13 +181,13 @@ export default function WalletManager() {
                                     required
                                     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="0x..."
-                                    data-oid="b7u:x.c"
+                                    data-oid="fun388h"
                                 />
                             </div>
-                            <div data-oid="7vgxx74">
+                            <div data-oid="::ybda:">
                                 <label
                                     className="block text-sm font-medium mb-1"
-                                    data-oid="r2dnnz1"
+                                    data-oid="tag-yf0"
                                 >
                                     Owner Name *
                                 </label>
@@ -199,13 +199,13 @@ export default function WalletManager() {
                                     required
                                     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="John Doe"
-                                    data-oid="sw5a1ak"
+                                    data-oid="cf79loc"
                                 />
                             </div>
-                            <div data-oid="quv9_0q">
+                            <div data-oid="kc7._tp">
                                 <label
                                     className="block text-sm font-medium mb-1"
-                                    data-oid="qmb07jl"
+                                    data-oid="1tn.82i"
                                 >
                                     Balance
                                 </label>
@@ -217,13 +217,13 @@ export default function WalletManager() {
                                     step="0.000001"
                                     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="0.0"
-                                    data-oid="-994omf"
+                                    data-oid="7--v4ly"
                                 />
                             </div>
-                            <div data-oid="9tht5v3">
+                            <div data-oid="9-lk7v:">
                                 <label
                                     className="block text-sm font-medium mb-1"
-                                    data-oid="kne10k-"
+                                    data-oid="1.22hcg"
                                 >
                                     Currency
                                 </label>
@@ -232,26 +232,26 @@ export default function WalletManager() {
                                     value={formData.currency}
                                     onChange={handleInputChange}
                                     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    data-oid="8be9w5v"
+                                    data-oid="ihf_3oi"
                                 >
-                                    <option value="ETH" data-oid="tsl:46o">
+                                    <option value="ETH" data-oid="ynj0q3t">
                                         ETH
                                     </option>
-                                    <option value="BTC" data-oid="kl03tff">
+                                    <option value="BTC" data-oid="xir.4jw">
                                         BTC
                                     </option>
-                                    <option value="USDT" data-oid="26:onc9">
+                                    <option value="USDT" data-oid="fgvzhai">
                                         USDT
                                     </option>
-                                    <option value="USDC" data-oid="d-1oq_e">
+                                    <option value="USDC" data-oid="j0pnnrz">
                                         USDC
                                     </option>
                                 </select>
                             </div>
-                            <div data-oid="us112px">
+                            <div data-oid="imi4:ry">
                                 <label
                                     className="block text-sm font-medium mb-1"
-                                    data-oid="d.az_-d"
+                                    data-oid="z3l-uqo"
                                 >
                                     Network
                                 </label>
@@ -260,26 +260,26 @@ export default function WalletManager() {
                                     value={formData.network}
                                     onChange={handleInputChange}
                                     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    data-oid="w10in_a"
+                                    data-oid="xsdc3kc"
                                 >
-                                    <option value="Ethereum" data-oid="of-tgay">
+                                    <option value="Ethereum" data-oid="yzsekp.">
                                         Ethereum
                                     </option>
-                                    <option value="Bitcoin" data-oid="onyl7lr">
+                                    <option value="Bitcoin" data-oid="aqr-0-f">
                                         Bitcoin
                                     </option>
-                                    <option value="Polygon" data-oid="rw88ko-">
+                                    <option value="Polygon" data-oid="znusfbd">
                                         Polygon
                                     </option>
-                                    <option value="BSC" data-oid="p1q-7_k">
+                                    <option value="BSC" data-oid="p2ohpux">
                                         BSC
                                     </option>
                                 </select>
                             </div>
-                            <div data-oid="kkgjudh">
+                            <div data-oid="l.k13ms">
                                 <label
                                     className="block text-sm font-medium mb-1"
-                                    data-oid="bsap:yk"
+                                    data-oid="n_.o2vu"
                                 >
                                     Status
                                 </label>
@@ -288,26 +288,26 @@ export default function WalletManager() {
                                     value={formData.status}
                                     onChange={handleInputChange}
                                     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    data-oid="gsh84v3"
+                                    data-oid="zjt6cos"
                                 >
-                                    <option value="Active" data-oid="duzzavh">
+                                    <option value="Active" data-oid="gzlrgnb">
                                         Active
                                     </option>
-                                    <option value="Inactive" data-oid="u_v8rt2">
+                                    <option value="Inactive" data-oid="oja2e4y">
                                         Inactive
                                     </option>
-                                    <option value="Frozen" data-oid="zlz5271">
+                                    <option value="Frozen" data-oid=":9f40pn">
                                         Frozen
                                     </option>
                                 </select>
                             </div>
                         </div>
-                        <div className="flex space-x-2" data-oid="yu.uv85">
+                        <div className="flex space-x-2" data-oid="p53-8-s">
                             <button
                                 type="submit"
                                 disabled={submitting}
                                 className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
-                                data-oid="lp9i_vx"
+                                data-oid="c:::z01"
                             >
                                 {submitting ? 'Adding...' : 'Add Wallet'}
                             </button>
@@ -315,7 +315,7 @@ export default function WalletManager() {
                                 type="button"
                                 onClick={() => setShowForm(false)}
                                 className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-                                data-oid="6ci0_rs"
+                                data-oid=".4yw2gp"
                             >
                                 Cancel
                             </button>
@@ -325,113 +325,113 @@ export default function WalletManager() {
             )}
 
             {/* Wallets Table */}
-            <div className="bg-white rounded-lg shadow overflow-hidden" data-oid="ilemu4:">
-                <div className="px-6 py-4 bg-gray-50" data-oid="wgguuoe">
-                    <h2 className="text-xl font-semibold" data-oid="mstcwlr">
+            <div className="bg-white rounded-lg shadow overflow-hidden" data-oid="li_xxnj">
+                <div className="px-6 py-4 bg-gray-50" data-oid="k80d8--">
+                    <h2 className="text-xl font-semibold" data-oid="jg-2ukt">
                         Wallet Data ({wallets.length} wallets)
                     </h2>
                 </div>
 
                 {wallets.length === 0 ? (
-                    <div className="p-6 text-center text-gray-500" data-oid="e5_a4ck">
+                    <div className="p-6 text-center text-gray-500" data-oid="sanoi5c">
                         No wallets found. Add your first wallet above.
                     </div>
                 ) : (
-                    <div className="overflow-x-auto" data-oid="841m8e1">
-                        <table className="min-w-full divide-y divide-gray-200" data-oid="j0x.a2k">
-                            <thead className="bg-gray-50" data-oid="gwjn7wn">
-                                <tr data-oid=".fisww_">
+                    <div className="overflow-x-auto" data-oid="6ool0gz">
+                        <table className="min-w-full divide-y divide-gray-200" data-oid="nayferx">
+                            <thead className="bg-gray-50" data-oid="o-:n9nu">
+                                <tr data-oid=":pdr7dc">
                                     <th
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        data-oid="vdjolmp"
+                                        data-oid="t4ezwxv"
                                     >
                                         ID
                                     </th>
                                     <th
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        data-oid="xnjherz"
+                                        data-oid="4v_lpqa"
                                     >
                                         Wallet Address
                                     </th>
                                     <th
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        data-oid="6b62j5f"
+                                        data-oid="nf8m0p:"
                                     >
                                         Owner
                                     </th>
                                     <th
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        data-oid="2gu2.j2"
+                                        data-oid="cb9z5fk"
                                     >
                                         Balance
                                     </th>
                                     <th
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        data-oid="9:b57i7"
+                                        data-oid="hk3ow22"
                                     >
                                         Network
                                     </th>
                                     <th
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        data-oid="7a2gnvw"
+                                        data-oid="fb5u.74"
                                     >
                                         Status
                                     </th>
                                     <th
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        data-oid="dx6gk4:"
+                                        data-oid="8nsloy2"
                                     >
                                         Created
                                     </th>
                                     <th
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                        data-oid="143k-ss"
+                                        data-oid="c9wj71i"
                                     >
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200" data-oid="73rkvsb">
+                            <tbody className="bg-white divide-y divide-gray-200" data-oid="pona0bm">
                                 {wallets.map((wallet, index) => (
                                     <tr
                                         key={wallet.id || index}
                                         className="hover:bg-gray-50"
-                                        data-oid="9fytid6"
+                                        data-oid="nsj7cr6"
                                     >
                                         <td
                                             className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-                                            data-oid="s.zkxxx"
+                                            data-oid="3lhfhau"
                                         >
                                             {wallet.id}
                                         </td>
                                         <td
                                             className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900"
-                                            data-oid="iqdgoqd"
+                                            data-oid="as-570u"
                                         >
                                             {wallet.walletAddress?.slice(0, 10)}...
                                             {wallet.walletAddress?.slice(-8)}
                                         </td>
                                         <td
                                             className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-                                            data-oid="txy9z0t"
+                                            data-oid="68pncag"
                                         >
                                             {wallet.ownerName}
                                         </td>
                                         <td
                                             className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-                                            data-oid="r0a_ysj"
+                                            data-oid="6o43gyq"
                                         >
                                             {wallet.balance} {wallet.currency}
                                         </td>
                                         <td
                                             className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-                                            data-oid="mpv3en1"
+                                            data-oid="1vp48e3"
                                         >
                                             {wallet.network}
                                         </td>
                                         <td
                                             className="px-6 py-4 whitespace-nowrap"
-                                            data-oid="jjsi-bj"
+                                            data-oid="7v5.6dq"
                                         >
                                             <span
                                                 className={`px-2 py-1 text-xs rounded-full ${
@@ -441,25 +441,25 @@ export default function WalletManager() {
                                                           ? 'bg-gray-100 text-gray-800'
                                                           : 'bg-red-100 text-red-800'
                                                 }`}
-                                                data-oid="tr.re5m"
+                                                data-oid="j2rs4hu"
                                             >
                                                 {wallet.status}
                                             </span>
                                         </td>
                                         <td
                                             className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-                                            data-oid=".tdfk1f"
+                                            data-oid="bitmmk0"
                                         >
                                             {wallet.createdAt}
                                         </td>
                                         <td
                                             className="px-6 py-4 whitespace-nowrap text-sm"
-                                            data-oid="qf_3d9y"
+                                            data-oid="e-awq39"
                                         >
                                             <button
                                                 onClick={() => handleDelete(wallet.walletAddress)}
                                                 className="text-red-600 hover:text-red-900"
-                                                data-oid="ce3-777"
+                                                data-oid="enmxshl"
                                             >
                                                 Delete
                                             </button>
@@ -473,14 +473,14 @@ export default function WalletManager() {
             </div>
 
             {/* JSON Preview (Optional) */}
-            <div className="mt-8" data-oid="aqnvl:9">
-                <details className="bg-gray-50 p-4 rounded-lg" data-oid="pjac9vk">
-                    <summary className="cursor-pointer font-semibold mb-2" data-oid="rzqmtah">
+            <div className="mt-8" data-oid="prrzcw7">
+                <details className="bg-gray-50 p-4 rounded-lg" data-oid="gzcq-t1">
+                    <summary className="cursor-pointer font-semibold mb-2" data-oid="p8dm_84">
                         View JSON Data
                     </summary>
                     <pre
                         className="text-sm bg-white p-4 rounded border overflow-auto max-h-64"
-                        data-oid="i4ftfcq"
+                        data-oid="gtvxnr2"
                     >
                         {JSON.stringify(wallets, null, 2)}
                     </pre>
