@@ -5,13 +5,34 @@ import CSVDisplay from "./components/CsvDisplay";
 import WalletManager from "./components/WalletManager";
 import Image from "next/image";
 
+type Wallet = {
+    name: string;
+    category: string;
+    platforms: string[];
+    custodyModel: string;
+    inAppDexSwap: boolean;
+    nftGallery: boolean;
+    inAppStaking: boolean;
+    fiatOnOffRamp: boolean;
+    pushNotifications: boolean;
+    solanaPayQR: string;
+    multiChain: boolean;
+    openSource: boolean;
+    logo: string;
+    description: string;
+    security: string;
+    popularity: number;
+    imageLogo: string;
+    website: string;
+};
+
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
     const [isLoaded, setIsLoaded] = useState(false);
-    const [wallets, setWallets] = useState([]);
+    const [wallets, setWallets] = useState<Wallet[]>([]);
     const [loading, setLoading] = useState(true);
-    const [expandedCard, setExpandedCard] = useState(null);
+    const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
   console.log("wallets", wallets);
 
@@ -28,13 +49,13 @@ export default function Page() {
             if (response.ok && result.data) {
         console.log("result.data", result.data);
                 // Transform CSV data to match our component structure
-        const transformedWallets = result.data.
-        filter((wallet) => wallet.Name && wallet.Name.trim() !== "") // Filter out empty rows
-                    .map((wallet) => ({
+        const transformedWallets: Wallet[] = result.data.
+        filter((wallet: any) => wallet.Name && wallet.Name.trim() !== "") // Filter out empty rows
+                    .map((wallet: any) => ({
                         name: wallet.Name,
                         category: getCategoryFromPlatforms(wallet.Platforms),
           platforms: wallet.Platforms ?
-          wallet.Platforms.split(";").map((p) => p.trim()) :
+          wallet.Platforms.split(";").map((p: string) => p.trim()) :
           [],
           custodyModel: wallet["Custody Model"] || "Unknown",
           inAppDexSwap: wallet["In-app DEX Swap"] === "Yes",
@@ -64,7 +85,7 @@ export default function Page() {
         }
     };
 
-    const getCategoryFromPlatforms = (platforms) => {
+    const getCategoryFromPlatforms = (platforms: string | undefined) => {
     if (!platforms) return "other";
         const platformStr = platforms.toLowerCase();
         if (
@@ -86,7 +107,7 @@ export default function Page() {
     return "other";
     };
 
-    const getWalletLogo = (name) => {
+    const getWalletLogo = (name: string) => {
         const logoMap = {
       Phantom: "👻",
       Solflare: "🔥",
@@ -127,13 +148,13 @@ export default function Page() {
     return "💼"; // Default wallet icon
     };
 
-    const getSecurityLevel = (category) => {
+    const getSecurityLevel = (category: string) => {
     if (category === "Cold Wallet") return "High";
     if (category === "Hot Wallet") return "Medium";
     return "Medium";
     };
 
-    const getPopularityScore = (name) => {
+    const getPopularityScore = (name: string) => {
         const popularityMap = {
             Phantom: 95,
             Solflare: 88,
@@ -184,7 +205,7 @@ export default function Page() {
         return matchesCategory && matchesSearch;
     });
 
-    const getSecurityColor = (security) => {
+    const getSecurityColor = (security: string) => {
         switch (security) {
       case "High":
         return "text-green-400 bg-green-400/10";
@@ -253,7 +274,7 @@ export default function Page() {
 
               <div className="flex items-center space-x-4" data-oid="h0g3vd3">
                                 <div
-                  className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center"
+                  className="w-10 h-10 bg-gradient-to-r from-[#00ffff]/20 to-[#00ffff]/40 rounded-lg flex items-center justify-center"
                   data-oid="cqgbdws">
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
@@ -268,16 +289,28 @@ export default function Page() {
                         group-hover:scale-110
                       "
                     >
+                      {/* Glowing Effect */}
+                      <defs>
+                        <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+                          <feGaussianBlur className="blur-lg" stdDeviation="3" result="coloredBlur"/>
+                          <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                          </feMerge>
+                        </filter>
+                      </defs>
+
                       {/* Wallet Matrix Symbol */}
                       <path 
                         d="M10 25 L25 10 L40 25 L25 40 Z" 
                         fill="none" 
-                        stroke="white" 
+                        stroke="#00ffff" 
                         strokeWidth="3" 
                         strokeLinecap="round" 
                         strokeLinejoin="round"
+                        filter="url(#neon-glow)"
                         className="
-                          group-hover:stroke-[#7e3af2] 
+                          group-hover:stroke-[#00ffff]/70 
                           transition-colors 
                           duration-500
                         "
@@ -286,26 +319,25 @@ export default function Page() {
                         cx="25" 
                         cy="25" 
                         r="3" 
-                        fill="white"
+                        fill="#00ffff"
+                        filter="url(#neon-glow)"
                         className="
-                          group-hover:fill-[#7e3af2] 
+                          group-hover:fill-[#00ffff]/70 
                           transition-colors 
                           duration-500
                         "
                       />
                     </svg>
-                </div>
+                                </div>
                 <div data-oid="j7p104i">
                                     <h1
-                    className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent print:text-slate-900"
+                    className="text-2xl font-bold bg-gradient-to-r from-[#00ffff] to-[#00ffff]/70 bg-clip-text text-transparent animate-pulse print:text-slate-900 text-shadow-[0_0_10px_rgba(128,0,128,0.5)]"
                     data-oid="se2fn1r">
-
                                         Solana Wallet Inventory
                                     </h1>
-                  <p
-                    className="text-gray-400 text-sm print:text-slate-700"
+                    <p
+                    className="text-[#00ffff]/60 text-sm print:text-slate-700"
                     data-oid="d:3udu0">
-
                                         Comprehensive wallet ecosystem dashboard
                                     </p>
                                 </div>
@@ -313,19 +345,16 @@ export default function Page() {
               <div
                 className="flex items-center space-x-4 print:hidden"
                 data-oid="hmwl_mm">
-
-                                <button
-                  className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-300"
-                  data-oid="bhhac8m">
-
-                                    API Access
-                                </button>
-                                <button
-                  className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg text-white font-medium hover:from-purple-400 hover:to-indigo-500 transition-all duration-300"
-                  data-oid="7m2i5i_">
-
-                                    Embed Widget
-                                </button>
+                                <a
+                  href="https://github.com/shivam-soni/solana-wallet-matrix"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-gray-700/50 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-300 flex items-center justify-center"
+                  data-oid="github-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
                             </div>
                         </div>
                     </div>
@@ -412,62 +441,84 @@ export default function Page() {
                     </div>
 
                     {/* Stats */}
-          <div
-            className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8 print:mb-4"
-            data-oid="bo1xkje">
-
-                        {[
-            { label: "Total Wallets", value: wallets.length, icon: "💼" },
-                            {
-              label: "Browser Extensions",
-              value: wallets.filter((w) => w.category === "browser").length,
-              icon: "🌐"
-                            },
-                            {
-              label: "Mobile Apps",
-              value: wallets.filter((w) => w.category === "mobile").length,
-              icon: "📱"
-                            },
-                            {
-              label: "Hardware Wallets",
-              value: wallets.filter((w) => w.category === "hardware").length,
-              icon: "🔐"
-                            },
-                            {
-              label: "Solana Pay Support",
-              value: wallets.filter((w) => w.solanaPayQR === "Yes").length,
-              icon: "💳"
-            }].
-            map((stat, index) =>
+                <div
+                    className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8 print:mb-4"
+                    data-oid="bo1xkje">
+                    {[
+                        { label: "Total Wallets", value: wallets.length, icon: "💼" },
+                        {
+                            label: "Browser Extensions",
+                            value: wallets.filter((w) => w.category === "browser").length,
+                            icon: "🌐"
+                        },
+                        {
+                            label: "Mobile Apps",
+                            value: wallets.filter((w) => w.category === "mobile").length,
+                            icon: "📱"
+                        },
+                        {
+                            label: "Hardware Wallets",
+                            value: wallets.filter((w) => w.category === "hardware").length,
+                            icon: "🔐"
+                        },
+                        {
+                            label: "Solana Pay Support",
+                            value: wallets.filter((w) => w.solanaPayQR === "Yes").length,
+                            icon: "💳"
+                        }
+                        ].map((stat, index) => (
                             <div
                                 key={index}
-              className={`backdrop-blur-xl bg-gray-800/60 rounded-xl border border-gray-700 p-6 transition-all duration-1000 delay-${(index + 1) * 100} print:bg-white print:border-slate-300 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-              data-oid="5xd2y8t">
-
+                            className={`
+                                backdrop-blur-xl 
+                                bg-gray-800/60 
+                                rounded-xl 
+                                border 
+                                border-[#00ffff]/20 
+                                p-6 
+                                transition-all 
+                                duration-1000 
+                                delay-${(index + 1) * 100} 
+                                print:bg-white 
+                                print:border-slate-300 
+                                ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}
+                                hover:shadow-[0_0_15px_rgba(0,255,255,0.3)]
+                                hover:border-[#00ffff]/40
+                                transition-all
+                                duration-300
+                            `}
+                            data-oid="5xd2y8t">
                                 <div
                                     className="flex items-center justify-between"
-                data-oid="nlodcwg">
-
-                  <div data-oid="frwjxi.">
-                    <p
-                    className="text-gray-400 text-sm print:text-slate-700"
-                    data-oid="idso9kw">
-
+                                data-oid="nlodcwg">
+                                <div data-oid="frwjxi.">
+                                    <p
+                                        className="text-[#00ffff]/50 text-sm print:text-slate-700"
+                                        data-oid="idso9kw">
                                             {stat.label}
                                         </p>
                                         <p
-                    className="text-2xl font-bold text-purple-400 print:text-slate-900"
-                    data-oid="vzrjv_w">
-
+                                        className="
+                                            text-2xl 
+                                            font-bold 
+                                            bg-gradient-to-r 
+                                            from-[#00ffff] 
+                                            to-[#00ffff]/70 
+                                            bg-clip-text 
+                                            text-transparent 
+                                            print:text-slate-900
+                                            animate-pulse
+                                        "
+                                        data-oid="vzrjv_w">
                                             {stat.value}
                                         </p>
                                     </div>
-                  <div className="text-2xl" data-oid="r_l41w9">
+                                <div className="text-2xl opacity-70" data-oid="r_l41w9">
                                         {stat.icon}
                                     </div>
                                 </div>
                             </div>
-            )}
+                        ))}
                     </div>
 
                     {/* Wallet Grid */}
@@ -744,7 +795,7 @@ function WalletCard({
   isLoaded,
   expandedCard,
   setExpandedCard
-}: {wallet: any;index: number;isLoaded: boolean;expandedCard: string | null;setExpandedCard: (name: string | null) => void;}) {
+}: {wallet: Wallet;index: number;isLoaded: boolean;expandedCard: string | null;setExpandedCard: (name: string | null) => void;}) {
   return (
     <div
       className={`
