@@ -537,8 +537,8 @@ export default function Page() {
 
               {/* Search */}
               <div className="flex-1" data-oid="efv7mf1">
-                <label
-                  htmlFor="wallet-search"
+                <label 
+                  htmlFor="wallet-search" 
                   className="
                     block 
                     mb-2 
@@ -573,7 +573,7 @@ export default function Page() {
                         rounded-xl 
                         px-4 
                         py-2 
-                        pl-12 // Add left padding for the search icon
+                        pl-12 
                         text-text-primary 
                         focus:outline-none 
                         focus:ring-2 
@@ -584,7 +584,7 @@ export default function Page() {
                         group-hover:text-solana-green
                         pr-8
                       "
-                      data-oid="e0a_np0"
+                      data-oid="e0a_np0" 
                     />
                     {/* Search Icon */}
                     <div
@@ -601,18 +601,18 @@ export default function Page() {
                       "
                       data-oid="4.n83yy"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 stroke-[3]"
-                        fill="none"
-                        viewBox="0 0 24 24"
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-5 w-5 stroke-[3]" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
                         stroke="currentColor"
                         strokeWidth={3}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
                         />
                       </svg>
                     </div>
@@ -621,23 +621,23 @@ export default function Page() {
               </div>
 
               {/* Dropdowns */}
-              <div className="grid grid-cols-3 gap-4">
-                <Dropdown
-                  options={platformOptions}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Dropdown 
+                  options={platformOptions} 
                   selectedValue={selectedPlatform}
                   onSelect={setSelectedPlatform}
                   placeholder="Platform"
                   label="Platform"
                 />
-                <Dropdown
-                  options={custodyModelOptions}
+                <Dropdown 
+                  options={custodyModelOptions} 
                   selectedValue={selectedCustodyModel}
                   onSelect={setSelectedCustodyModel}
                   placeholder="Custody Model"
                   label="Custody Model"
                 />
-                <Dropdown
-                  options={featureOptions}
+                <Dropdown 
+                  options={featureOptions} 
                   selectedValue={selectedFeature}
                   onSelect={setSelectedFeature}
                   placeholder="Features"
