@@ -25,13 +25,17 @@ const config: Config = {
           900: '#0a0a1a',
           800: '#121229',
           700: '#1a1a3a'
+        },
+        solana: {
+          purple: '#9945FF',
+          green: '#14F195',
         }
       },
       fontFamily: {
         web3: ['Inter', 'system-ui', 'sans-serif']
       },
       animation: {
-        'gradient-x': 'gradient-x 15s ease infinite',
+        'gradient-x': 'gradient-x 3s ease infinite',
         'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
       keyframes: {
@@ -43,6 +47,9 @@ const config: Config = {
             'background-position': '100% 50%'
           }
         }
+      },
+      backgroundSize: {
+        '200%': '200% 200%',
       },
       transitionProperty: {
         'height': 'height',
