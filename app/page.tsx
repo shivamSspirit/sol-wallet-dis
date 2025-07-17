@@ -24,120 +24,102 @@ type Wallet = {
   website: string;
 };
 
-// Platform options
-const platformOptions = [
-  "All Platforms",
-  "Android",
-  "Chrome",
-  "Firefox",
-  "Windows",
-  "Linux",
-  "macOS",
-  "Hardware"
-];
-
-// Custody Model options
-const custodyModelOptions = [
-  "All Models",
-  "Self-custody",
-  "Custodial",
-  "MPC"
-];
-
-// Feature options
-const featureOptions = [
-  "All Features",
-  "DEX",
-  "NFT",
-  "Fiat On-ramp",
-  "Fiat Off-ramp",
-  "Staking",
-  "Push Notifications",
-  "Solana Pay QR",
-  "Multi-Chain"
-];
-
 export default function Page() {
-  // Use client-side state with initial values that match server-side rendering
-  const [isClient, setIsClient] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+    const [isLoaded, setIsLoaded] = useState(false);
   const [wallets, setWallets] = useState<Wallet[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState(true);
 
-  // Ensure consistent initial state for dropdowns
-  const [selectedPlatform, setSelectedPlatform] = useState<string>("All Platforms");
-  const [selectedCustodyModel, setSelectedCustodyModel] = useState<string>("All Models");
-  const [selectedFeature, setSelectedFeature] = useState<string>("All Features");
 
-  // Ensure consistent rendering
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
-  // Ensure useEffect has proper dependency and handling
-  useEffect(() => {
-    // Only fetch data on client side
-    if (!isClient) return;
+   console.log(wallets.filter((w) => w.category)) ;
 
-    let isMounted = true;
-    
+  // State for new dropdowns
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>("All Platforms");
+  const [selectedCustodyModel, setSelectedCustodyModel] = useState<string | null>("All Models");
+  const [selectedFeature, setSelectedFeature] = useState<string | null>("All Features");
+
+  // Platform options
+  const platformOptions = [
+    "All Platforms",
+    "Android",
+    "Chrome",
+    "Firefox",
+    "Windows",
+    "Linux",
+    "macOS",
+    "Hardware"
+  ];
+
+  // Custody Model options
+  const custodyModelOptions = [
+    "All Models",
+    "Self-custody",
+    "Custodial",
+    "MPC"
+  ];
+
+  // Feature options
+  const featureOptions = [
+    "All Features",
+    "DEX",
+    "NFT",
+    "Fiat On-ramp",
+    "Fiat Off-ramp",
+    "Staking",
+    "Push Notifications",
+    "Solana Pay QR",
+    "Multi-Chain"
+  ];
+
+    useEffect(() => {
+        setIsLoaded(true);
+        fetchWalletData();
+    }, []);
+
     const fetchWalletData = async () => {
-      try {
-        const response = await fetch("/api/csv-data");
-        const result = await response.json();
+        try {
+      const response = await fetch("/api/csv-data");
+            const result = await response.json();
 
-        if (isMounted && response.ok && result.data) {
-          // Transform CSV data to match our component structure
-          const transformedWallets: Wallet[] = result.data
-            .filter((wallet: any) => wallet.Name && wallet.Name.trim() !== "")
-            .map((wallet: any) => ({
-              name: wallet.Name,
-              category: getCategoryFromPlatforms(wallet.Platforms),
-              platforms: wallet.Platforms ?
-                wallet.Platforms.split(";").map((p: string) => p.trim()) :
-                [],
-              custodyModel: wallet["Custody Model"] || "Unknown",
-              inAppDexSwap: wallet["In-app DEX Swap"] === "Yes",
-              nftGallery: wallet["NFT Gallery"] === "Yes",
-              inAppStaking: wallet["In-app Staking"] === "Yes",
-              fiatOnOffRamp:
-                wallet["Fiat On/Off Ramp"] === "Yes" ||
-                wallet["Fiat On/Off Ramp"] === "Partial",
-              pushNotifications: wallet["Push Notifications"] === "Yes",
-              solanaPayQR: wallet["Solana Pay QR"] || "No",
-              multiChain: wallet["Multi-Chain"] === "Yes",
-              openSource: wallet["Open Source"] === "Yes",
-              logo: getWalletLogo(wallet.Name),
-              description: wallet.Notes || `${wallet.Name} wallet`,
-              security: getSecurityLevel(wallet.Category),
-              popularity: getPopularityScore(wallet.Name),
-              imageLogo: wallet.Logos,
-              website: wallet.weblink
-            }));
+            if (response.ok && result.data) {
+                // Transform CSV data to match our component structure
+        const transformedWallets: Wallet[] = result.data.
+          filter((wallet: any) => wallet.Name && wallet.Name.trim() !== "") // Filter out empty rows
+          .map((wallet: any) => ({
+                        name: wallet.Name,
+                        category: getCategoryFromPlatforms(wallet.Platforms),
+            platforms: wallet.Platforms ?
+              wallet.Platforms.split(";").map((p: string) => p.trim()) :
+              [],
+            custodyModel: wallet["Custody Model"] || "Unknown",
+            inAppDexSwap: wallet["In-app DEX Swap"] === "Yes",
+            nftGallery: wallet["NFT Gallery"] === "Yes",
+            inAppStaking: wallet["In-app Staking"] === "Yes",
+                        fiatOnOffRamp:
+              wallet["Fiat On/Off Ramp"] === "Yes" ||
+              wallet["Fiat On/Off Ramp"] === "Partial",
+            pushNotifications: wallet["Push Notifications"] === "Yes",
+            solanaPayQR: wallet["Solana Pay QR"] || "No",
+            multiChain: wallet["Multi-Chain"] === "Yes",
+            openSource: wallet["Open Source"] === "Yes",
+                        logo: getWalletLogo(wallet.Name),
+                        description: wallet.Notes || `${wallet.Name} wallet`,
+                        security: getSecurityLevel(wallet.Category),
+                        popularity: getPopularityScore(wallet.Name),
+                        imageLogo: wallet.Logos,
+            website: wallet.weblink
+                    }));
 
-          setWallets(transformedWallets);
-          setIsLoaded(true);
-          setLoading(false);
+                setWallets(transformedWallets);
+            }
+        } catch (error) {
+      console.error("Error fetching wallet data:", error);
+        } finally {
+            setLoading(false);
         }
-      } catch (error) {
-        console.error("Error fetching wallet data:", error);
-        setLoading(false);
-      }
     };
-
-    fetchWalletData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [isClient]); // Add isClient as a dependency
-
-  // Render nothing on the server
-  if (!isClient) {
-    return null;
-  }
 
   const getCategoryFromPlatforms = (platforms: string | undefined) => {
     if (!platforms) return "other";
@@ -182,7 +164,7 @@ export default function Page() {
       Coin98: "🌐",
       "Math Wallet": "📊",
       Guarda: "🛡️",
-      TokenPocket: "👛",
+      TokenPocket: "💰",
       Enkrypt: "🔐",
       Robinhood: "🏹",
       Torus: "🌀",
@@ -232,7 +214,7 @@ export default function Page() {
     };
 
   // Modify filtering logic
-  const filteredWallets = wallets.filter((wallet) => {
+    const filteredWallets = wallets.filter((wallet) => {
     // Normalize search term
     const normalizedSearchTerm = searchTerm.toLowerCase().trim();
 
@@ -264,6 +246,7 @@ export default function Page() {
 
     // Platform filtering
     const matchesPlatform =
+      !selectedPlatform ||
       selectedPlatform === "All Platforms" ||
       wallet.platforms.some(platform =>
         platform.toLowerCase().includes(selectedPlatform.toLowerCase().replace("all platforms", ""))
@@ -271,11 +254,13 @@ export default function Page() {
 
     // Custody Model filtering
     const matchesCustodyModel =
+      !selectedCustodyModel ||
       selectedCustodyModel === "All Models" ||
       wallet.custodyModel.toLowerCase() === selectedCustodyModel.toLowerCase().replace("all models", "");
 
     // Feature filtering
     const matchesFeature =
+      !selectedFeature ||
       selectedFeature === "All Features" ||
       (selectedFeature === "DEX" && wallet.inAppDexSwap) ||
       (selectedFeature === "NFT" && wallet.nftGallery) ||
@@ -545,7 +530,7 @@ export default function Page() {
               {
                 label: "Solana Pay Support",
                 value: wallets.filter((w) => w.solanaPayQR === "Yes").length,
-                icon: <Image src="/images/solana-sol-logo.png" width={8} height={8} alt="Solana Pay" className="w-5 h-5"/>
+                icon: <Image src="/solana-pay-logo-small.svg" width={60} height={25} alt="Solana Pay"/>
               }].
               map((stat) => (
                 <div
@@ -1236,7 +1221,7 @@ function WalletCard({
 
             <div className="flex items-center space-x-3" data-oid="wf1dfus">
               <div
-                className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center relative overflow-hidden"
+                className="w-14 h-9 p-2 bg-black rounded-md flex items-center justify-center relative overflow-hidden"
                 data-oid="0.v5hsq">
 
                 {/* Icon glow effect - Much more subtle */}
@@ -1246,7 +1231,7 @@ function WalletCard({
                 </div>
 
                 <span className="relative z-10 text-base" data-oid="qd4cp6k">
-                <Image src="/images/solana-sol-logo.png" width={8} height={8} alt="Solana Pay" className="w-5 h-5"/>
+                <Image src="/solana-pay-logo-small.svg" width={60} height={25} alt="Solana Pay" className="w-16 h-6"/>
                 </span>
               </div>
               <div data-oid="ux-46yz">
@@ -1571,107 +1556,95 @@ const Dropdown = ({
   label
 }: {
   options: string[],
-  selectedValue: string,
-  onSelect: (value: string) => void,
+  selectedValue: string | null,
+  onSelect: (value: string | null) => void,
   placeholder: string,
   label: string
-}) => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null;
-  }
-
-  return (
-    <div className="relative group">
-      <label
+}) => (
+  <div className="relative group">
+    <label
+      className="
+        block 
+        mb-2 
+        text-xs 
+        font-semibold 
+        tracking-wide 
+        uppercase
+        bg-gradient-to-r 
+        from-solana-purple 
+        to-solana-green 
+        bg-clip-text 
+        text-transparent
+      "
+    >
+      {label}
+    </label>
+    <div className="absolute inset-0 bg-gradient-to-r from-solana-purple/10 to-solana-green/10 opacity-0 group-hover:opacity-50 rounded-xl transition-opacity duration-300 pointer-events-none"></div>
+    <div className="relative">
+      <select
+        value={selectedValue || ''}
+        onChange={(e) => onSelect(e.target.value || null)}
         className="
-          block 
-          mb-2 
-          text-xs 
-          font-semibold 
-          tracking-wide 
-          uppercase
-          bg-gradient-to-r 
-          from-solana-purple 
-          to-solana-green 
-          bg-clip-text 
-          text-transparent
+          relative z-10 
+          w-full 
+          bg-transparent 
+          border 
+          border-solana-purple/30 
+          rounded-xl 
+          px-4 
+          py-2 
+          text-text-primary 
+          appearance-none 
+          focus:outline-none 
+          focus:ring-2 
+          focus:ring-solana-green/50 
+          transition-all 
+          duration-300 
+          group-hover:border-solana-green/50
+          group-hover:text-solana-green
+          pr-8 // Add right padding for the arrow
         "
       >
-        {label}
-      </label>
-      <div className="absolute inset-0 bg-gradient-to-r from-solana-purple/10 to-solana-green/10 opacity-0 group-hover:opacity-50 rounded-xl transition-opacity duration-300 pointer-events-none"></div>
-      <div className="relative">
-        <select
-          value={selectedValue}
-          onChange={(e) => onSelect(e.target.value)}
-          className="
-            relative z-10 
-            w-full 
-            bg-transparent 
-            border 
-            border-solana-purple/30 
-            rounded-xl 
-            px-4 
-            py-2 
-            text-text-primary 
-            appearance-none 
-            focus:outline-none 
-            focus:ring-2 
-            focus:ring-solana-green/50 
-            transition-all 
-            duration-300 
-            group-hover:border-solana-green/50
-            group-hover:text-solana-green
-            pr-8 // Add right padding for the arrow
-          "
-        >
-          <option value="" className="bg-background-card text-text-primary">
-            {placeholder}
-          </option>
-          {options.map((option) => (
-            <option
-              key={option}
-              value={option}
-              className="bg-background-card text-text-primary"
-            >
-              {option}
-            </option>
-          ))}
-        </select>
-        {/* Custom dropdown arrow */}
-        <div className="
-          pointer-events-none 
-          absolute 
-          inset-y-0 
-          right-0 
-          flex 
-          items-center 
-          px-2 
-          text-solana-green
-          font-bold
-        ">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 stroke-[5]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+        <option value="" className="bg-background-card text-text-primary">
+          {placeholder}
+        </option>
+        {options.map((option) => (
+          <option
+            key={option}
+            value={option}
+            className="bg-background-card text-text-primary"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={3}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </div>
+            {option}
+          </option>
+        ))}
+      </select>
+      {/* Custom dropdown arrow */}
+      <div className="
+        pointer-events-none 
+        absolute 
+        inset-y-0 
+        right-0 
+        flex 
+        items-center 
+        px-2 
+        text-solana-green
+        font-bold
+      ">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 stroke-[5]"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={3}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
       </div>
     </div>
-  );
-}
+  </div>
+)
