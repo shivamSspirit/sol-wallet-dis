@@ -3,21 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-import {
-  Smartphone,
-  Apple,
-  Laptop,
-  Monitor,
-  Chrome,
-  Bell,
-  Layers,
-  LineChart,
-  Repeat,
-  ArrowDownCircle,
-  ArrowUpCircle,
-  Network,
-} from 'lucide-react';
-
 type Wallet = {
   name: string;
   category: string;
@@ -42,10 +27,13 @@ type Wallet = {
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
   const [wallets, setWallets] = useState<Wallet[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+
+
+   console.log(wallets.filter((w) => w.category)) ;
 
   // State for new dropdowns
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>("All Platforms");
@@ -85,26 +73,23 @@ export default function Page() {
     "Multi-Chain"
   ];
 
-  console.log("wallets", wallets);
+    useEffect(() => {
+        setIsLoaded(true);
+        fetchWalletData();
+    }, []);
 
-  useEffect(() => {
-    setIsLoaded(true);
-    fetchWalletData();
-  }, []);
-
-  const fetchWalletData = async () => {
-    try {
+    const fetchWalletData = async () => {
+        try {
       const response = await fetch("/api/csv-data");
-      const result = await response.json();
+            const result = await response.json();
 
-      if (response.ok && result.data) {
-        console.log("result.data", result.data);
-        // Transform CSV data to match our component structure
+            if (response.ok && result.data) {
+                // Transform CSV data to match our component structure
         const transformedWallets: Wallet[] = result.data.
           filter((wallet: any) => wallet.Name && wallet.Name.trim() !== "") // Filter out empty rows
           .map((wallet: any) => ({
-            name: wallet.Name,
-            category: getCategoryFromPlatforms(wallet.Platforms),
+                        name: wallet.Name,
+                        category: getCategoryFromPlatforms(wallet.Platforms),
             platforms: wallet.Platforms ?
               wallet.Platforms.split(";").map((p: string) => p.trim()) :
               [],
@@ -112,34 +97,37 @@ export default function Page() {
             inAppDexSwap: wallet["In-app DEX Swap"] === "Yes",
             nftGallery: wallet["NFT Gallery"] === "Yes",
             inAppStaking: wallet["In-app Staking"] === "Yes",
-            fiatOnOffRamp:
+                        fiatOnOffRamp:
               wallet["Fiat On/Off Ramp"] === "Yes" ||
               wallet["Fiat On/Off Ramp"] === "Partial",
             pushNotifications: wallet["Push Notifications"] === "Yes",
             solanaPayQR: wallet["Solana Pay QR"] || "No",
             multiChain: wallet["Multi-Chain"] === "Yes",
             openSource: wallet["Open Source"] === "Yes",
-            logo: getWalletLogo(wallet.Name),
-            description: wallet.Notes || `${wallet.Name} wallet`,
-            security: getSecurityLevel(wallet.Category),
-            popularity: getPopularityScore(wallet.Name),
-            imageLogo: wallet.Logos,
+                        logo: getWalletLogo(wallet.Name),
+                        description: wallet.Notes || `${wallet.Name} wallet`,
+                        security: getSecurityLevel(wallet.Category),
+                        popularity: getPopularityScore(wallet.Name),
+                        imageLogo: wallet.Logos,
             website: wallet.weblink
-          }));
+                    }));
 
-        setWallets(transformedWallets);
-      }
-    } catch (error) {
+                setWallets(transformedWallets);
+            }
+        } catch (error) {
       console.error("Error fetching wallet data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        } finally {
+            setLoading(false);
+        }
+    };
 
   const getCategoryFromPlatforms = (platforms: string | undefined) => {
     if (!platforms) return "other";
-    const platformStr = platforms.toLowerCase();
-    if (
+        const platformStr = platforms.toLowerCase();
+        if (platformStr.includes("hardware")) {
+          return "hardware";
+        }
+        if (
       platformStr.includes("chrome") ||
       platformStr.includes("firefox") ||
       platformStr.includes("edge")) {
@@ -151,14 +139,11 @@ export default function Page() {
     if (platformStr.includes("desktop")) {
       return "desktop";
     }
-    if (platformStr.includes("hardware")) {
-      return "hardware";
-    }
     return "other";
   };
 
   const getWalletLogo = (name: string) => {
-    const logoMap = {
+        const logoMap = {
       Phantom: "👻",
       Solflare: "🔥",
       Backpack: "🎒",
@@ -188,13 +173,13 @@ export default function Page() {
       Helium: "📡",
       Bitget: "📈",
       Jupiter: "🪐"
-    };
+        };
 
-    for (const [key, emoji] of Object.entries(logoMap)) {
-      if (name.toLowerCase().includes(key.toLowerCase())) {
-        return emoji;
-      }
-    }
+        for (const [key, emoji] of Object.entries(logoMap)) {
+            if (name.toLowerCase().includes(key.toLowerCase())) {
+                return emoji;
+            }
+        }
     return "💼"; // Default wallet icon
   };
 
@@ -205,39 +190,60 @@ export default function Page() {
   };
 
   const getPopularityScore = (name: string) => {
-    const popularityMap = {
-      Phantom: 95,
-      Solflare: 88,
+        const popularityMap = {
+            Phantom: 95,
+            Solflare: 88,
       "Trust Wallet": 85,
-      Exodus: 80,
-      Backpack: 75,
-      Coin98: 70,
-      Glow: 65,
+            Exodus: 80,
+            Backpack: 75,
+            Coin98: 70,
+            Glow: 65,
       "Atomic Wallet": 75,
       "Coinbase Wallet": 80,
-      Ledger: 90,
-      Trezor: 85,
+            Ledger: 90,
+            Trezor: 85,
       MetaMask: 70
+        };
+
+        for (const [key, score] of Object.entries(popularityMap)) {
+            if (name.toLowerCase().includes(key.toLowerCase())) {
+                return score;
+            }
+        }
+        return Math.floor(Math.random() * 40) + 40; // Random score between 40-80 for unknown wallets
     };
-
-    for (const [key, score] of Object.entries(popularityMap)) {
-      if (name.toLowerCase().includes(key.toLowerCase())) {
-        return score;
-      }
-    }
-    return Math.floor(Math.random() * 40) + 40; // Random score between 40-80 for unknown wallets
-  };
-
-  const categories = [
-    { id: "all", name: "All Wallets", icon: "🌟" },
-    { id: "browser", name: "Browser Extension", icon: "🌐" },
-    { id: "mobile", name: "Mobile App", icon: "📱" },
-    { id: "desktop", name: "Desktop App", icon: "💻" },
-    { id: "hardware", name: "Hardware Wallet", icon: "🔐" }];
-
 
   // Modify filtering logic
   const filteredWallets = wallets.filter((wallet) => {
+    // Normalize search term
+    const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+
+    // Search term filtering (comprehensive and flexible)
+    const matchesSearchTerm = !searchTerm || (
+      // Search by wallet name
+      wallet.name.toLowerCase().includes(normalizedSearchTerm) ||
+      
+      // Search by platforms
+      wallet.platforms.some(platform => 
+        platform.toLowerCase().includes(normalizedSearchTerm)
+      ) ||
+      
+      // Search by description
+      wallet.description.toLowerCase().includes(normalizedSearchTerm) ||
+      
+      // Search by custody model
+      wallet.custodyModel.toLowerCase().includes(normalizedSearchTerm) ||
+      
+      // Search by features
+      (normalizedSearchTerm === "dex" && wallet.inAppDexSwap) ||
+      (normalizedSearchTerm === "nft" && wallet.nftGallery) ||
+      (normalizedSearchTerm === "fiat" && wallet.fiatOnOffRamp) ||
+      (normalizedSearchTerm === "staking" && wallet.inAppStaking) ||
+      (normalizedSearchTerm === "notifications" && wallet.pushNotifications) ||
+      (normalizedSearchTerm === "multichain" && wallet.multiChain) ||
+      (normalizedSearchTerm === "solana pay" && wallet.solanaPayQR === "Yes")
+    );
+
     // Platform filtering
     const matchesPlatform =
       !selectedPlatform ||
@@ -265,25 +271,25 @@ export default function Page() {
       (selectedFeature === "Solana Pay QR" && wallet.solanaPayQR === "Yes") ||
       (selectedFeature === "Multi-Chain" && wallet.multiChain);
 
-    return matchesPlatform && matchesCustodyModel && matchesFeature;
+    return matchesSearchTerm && matchesPlatform && matchesCustodyModel && matchesFeature;
   });
 
   const getSecurityColor = (security: string) => {
-    switch (security) {
+        switch (security) {
       case "High":
         return "text-green-400 bg-green-400/10";
       case "Medium":
         return "text-yellow-400 bg-yellow-400/10";
       case "Low":
         return "text-red-400 bg-red-400/10";
-      default:
+            default:
         return "text-gray-400 bg-gray-400/10";
-    }
-  };
+        }
+    };
 
-  if (loading) {
-    return (
-      <div
+    if (loading) {
+        return (
+            <div
         className="min-h-screen bg-solana-gradient text-white flex items-center justify-center"
         data-oid="rp5-884">
 
@@ -296,14 +302,14 @@ export default function Page() {
             className="text-solana-purple text-lg font-medium"
             data-oid="et94.fa">
 
-            Loading wallet data...
-          </p>
-        </div>
+                        Loading wallet data...
+                    </p>
+                </div>
       </div>);
 
-  }
+    }
 
-  return (
+    return (
     <div
       className="min-h-screen bg-solana-gradient text-white overflow-x-hidden print:bg-white"
       data-oid="7b1mj:z">
@@ -325,11 +331,11 @@ export default function Page() {
           className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-solana-green/10 rounded-full blur-3xl animate-pulse delay-1000"
           data-oid="w:-vv8a">
         </div>
-      </div>
+            </div>
 
       <div className="relative z-10" data-oid="g8:iw-:">
-        {/* Header */}
-        <header
+                {/* Header */}
+                <header
           className={`backdrop-blur-xl bg-background-card/40 border-border-primary/10 transition-all duration-1000 shadow-sm print:bg-white print:border-slate-300 relative ${isLoaded ? "translate-y-0 opacity-100" : "-translate-y-full opacity-10"}`}
           data-oid="ufe677_">
           {/* Full header gradient overlay */}
@@ -448,22 +454,22 @@ export default function Page() {
 
                     </linearGradient>
                   </svg>
-                </div>
+                                </div>
                 <div data-oid="j7p104i">
                   <h1
                     className="text-lg md:text-xl font-bold text-solana-gradient print:text-slate-900 tracking-tight leading-tight"
                     data-oid="se2fn1r">
 
-                    Solana Wallet Inventory
-                  </h1>
+                                        Solana Wallet Inventory
+                                    </h1>
                   <p
                     className="text-text-secondary/80 text-xs md:text-sm print:text-slate-700 font-medium tracking-wide"
                     data-oid="d:3udu0">
 
                     Comprehensive Wallet Ecosystem Dashboard
-                  </p>
-                </div>
-              </div>
+                                    </p>
+                                </div>
+                            </div>
 
               <div
                 className="flex items-center space-x-4 print:hidden"
@@ -487,19 +493,19 @@ export default function Page() {
                       data-oid="kv_33mn" />
                   </svg>
                 </a>
-              </div>
-            </div>
-          </div>
-        </header>
+                            </div>
+                        </div>
+                    </div>
+                </header>
 
-        {/* Controls */}
-        <div
+                {/* Controls */}
+                <div
           className={`max-w-7xl mx-auto px-6 py-6 transition-all duration-1000 delay-300 print:py-4 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
           data-oid="0-du3cf">
 
 
 
-          {/* Stats */}
+                    {/* Stats */}
           <div
             className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8 print:mb-4"
             data-oid="bo1xkje">
@@ -536,10 +542,10 @@ export default function Page() {
                   <div className="flex-1">
                     <div className="text-sm text-text-secondary truncate">{stat.label}</div>
                     <div className="text-2xl font-bold text-solana-green group-hover:text-[#00D97E] transition-colors">{stat.value}</div>
-                  </div>
-                </div>
-              ))}
-          </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
 
           <div
@@ -630,10 +636,10 @@ export default function Page() {
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
                         />
                       </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
 
               {/* Dropdowns */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -658,9 +664,9 @@ export default function Page() {
                   placeholder="Features"
                   label="Features"
                 />
-              </div>
-            </div>
-          </div>
+                                    </div>
+                                    </div>
+                                </div>
 
           {/* Wallet Grid */}
           <div
@@ -673,24 +679,22 @@ export default function Page() {
                 wallet={wallet}
                 index={index}
                 isLoaded={isLoaded}
-                expandedCard={expandedCard}
-                setExpandedCard={setExpandedCard}
                 data-oid=".3s79ag" />
 
             )}
-          </div>
+                    </div>
 
-          {/* Legend */}
-          <div
-            className="mt-12 backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6"
+                    {/* Legend */}
+                    <div
+                        className="mt-12 backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-6"
             data-oid="i26yexu">
 
             <h3
               className="text-xl md:text-2xl font-bold text-solana-green mb-6 tracking-tight"
               data-oid="ymo.to-">
 
-              Legend & Information
-            </h3>
+                            Legend & Information
+                        </h3>
             <div
               className="grid grid-cols-1 md:grid-cols-4 gap-8"
               data-oid="z-r.87i">
@@ -700,8 +704,8 @@ export default function Page() {
                   className="text-white font-bold mb-3 text-base tracking-wide"
                   data-oid="f8jxwt_">
 
-                  Custody Models
-                </h4>
+                                    Custody Models
+                                </h4>
                 <div className="space-y-3 text-sm" data-oid="gtvewpv">
                   <div
                     className="flex items-center space-x-3"
@@ -711,14 +715,14 @@ export default function Page() {
                       className="w-3 h-3 bg-green-400 rounded-full flex-shrink-0"
                       data-oid="v3905b.">
                     </div>
-                    <span
+                                        <span
                       className="text-gray-300 font-medium leading-relaxed"
                       data-oid=":w11x0z">
 
-                      Self-custody - You control your keys
-                    </span>
-                  </div>
-                  <div
+                                            Self-custody - You control your keys
+                                        </span>
+                                    </div>
+                                    <div
                     className="flex items-center space-x-3"
                     data-oid="m40cf6j">
 
@@ -730,10 +734,10 @@ export default function Page() {
                       className="text-gray-300 font-medium leading-relaxed"
                       data-oid="1tk5sg_">
 
-                      MPC - Multi-party computation
-                    </span>
-                  </div>
-                  <div
+                                            MPC - Multi-party computation
+                                        </span>
+                                    </div>
+                                    <div
                     className="flex items-center space-x-3"
                     data-oid="43t1_p1">
 
@@ -745,18 +749,18 @@ export default function Page() {
                       className="text-gray-300 font-medium leading-relaxed"
                       data-oid="56t-gme">
 
-                      Custodial - Third-party holds keys
-                    </span>
-                  </div>
-                </div>
-              </div>
+                                            Custodial - Third-party holds keys
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
               <div data-oid="8a78g:8">
                 <h4
                   className="text-white font-bold mb-3 text-base tracking-wide"
                   data-oid="7xtaes-">
 
-                  Solana Pay QR Support
-                </h4>
+                                    Solana Pay QR Support
+                                </h4>
                 <div className="space-y-3 text-sm" data-oid="5tagzs_">
                   <div
                     className="flex items-center space-x-3"
@@ -769,23 +773,23 @@ export default function Page() {
                       className="text-green-300 font-medium leading-relaxed"
                       data-oid="t68dayp">
 
-                      Yes - Full support
-                    </span>
-                  </div>
-                  <div
+                                            Yes - Full support
+                                        </span>
+                                    </div>
+                                    <div
                     className="flex items-center space-x-3"
                     data-oid="mfgv._1">
 
                     <span className="flex-shrink-0" data-oid="an7qqoc">
                       ⚠️
                     </span>
-                    <span
+                                        <span
                       className="text-yellow-300 font-medium leading-relaxed"
                       data-oid="tbfe4ft">
 
-                      Partial - Limited support
-                    </span>
-                  </div>
+                                            Partial - Limited support
+                                        </span>
+                                    </div>
                   <div
                     className="flex items-center space-x-3"
                     data-oid="dmus58e">
@@ -797,64 +801,64 @@ export default function Page() {
                       className="text-red-300 font-medium leading-relaxed"
                       data-oid=".p:n57t">
 
-                      No - Not supported
-                    </span>
-                  </div>
-                </div>
-              </div>
+                                            No - Not supported
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
               <div data-oid=".ef:b_-">
                 <h4
                   className="text-white font-bold mb-3 text-base tracking-wide"
                   data-oid="80r0lai">
 
-                  Key Features
-                </h4>
+                                    Key Features
+                                </h4>
                 <div className="space-y-3 text-sm" data-oid="9ja1xb2">
                   <div
                     className="text-gray-300 font-medium leading-relaxed"
                     data-oid="47ax51l">
 
-                    • In-app DEX swap
-                  </div>
+                                        • In-app DEX swap
+                                    </div>
                   <div
                     className="text-gray-300 font-medium leading-relaxed"
                     data-oid="_frznpz">
 
-                    • NFT gallery support
-                  </div>
+                                        • NFT gallery support
+                                    </div>
                   <div
                     className="text-gray-300 font-medium leading-relaxed"
                     data-oid="1_27d7j">
 
-                    • In-app staking
-                  </div>
+                                        • In-app staking
+                                    </div>
                   <div
                     className="text-gray-300 font-medium leading-relaxed"
                     data-oid=".9yz2_y">
 
-                    • Fiat on/off ramps
-                  </div>
+                                        • Fiat on/off ramps
+                                    </div>
                   <div
                     className="text-gray-300 font-medium leading-relaxed"
                     data-oid="v2ndn22">
 
-                    • Push notifications
-                  </div>
+                                        • Push notifications
+                                    </div>
                   <div
                     className="text-gray-300 font-medium leading-relaxed"
                     data-oid="vow4nvj">
 
                     • Multi-Chain support
-                  </div>
-                </div>
+                                </div>
+                            </div>
               </div>
               <div data-oid="yq7lj7y">
                 <h4
                   className="text-white font-bold mb-3 text-base tracking-wide"
                   data-oid="sgdtw0u">
 
-                  Platform Types
-                </h4>
+                                    Platform Types
+                                </h4>
                 <div className="space-y-3 text-sm" data-oid="ucb8g1m">
                   <div
                     className="flex items-center space-x-3"
@@ -867,10 +871,10 @@ export default function Page() {
                       className="text-gray-300 font-medium leading-relaxed"
                       data-oid="1qn-z4c">
 
-                      Browser Extension
-                    </span>
-                  </div>
-                  <div
+                                            Browser Extension
+                                        </span>
+                                    </div>
+                                    <div
                     className="flex items-center space-x-3"
                     data-oid="ddn-18z">
 
@@ -881,10 +885,10 @@ export default function Page() {
                       className="text-gray-300 font-medium leading-relaxed"
                       data-oid="tn84qn9">
 
-                      Mobile Application
-                    </span>
-                  </div>
-                  <div
+                                            Mobile Application
+                                        </span>
+                                    </div>
+                                    <div
                     className="flex items-center space-x-3"
                     data-oid="mp.y.4c">
 
@@ -895,59 +899,59 @@ export default function Page() {
                       className="text-gray-300 font-medium leading-relaxed"
                       data-oid="q7_1udf">
 
-                      Hardware Wallet
-                    </span>
-                  </div>
+                                            Hardware Wallet
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Footer */}
-        <footer
-          className="backdrop-blur-xl bg-black/20 border-t border-green-500/20 mt-16"
+                {/* Footer */}
+                <footer
+                    className="backdrop-blur-xl bg-black/20 border-t border-green-500/20 mt-16"
           data-oid="r.f5344">
 
           <div className="max-w-7xl mx-auto px-6 py-8" data-oid="mm8tzsw">
-            <div
-              className="flex flex-col md:flex-row justify-between items-center"
+                        <div
+                            className="flex flex-col md:flex-row justify-between items-center"
               data-oid="fxjyoin">
 
               <div className="text-gray-400 text-sm" data-oid="wn7x1e5">
                 © 2025 Solana Wallet Inventory. Built for builders, merchants,
                 and users.
-              </div>
-              <div
-                className="flex items-center space-x-6 mt-4 md:mt-0"
+                            </div>
+                            <div
+                                className="flex items-center space-x-6 mt-4 md:mt-0"
                 data-oid="4wkpdsr">
 
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-green-400 transition-colors duration-300"
+                                <a
+                                    href="#"
+                                    className="text-gray-400 hover:text-green-400 transition-colors duration-300"
                   data-oid="oyp-g7b">
 
-                  API Docs
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-green-400 transition-colors duration-300"
+                                    API Docs
+                                </a>
+                                <a
+                                    href="#"
+                                    className="text-gray-400 hover:text-green-400 transition-colors duration-300"
                   data-oid="4x6awnt">
 
-                  Submit Wallet
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-green-400 transition-colors duration-300"
+                                    Submit Wallet
+                                </a>
+                                <a
+                                    href="#"
+                                    className="text-gray-400 hover:text-green-400 transition-colors duration-300"
                   data-oid="56vzj7x">
 
-                  Contact
-                </a>
-              </div>
+                                    Contact
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>
-          </div>
-        </footer>
-      </div>
     </div>);
 
 }
@@ -958,8 +962,8 @@ export default function Page() {
  * Example: <div className="w-16 h-16"><WalletAvatar ... /></div>
  */
 function WalletAvatar({
-  walletName,
-  imageUrl,
+    walletName,
+    imageUrl,
   bgColor = "bg-gradient-to-br from-blue-500 to-purple-600",
   textColor = "text-white"
 
@@ -970,17 +974,17 @@ function WalletAvatar({
 }: { walletName: string; imageUrl?: string; bgColor?: string; textColor?: string; }) {
   const getInitial = (name: string) => {
     if (!name) return "?";
-    return name.charAt(0).toUpperCase();
-  };
+        return name.charAt(0).toUpperCase();
+    };
 
-  return (
+    return (
     <div
       className="relative w-full h-full rounded-xl overflow-hidden"
       data-oid="0m8tsyl">
 
       {imageUrl ?
-        <Image
-          src={imageUrl}
+                <Image
+                    src={imageUrl}
           alt={walletName || "Wallet"}
           fill
           className="object-cover"
@@ -992,8 +996,8 @@ function WalletAvatar({
           style={{ fontSize: "2em" }}
           data-oid="q507zf9">
 
-          {getInitial(walletName)}
-        </div>
+                    {getInitial(walletName)}
+                </div>
       }
     </div>);
 
@@ -1005,16 +1009,12 @@ function WalletAvatar({
 function WalletCard({
   wallet,
   index,
-  isLoaded,
-  expandedCard,
-  setExpandedCard
-
-
-
-
-
-
-}: { wallet: Wallet; index: number; isLoaded: boolean; expandedCard: string | null; setExpandedCard: (name: string | null) => void; }) {
+  isLoaded
+}: { 
+  wallet: Wallet; 
+  index: number; 
+  isLoaded: boolean; 
+}) {
   return (
     <div
       className={`
@@ -1193,7 +1193,7 @@ function WalletCard({
               data-oid="1g0ankh">
 
               +{wallet.platforms.length - 4}
-            </div>
+        </div>
           }
         </div>
       </div>
@@ -1431,7 +1431,6 @@ function PlatformIcon({ platform }: { platform: string; }) {
   const getIcon = (platform: string) => {
     const p = platform.toLowerCase();
 
-    console.log("p",p)
     if (p.includes("ios")) return "📱";
     if (p.includes("android")) return "🤖";
     if (
