@@ -1,27 +1,50 @@
-# Onlook Starter Template
+# Solana Wallet Inventory
 
-<p align="center">
-  <img src="app/favicon.ico" />
-</p>
+How to Add a Wallet to the Dashboard ??
+This dashboard uses a Google Sheet to manage wallet data. 
 
-This is an [Onlook](https://onlook.com/) project set up with
-[Next.js](https://nextjs.org/), [TailwindCSS](https://tailwindcss.com/) and
-[ShadCN](https://ui.shadcn.com).
+That sheet is exported as a CSV and added to the project.
 
-## Getting Started
+sheet link
 
-First, run the development server:
+🪜 Steps to Add a Wallet
+1. Open the Wallets Google Sheet
+👉 Open Sheet
+Each row = one wallet
+Fill in details like:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Wallet name
 
-Open [http://localhost:3000](http://localhost:3000) in Onlook to see the result.
-# sol-wallet-dis
-# sol-wallet-dis
+Platform (Android, Chrome, etc.)
+
+Custody type (Self-custody, Custodial, MPC)
+
+Features (Staking, NFT, DEX, etc.)
+
+Website, version, notes, and test date
+
+2. Add Your Wallet
+Scroll down and add a new row
+
+Fill in all required columns
+
+Keep names and categories consistent
+
+3. Download as CSV
+In Google Sheets, click:
+File → Download → Comma-separated values (.csv)
+
+Save the file as:
+solana-wallet-matrix.csv
+
+1. Update the Project
+Replace the old solana-wallet-matrix.csv inside:
+/data/ folder in your project
+
+Example path:
+your-project/data/solana-wallet-matrix.csv
+
+1. Check the Dashboard
+Run or refresh the dashboard
+
+Your new wallet should now appear correctly
