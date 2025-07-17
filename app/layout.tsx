@@ -12,11 +12,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Solana Wallet Matrix - Comprehensive Wallet Ecosystem Dashboard',
     description: 'Explore, compare, and discover the best Solana wallets. Find wallets by platform, features, security, and more.',
-    url: 'https://solana-wallet-matrix.vercel.app',
+    url: 'https://sol-wallet-dis.vercel.app/',
     siteName: 'Solana Wallet Matrix',
     images: [
       {
-        url: '/images/solana-wallet-matrix-og.png',
+        url: '/images/ogimage.jpeg',
         width: 1200,
         height: 630,
         alt: 'Solana Wallet Matrix - Discover Solana Wallets'
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Solana Wallet Matrix - Comprehensive Wallet Ecosystem Dashboard',
     description: 'Explore, compare, and discover the best Solana wallets. Find wallets by platform, features, security, and more.',
-    images: ['/images/solana-wallet-matrix-og.png']
+    images: ['/images/ogimage.jpeg']
   }
 }
 
