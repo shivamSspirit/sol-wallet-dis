@@ -1,23 +1,23 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  content: [
+    content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   darkMode: 'class',
   theme: {
-    extend: {
-      colors: {
-        primary: {
+  	extend: {
+  		colors: {
+  			primary: {
           50: '#e6f1ff',
           100: '#b3d7ff',
           300: '#4fa5ff',
           500: '#0066cc',
           700: '#004080'
-        },
-        accent: {
+  			},
+  			accent: {
           neon: '#00ffff',
           purple: '#7e3af2',
         },
@@ -57,7 +57,7 @@ const config: Config = {
       },
       transformOrigin: {
         'center-top': 'center top',
-      }
+  			}
     },
   },
   plugins: [

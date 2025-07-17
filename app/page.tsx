@@ -34,6 +34,8 @@ export default function Page() {
     const [loading, setLoading] = useState(true);
     const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
+
+
   console.log("wallets", wallets);
 
     useEffect(() => {
@@ -73,7 +75,7 @@ export default function Page() {
                         security: getSecurityLevel(wallet.Category),
                         popularity: getPopularityScore(wallet.Name),
                         imageLogo: wallet.Logos,
-          website: wallet.Website
+          website: wallet.weblink
                     }));
 
                 setWallets(transformedWallets);
@@ -200,8 +202,8 @@ export default function Page() {
             wallet.platforms.some((platform) =>
     platform.toLowerCase().includes(searchTerm.toLowerCase())
             ) ||
-            wallet.custodyModel.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            wallet.description.toLowerCase().includes(searchTerm.toLowerCase());
+            wallet.custodyModel.toLowerCase().includes(searchTerm.toLowerCase());
+            
         return matchesCategory && matchesSearch;
     });
 
@@ -244,19 +246,19 @@ export default function Page() {
 
       {/* Animated background - hidden in print */}
             <div
-        className="fixed inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 print:hidden"
+        className="fixed inset-0 bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] print:hidden"
         data-oid="lf5j-wj">
 
                 <div
-          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.1),transparent_50%)]"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(106,17,203,0.1),transparent_50%)]"
           data-oid="xxl97z2">
         </div>
                 <div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#6a11cb]/10 rounded-full blur-3xl animate-pulse"
           data-oid="w417dql">
         </div>
                 <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse delay-1000"
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#2575fc]/10 rounded-full blur-3xl animate-pulse delay-1000"
           data-oid="w:-vv8a">
         </div>
             </div>
@@ -274,7 +276,7 @@ export default function Page() {
 
               <div className="flex items-center space-x-4" data-oid="h0g3vd3">
                                 <div
-                  className="w-10 h-10 bg-gradient-to-r from-[#00ffff]/20 to-[#00ffff]/40 rounded-lg flex items-center justify-center"
+                  className="w-10 h-10 bg-gradient-to-r from-[#6a11cb]/20 to-[#2575fc]/40 rounded-lg flex items-center justify-center"
                   data-oid="cqgbdws">
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
@@ -304,13 +306,13 @@ export default function Page() {
                       <path 
                         d="M10 25 L25 10 L40 25 L25 40 Z" 
                         fill="none" 
-                        stroke="#00ffff" 
+                        stroke="url(#gradient)" 
                         strokeWidth="3" 
                         strokeLinecap="round" 
                         strokeLinejoin="round"
                         filter="url(#neon-glow)"
                         className="
-                          group-hover:stroke-[#00ffff]/70 
+                          group-hover:stroke-[#6a11cb]/70 
                           transition-colors 
                           duration-500
                         "
@@ -319,24 +321,29 @@ export default function Page() {
                         cx="25" 
                         cy="25" 
                         r="3" 
-                        fill="#00ffff"
+                        fill="url(#gradient)"
                         filter="url(#neon-glow)"
                         className="
-                          group-hover:fill-[#00ffff]/70 
+                          group-hover:fill-[#6a11cb]/70 
                           transition-colors 
                           duration-500
                         "
                       />
+                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#6a11cb"/>
+                        <stop offset="50%" stopColor="#2575fc"/>
+                        <stop offset="100%" stopColor="#00ffff"/>
+                      </linearGradient>
                     </svg>
                                 </div>
                 <div data-oid="j7p104i">
                                     <h1
-                    className="text-2xl font-bold bg-gradient-to-r from-[#00ffff] to-[#00ffff]/70 bg-clip-text text-transparent animate-pulse print:text-slate-900 text-shadow-[0_0_10px_rgba(128,0,128,0.5)]"
+                    className="text-2xl font-bold bg-gradient-to-r from-[#6a11cb] via-[#2575fc] to-[#00ffff] bg-clip-text text-transparent animate-pulse print:text-slate-900 text-shadow-[0_0_10px_rgba(106,17,203,0.5)]"
                     data-oid="se2fn1r">
                                         Solana Wallet Inventory
                                     </h1>
                     <p
-                    className="text-[#00ffff]/60 text-sm print:text-slate-700"
+                    className="text-[#2575fc]/80 text-sm print:text-slate-700"
                     data-oid="d:3udu0">
                                         Comprehensive wallet ecosystem dashboard
                                     </p>
@@ -381,12 +388,12 @@ export default function Page() {
                                         placeholder="Search wallets or features..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/20 transition-all duration-300"
+                    className="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-[#6a11cb] focus:outline-none focus:ring-2 focus:ring-[#6a11cb]/20 transition-all duration-300"
                     data-oid="e0a_np0" />
 
 
                                     <div
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#6a11cb]"
                     data-oid="4.n83yy">
 
                                         🔍
@@ -402,8 +409,8 @@ export default function Page() {
                                         onClick={() => setSelectedCategory(category.id)}
                                         className={`px-4 py-2 rounded-xl border transition-all duration-300 flex items-center space-x-2 ${
                   selectedCategory === category.id ?
-                  "bg-purple-500/20 border-purple-400 text-purple-300" :
-                  "bg-gray-700/50 border-gray-600 text-gray-300 hover:border-purple-500/50 hover:text-purple-300"}`
+                  "bg-[#6a11cb]/20 border-[#6a11cb] text-[#6a11cb]" :
+                  "bg-gray-700/50 border-gray-600 text-gray-300 hover:border-[#6a11cb]/50 hover:text-[#6a11cb]"}`
                   }
                   data-oid="ro62zaz">
 
@@ -474,7 +481,7 @@ export default function Page() {
                                 bg-gray-800/60 
                                 rounded-xl 
                                 border 
-                                border-[#00ffff]/20 
+                                border-[#6a11cb]/20 
                                 p-6 
                                 transition-all 
                                 duration-1000 
@@ -482,8 +489,8 @@ export default function Page() {
                                 print:bg-white 
                                 print:border-slate-300 
                                 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}
-                                hover:shadow-[0_0_15px_rgba(0,255,255,0.3)]
-                                hover:border-[#00ffff]/40
+                                hover:shadow-[0_0_15px_rgba(106,17,203,0.3)]
+                                hover:border-[#6a11cb]/40
                                 transition-all
                                 duration-300
                             `}
@@ -493,7 +500,7 @@ export default function Page() {
                                 data-oid="nlodcwg">
                                 <div data-oid="frwjxi.">
                                     <p
-                                        className="text-[#00ffff]/50 text-sm print:text-slate-700"
+                                        className="text-[#2575fc]/50 text-sm print:text-slate-700"
                                         data-oid="idso9kw">
                                             {stat.label}
                                         </p>
@@ -502,8 +509,9 @@ export default function Page() {
                                             text-2xl 
                                             font-bold 
                                             bg-gradient-to-r 
-                                            from-[#00ffff] 
-                                            to-[#00ffff]/70 
+                                            from-[#6a11cb] 
+                                            via-[#2575fc] 
+                                            to-[#00ffff] 
                                             bg-clip-text 
                                             text-transparent 
                                             print:text-slate-900
@@ -844,7 +852,7 @@ function WalletCard({
                        group relative"
             title="Open website"
             data-oid="wallet-link"
-            style={{ minWidth: 32, minHeight: 32 }}
+            style={{ minWidth: 30, minHeight: 30 }}
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
@@ -931,7 +939,7 @@ function WalletCard({
 
       {/* Notes - single line, always at bottom, no scroll */}
       <div className="px-6 pt-1 pb-2 flex-shrink-0">
-        <div className="bg-slate-700/40 rounded-xl px-1 py-2 border border-slate-600/60 backdrop-blur-sm flex items-center h-8">
+        <div className="bg-slate-700/40 rounded-lg px-1 py-2 border border-slate-600/60 backdrop-blur-sm flex items-center h-8">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             className="w-5 h-5 mr-1 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" 
@@ -961,10 +969,12 @@ function WalletCard({
 function CustodyBadge({ custodyModel }: {custodyModel: string;}) {
   const getStyles = (model: string) => {
     switch (model) {
-      case "Self-custody":
+      case "self-custody":
         return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
       case "MPC":
         return "bg-amber-500/20 text-amber-300 border-amber-500/30";
+      case "custodial":
+        return "bg-blue-500/20 text-blue-300 border-blue-500/30";
       default:
         return "bg-red-500/20 text-red-300 border-red-500/30";
     }
@@ -1002,9 +1012,9 @@ function PlatformIcon({ platform }: {platform: string;}) {
     const p = platform.toLowerCase();
     if (p.includes("ios")) return "📱";
     if (p.includes("android")) return "🤖";
-    if (p.includes("chrome") || p.includes("firefox") || p.includes("edge"))
+    if (p.includes("chrome") || p.includes("firefox") || p.includes("edge") || p.includes("brave"))
     return "🌐";
-    if (p.includes("desktop") || p.includes("windows") || p.includes("mac"))
+    if (p.includes("desktop") || p.includes("windows") || p.includes("mac") || p.includes("Linux"))
     return "💻";
     if (p.includes("hardware")) return "🔐";
     return "📦";
