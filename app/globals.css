@@ -3,16 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 10;
+  --background-end-rgb: 26, 26, 26;
+  
+  /* Solana Dashboard Color Variables */
+  --solana-green: #14F195;
+  --solana-purple: #9945FF;
+  --background-primary: #0a0a0a;
+  --background-secondary: #1a1a1a;
+  --background-card: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #6b7280;
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(20, 241, 149, 0.3);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 10, 10, 10;
+    --background-end-rgb: 26, 26, 26;
   }
 }
 
@@ -27,67 +39,234 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
   }
+  
+  /* Solana Dashboard Utilities */
+  .bg-solana-gradient {
+    background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+  }
+  
+  .text-solana-gradient {
+    background: linear-gradient(135deg, var(--solana-green) 0%, var(--solana-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .border-solana-hover {
+    border-color: var(--border-hover);
+  }
+  
+  .shadow-solana-green {
+    box-shadow: 0 0 15px rgba(20, 241, 149, 0.3);
+  }
+  
+  .shadow-solana-purple {
+    box-shadow: 0 0 15px rgba(153, 69, 255, 0.4);
+  }
+  
+  .glow-solana-green {
+    filter: drop-shadow(0 0 10px rgba(20, 241, 149, 0.6));
+  }
+  
+  .glow-solana-purple {
+    filter: drop-shadow(0 0 10px rgba(153, 69, 255, 0.6));
+  }
+
+  /* Creative Background Gradients */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+  
+  .bg-gradient-conic {
+    background: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
+  }
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    
+    /* Updated chart colors for financial data */
+    --chart-1: 142 76% 36%; /* Solana Green */
+    --chart-2: 262 83% 58%; /* Solana Purple */
+    --chart-3: 195 100% 50%; /* Bright Blue */
+    --chart-4: 330 81% 60%; /* Pink */
+    --chart-5: 220 14% 50%; /* Gray */
     --radius: 0.5rem;
   }
+  
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
   }
 }
 
 @layer base {
   body {
-    background-color: var(--background);
-    color: var(--foreground);
+    background: var(--background-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  /* Ensure high contrast for accessibility */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+  }
+  
+  /* Financial data styling */
+  .financial-positive {
+    color: var(--solana-green);
+  }
+  
+  .financial-negative {
+    color: #FF4747;
+  }
+  
+  /* Interactive elements focus states for accessibility */
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--solana-green);
+    outline-offset: 2px;
+  }
+  
+  /* Wallet card hover effects */
+  .wallet-card {
+    background: var(--background-card);
+    border: 1px solid var(--border-primary);
+    transition: all 0.3s ease;
+  }
+  
+  .wallet-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 0 15px rgba(20, 241, 149, 0.3);
+  }
+  
+  /* Navigation styling */
+  .nav-item {
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+  }
+  
+  .nav-item:hover {
+    color: var(--solana-green);
+    background: rgba(20, 241, 149, 0.1);
+  }
+  
+  .nav-item.active {
+    color: #000000;
+    background: var(--solana-green);
+  }
+  
+  /* Button variants */
+  .btn-primary {
+    background: var(--solana-purple);
+    color: var(--text-primary);
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background: #7c3aed;
+  }
+  
+  .btn-secondary {
+    background: var(--background-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
+  }
+  
+  .btn-secondary:hover {
+    background: #2a2a2a;
+  }
+  
+  .btn-success {
+    background: var(--solana-green);
+    color: #000000;
+    border: none;
+  }
+  
+  .btn-danger {
+    background: #FF4747;
+    color: var(--text-primary);
+    border: none;
+  }
+  
+  /* Data table styling */
+  .data-table {
+    background: var(--background-card);
+  }
+  
+  .data-table th {
+    background: #2a2a2a;
+    color: var(--text-primary);
+  }
+  
+  .data-table tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .data-table tr:hover {
+    background: rgba(20, 241, 149, 0.05);
+  }
+  
+  /* Status indicators */
+  .status-success {
+    background: rgba(0, 217, 126, 0.2);
+    color: #00D97E;
+    border: 1px solid rgba(0, 217, 126, 0.3);
+  }
+  
+  .status-warning {
+    background: rgba(255, 184, 0, 0.2);
+    color: #FFB800;
+    border: 1px solid rgba(255, 184, 0, 0.3);
+  }
+  
+  .status-error {
+    background: rgba(255, 71, 71, 0.2);
+    color: #FF4747;
+    border: 1px solid rgba(255, 71, 71, 0.3);
+  }
+  
+  .status-info {
+    background: rgba(14, 165, 233, 0.2);
+    color: #0EA5E9;
+    border: 1px solid rgba(14, 165, 233, 0.3);
   }
 }
