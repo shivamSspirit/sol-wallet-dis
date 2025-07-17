@@ -3,6 +3,21 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+import {
+  Smartphone,
+  Apple,
+  Laptop,
+  Monitor,
+  Chrome,
+  Bell,
+  Layers,
+  LineChart,
+  Repeat,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  Network,
+} from 'lucide-react';
+
 type Wallet = {
   name: string;
   category: string;
@@ -454,7 +469,7 @@ export default function Page() {
                 className="flex items-center space-x-4 print:hidden"
                 data-oid="hmwl_mm">
                 <a
-                  href="https://github.com/shivam-soni/solana-wallet-matrix"
+                  href="https://github.com/shivamSspirit/sol-wallet-dis"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 bg-transparent border border-border-primary/30 rounded-lg text-text-secondary hover:bg-solana-green/10 hover:text-solana-green hover:border-solana-green/50 transition-all duration-300 flex items-center justify-center"
@@ -509,7 +524,7 @@ export default function Page() {
               {
                 label: "Solana Pay Support",
                 value: wallets.filter((w) => w.solanaPayQR === "Yes").length,
-                icon: "💳"
+                icon: <Image src="/images/solana-sol-logo.png" width={8} height={8} alt="Solana Pay" className="w-5 h-5"/>
               }].
               map((stat) => (
                 <div
@@ -517,7 +532,7 @@ export default function Page() {
                   className="bg-background-card/60 rounded-xl p-4 flex items-center space-x-4 border border-border-primary transition-all duration-300 hover:bg-[#00D97E]/10 hover:border-[#00D97E]/50 group"
                   data-oid="stat-item"
                 >
-                  <div className="text-3xl opacity-70 group-hover:opacity-100 transition-opacity">{stat.icon}</div>
+                  <div className="text-3xl opacity-100 group-hover:opacity-100 transition-opacity">{stat.icon}</div>
                   <div className="flex-1">
                     <div className="text-sm text-text-secondary truncate">{stat.label}</div>
                     <div className="text-2xl font-bold text-solana-green group-hover:text-[#00D97E] transition-colors">{stat.value}</div>
@@ -1216,7 +1231,7 @@ function WalletCard({
                 </div>
 
                 <span className="relative z-10 text-base" data-oid="qd4cp6k">
-                  💳
+                <Image src="/images/solana-sol-logo.png" width={8} height={8} alt="Solana Pay" className="w-5 h-5"/>
                 </span>
               </div>
               <div data-oid="ux-46yz">
@@ -1415,6 +1430,8 @@ function SolanaPayBadge() {
 function PlatformIcon({ platform }: { platform: string; }) {
   const getIcon = (platform: string) => {
     const p = platform.toLowerCase();
+
+    console.log("p",p)
     if (p.includes("ios")) return "📱";
     if (p.includes("android")) return "🤖";
     if (
