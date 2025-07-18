@@ -1,7 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import NextImage from "next/image";  // Rename the Next.js Image import
+import {
+  Smartphone, 
+  Chrome, 
+  Tablet, 
+  Lock, 
+  ImageIcon,  // Use ImageIcon instead of Image
+  Wallet, 
+  Bell, 
+  Link,
+  Monitor
+} from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 type Wallet = {
   name: string;
@@ -511,7 +523,7 @@ export default function Page() {
             data-oid="bo1xkje">
 
             {[
-              { label: "Total Wallets", value: wallets.length, icon: "💼" },
+              { label: "Total Wallets", value: wallets.length, icon: <NextImage src="/images/wallet-state.png" width={30} height={20} alt="wallets"/> },
               {
                 label: "Browser Extensions",
                 value: wallets.filter((w) => w.category === "browser").length,
@@ -530,7 +542,7 @@ export default function Page() {
               {
                 label: "Solana Pay Support",
                 value: wallets.filter((w) => w.solanaPayQR === "Yes").length,
-                icon: <Image src="/solana-pay-logo-small.svg" width={60} height={25} alt="Solana Pay"/>
+                icon: <NextImage src="/solana-pay-logo-small.svg" width={60} height={25} alt="Solana Pay"/>
               }].
               map((stat) => (
                 <div
@@ -983,7 +995,7 @@ function WalletAvatar({
       data-oid="0m8tsyl">
 
       {imageUrl ?
-                <Image
+                <NextImage
                     src={imageUrl}
           alt={walletName || "Wallet"}
           fill
@@ -1231,7 +1243,7 @@ function WalletCard({
                 </div>
 
                 <span className="relative z-10 text-base" data-oid="qd4cp6k">
-                <Image src="/solana-pay-logo-small.svg" width={60} height={25} alt="Solana Pay" className="w-16 h-6"/>
+                <NextImage src="/solana-pay-logo-small.svg" width={60} height={25} alt="Solana Pay" className="w-16 h-6"/>
                 </span>
               </div>
               <div data-oid="ux-46yz">
@@ -1267,51 +1279,46 @@ function WalletCard({
         </div>
         <div className="grid grid-cols-3 gap-3" data-oid="t7tqh8_">
           <FeatureItem
-            icon="🔄"
+            icon={Smartphone}
             label="DEX"
             enabled={wallet.inAppDexSwap}
             compact
-            data-oid="8j04_lc" />
-
+          />
 
           <FeatureItem
-            icon="🖼️"
+            icon={ImageIcon}
             label="NFT"
             enabled={wallet.nftGallery}
             compact
-            data-oid="ymwgj6m" />
-
+          />
 
           <FeatureItem
-            icon="🏦"
+            icon={Lock}  // Replaced BankIcon with a suitable alternative
             label="Stake"
             enabled={wallet.inAppStaking}
             compact
-            data-oid="ft88s5v" />
-
+          />
 
           <FeatureItem
-            icon="💰"
+            icon={Wallet}
             label="Fiat"
             enabled={wallet.fiatOnOffRamp}
             compact
-            data-oid="oix:yny" />
-
+          />
 
           <FeatureItem
-            icon="🔔"
+            icon={Bell}
             label="Push"
             enabled={wallet.pushNotifications}
             compact
-            data-oid="6xgzxfg" />
-
+          />
 
           <FeatureItem
-            icon="🔗"
+            icon={Link}
             label="Multichain"
             enabled={wallet.multiChain}
             compact
-            data-oid="vow4nvj" />
+          />
 
         </div>
       </div>
@@ -1430,96 +1437,114 @@ function SolanaPayBadge() {
 function PlatformIcon({ platform }: { platform: string; }) {
   const getIcon = (platform: string) => {
     const p = platform.toLowerCase();
-
-    if (p.includes("ios")) return "📱";
-    if (p.includes("android")) return "🤖";
-    if (
-      p.includes("chrome") ||
-      p.includes("firefox") ||
-      p.includes("edge") ||
-      p.includes("brave"))
-
-      return "🌐";
-    if (
-      p.includes("desktop") ||
-      p.includes("windows") ||
-      p.includes("mac") ||
-      p.includes("Linux"))
-
-      return "💻";
-    if (p.includes("hardware")) return "🔐";
-    return "📦";
+    if (p.includes("ios")) return Smartphone;
+    if (p.includes("android")) return Tablet;
+    if (p.includes("chrome")) return Chrome;
+    if (p.includes("edge") || p.includes("brave")) return Monitor;
+    if (p.includes("hardware")) return Lock;
+    if (p.includes("desktop") || p.includes("windows") || p.includes("mac") || p.includes("linux")) return Monitor;
+    return Monitor; // default
   };
+
+  const IconComponent = getIcon(platform);
 
   return (
     <div
       className="flex items-center space-x-1 px-2 py-1 bg-gray-700 rounded-md text-xs text-gray-300 border border-gray-600"
       title={platform}
-      data-oid="q1o4c7c">
-
-      <span className="text-sm" data-oid="hpuvmkr">
-        {getIcon(platform)}
-      </span>
-      <span className="truncate max-w-16" data-oid="kanq97_">
-        {platform}
-      </span>
-    </div>);
-
+    >
+      <IconComponent size={16} strokeWidth={2} className="mr-1" />
+      <span className="truncate max-w-16">{platform}</span>
+    </div>
+  );
 }
 
 /**
  * Feature item component
  */
 function FeatureItem({
-  icon,
+  icon: Icon, 
   label,
   enabled,
   compact = false
+}: { 
+  icon: React.ComponentType<{ size?: number, strokeWidth?: number }>, 
+  label: string, 
+  enabled: boolean, 
+  compact?: boolean 
+}) {
+  // Common styles for enabled and disabled states
+  const getBaseStyles = (isEnabled: boolean) => `
+    flex items-center justify-center 
+    p-2 rounded-lg text-center 
+    transition-all duration-300 
+    ${isEnabled 
+      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30" 
+      : "bg-gray-700/50 text-gray-500 border border-gray-600 hover:bg-gray-700/60"}
+  `;
 
-
-
-
-
-}: { icon: string; label: string; enabled: boolean; compact?: boolean; }) {
+  // Compact version with icon and label
   if (compact) {
     return (
-      <div
-        className={`
-        flex flex-row items-center justify-center gap-2 p-2 rounded-lg text-center h-full
-        ${enabled ?
-            "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" :
-            "bg-gray-700/50 text-gray-500 border border-gray-600"}
-      `
-        }
-        data-oid="48u-joc">
-
-        <span className="text-sm" data-oid="rbs6vud">
-          {icon}
-        </span>
-        <span className="text-xs font-medium leading-tight" data-oid="-e:202x">
-          {label}
-        </span>
-      </div>);
-
+      <div 
+        className={getBaseStyles(enabled)}
+        title={`${label} ${enabled ? 'Supported' : 'Not Supported'}`}
+      >
+        <div className="flex items-center space-x-2">
+          <Icon 
+            size={16} 
+            strokeWidth={2}
+            className={enabled ? "text-emerald-300" : "text-gray-500"} 
+          />
+          <span className="text-xs font-medium leading-tight">
+            {label}
+          </span>
+        </div>
+      </div>
+    );
   }
+
+  // Expanded version with more detailed representation
   return (
-    <div className="flex items-center justify-between py-2" data-oid="i7x98ra">
-      <div className="flex items-center space-x-2" data-oid="28lhl95">
-        <span className="text-sm" data-oid="gtggzei">
-          {icon}
-        </span>
-        <span className="text-sm text-gray-300" data-oid="0.lt8se">
+    <div 
+      className="flex items-center justify-between py-2 group" 
+      data-oid="i7x98ra"
+    >
+      <div className="flex items-center space-x-3" data-oid="28lhl95">
+        <Icon 
+          size={16} 
+          strokeWidth={2}
+          className={`
+            ${enabled ? "text-emerald-400" : "text-gray-500"}
+            transition-colors duration-300 
+            group-hover:scale-110
+          `}
+        />
+        <span 
+          className={`
+            text-sm 
+            ${enabled ? "text-white" : "text-gray-400"}
+            transition-colors duration-300
+            group-hover:text-emerald-300
+          `}
+          data-oid="0.lt8se"
+        >
           {label}
         </span>
       </div>
       <span
-        className={`text-sm ${enabled ? "text-emerald-400" : "text-gray-500"}`}
-        data-oid="lrfati2">
-
+        className={`
+          text-sm 
+          ${enabled ? "text-emerald-400" : "text-gray-500"}
+          transition-all duration-300
+          group-hover:scale-110
+        `}
+        data-oid="lrfati2"
+      >
         {enabled ? "✅" : "❌"}
       </span>
-    </div>);
-
+    </div>
+  );
 }
 
 /**
