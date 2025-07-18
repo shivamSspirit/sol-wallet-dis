@@ -11,7 +11,8 @@ import {
   Wallet, 
   Bell, 
   Link,
-  Monitor
+  Monitor,
+  RefreshCcw  // Add this import
 } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
@@ -1279,7 +1280,7 @@ function WalletCard({
         </div>
         <div className="grid grid-cols-3 gap-3" data-oid="t7tqh8_">
           <FeatureItem
-            icon={Smartphone}
+            icon={RefreshCcw}
             label="DEX"
             enabled={wallet.inAppDexSwap}
             compact
@@ -1468,7 +1469,7 @@ function FeatureItem({
   enabled,
   compact = false
 }: { 
-  icon: React.ComponentType<{ size?: number, strokeWidth?: number }>, 
+  icon: React.ComponentType<any>, // Change to accept any prop type
   label: string, 
   enabled: boolean, 
   compact?: boolean 
