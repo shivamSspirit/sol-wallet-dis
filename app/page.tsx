@@ -1,52 +1,26 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import NextImage from "next/image";  // Rename the Next.js Image import
-import {
-  Smartphone, 
-  Chrome, 
-  Tablet, 
-  Lock, 
-  ImageIcon,  // Use ImageIcon instead of Image
-  Wallet, 
-  Bell, 
-  Link,
-  Monitor,
-  RefreshCcw  // Add this import
-} from 'lucide-react';
-import { LucideIcon } from 'lucide-react';
+import NextImage from "next/image";
 
-type Wallet = {
-  name: string;
-  category: string;
-  platforms: string[];
-  custodyModel: string;
-  inAppDexSwap: boolean;
-  nftGallery: boolean;
-  inAppStaking: boolean;
-  fiatOnOffRamp: boolean;
-  pushNotifications: boolean;
-  solanaPayQR: string;
-  multiChain: boolean;
-  openSource: boolean;
-  logo: string;
-  description: string;
-  security: string;
-  popularity: number;
-  imageLogo: string;
-  website: string;
-};
+import { Wallet } from "./components/WalletTypes";
+import { 
+  getCategoryFromPlatforms, 
+  getWalletLogo, 
+  getSecurityLevel, 
+  getPopularityScore 
+} from "./components/WalletUtils";
+import { WalletCard as SolanaWalletCard } from "./components/WalletCard";
+import { FeatureItem } from "./components/FeatureComponents";
+import { Dropdown as ImportedDropdown } from "./components/Dropdown";
+import { PlatformIcon as ImportedPlatformIcon } from "./components/Icons";
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-    const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [wallets, setWallets] = useState<Wallet[]>([]);
-    const [loading, setLoading] = useState(true);
-
-
-
-   console.log(wallets.filter((w) => w.category)) ;
+  const [loading, setLoading] = useState(true);
 
   // State for new dropdowns
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>("All Platforms");
@@ -86,23 +60,23 @@ export default function Page() {
     "Multi-Chain"
   ];
 
-    useEffect(() => {
-        setIsLoaded(true);
-        fetchWalletData();
-    }, []);
+  useEffect(() => {
+    setIsLoaded(true);
+    fetchWalletData();
+  }, []);
 
-    const fetchWalletData = async () => {
-        try {
+  const fetchWalletData = async () => {
+    try {
       const response = await fetch("/api/csv-data");
-            const result = await response.json();
+      const result = await response.json();
 
-            if (response.ok && result.data) {
-                // Transform CSV data to match our component structure
-        const transformedWallets: Wallet[] = result.data.
-          filter((wallet: any) => wallet.Name && wallet.Name.trim() !== "") // Filter out empty rows
+      if (response.ok && result.data) {
+        // Transform CSV data to match our component structure
+        const transformedWallets: Wallet[] = result.data
+          .filter((wallet: any) => wallet.Name && wallet.Name.trim() !== "") // Filter out empty rows
           .map((wallet: any) => ({
-                        name: wallet.Name,
-                        category: getCategoryFromPlatforms(wallet.Platforms),
+            name: wallet.Name,
+            category: getCategoryFromPlatforms(wallet.Platforms),
             platforms: wallet.Platforms ?
               wallet.Platforms.split(";").map((p: string) => p.trim()) :
               [],
@@ -110,124 +84,32 @@ export default function Page() {
             inAppDexSwap: wallet["In-app DEX Swap"] === "Yes",
             nftGallery: wallet["NFT Gallery"] === "Yes",
             inAppStaking: wallet["In-app Staking"] === "Yes",
-                        fiatOnOffRamp:
+            fiatOnOffRamp:
               wallet["Fiat On/Off Ramp"] === "Yes" ||
               wallet["Fiat On/Off Ramp"] === "Partial",
             pushNotifications: wallet["Push Notifications"] === "Yes",
             solanaPayQR: wallet["Solana Pay QR"] || "No",
             multiChain: wallet["Multi-Chain"] === "Yes",
             openSource: wallet["Open Source"] === "Yes",
-                        logo: getWalletLogo(wallet.Name),
-                        description: wallet.Notes || `${wallet.Name} wallet`,
-                        security: getSecurityLevel(wallet.Category),
-                        popularity: getPopularityScore(wallet.Name),
-                        imageLogo: wallet.Logos,
+            logo: getWalletLogo(wallet.Name),
+            description: wallet.Notes || `${wallet.Name} wallet`,
+            security: getSecurityLevel(wallet.Category),
+            popularity: getPopularityScore(wallet.Name),
+            imageLogo: wallet.Logos,
             website: wallet.weblink
-                    }));
+          }));
 
-                setWallets(transformedWallets);
-            }
-        } catch (error) {
+        setWallets(transformedWallets);
+      }
+    } catch (error) {
       console.error("Error fetching wallet data:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-  const getCategoryFromPlatforms = (platforms: string | undefined) => {
-    if (!platforms) return "other";
-        const platformStr = platforms.toLowerCase();
-        if (platformStr.includes("hardware")) {
-          return "hardware";
-        }
-        if (
-      platformStr.includes("chrome") ||
-      platformStr.includes("firefox") ||
-      platformStr.includes("edge")) {
-      return "browser";
+    } finally {
+      setLoading(false);
     }
-    if (platformStr.includes("ios") || platformStr.includes("android")) {
-      return "mobile";
-    }
-    if (platformStr.includes("desktop")) {
-      return "desktop";
-    }
-    return "other";
   };
-
-  const getWalletLogo = (name: string) => {
-        const logoMap = {
-      Phantom: "👻",
-      Solflare: "🔥",
-      Backpack: "🎒",
-      Glow: "✨",
-      Exodus: "🚀",
-      "Trust Wallet": "🛡️",
-      "Coinbase Wallet": "🔵",
-      "Atomic Wallet": "⚛️",
-      "Brave Wallet": "🦁",
-      Ledger: "🔐",
-      Trezor: "🔑",
-      SafePal: "💳",
-      Keystone: "🗝️",
-      Tangem: "💳",
-      MetaMask: "🦊",
-      Binance: "🟡",
-      OKX: "⭕",
-      Coin98: "🌐",
-      "Math Wallet": "📊",
-      Guarda: "🛡️",
-      TokenPocket: "💰",
-      Enkrypt: "🔐",
-      Robinhood: "🏹",
-      Torus: "🌀",
-      Tiplink: "🔗",
-      Fuse: "⚡",
-      Helium: "📡",
-      Bitget: "📈",
-      Jupiter: "🪐"
-        };
-
-        for (const [key, emoji] of Object.entries(logoMap)) {
-            if (name.toLowerCase().includes(key.toLowerCase())) {
-                return emoji;
-            }
-        }
-    return "💼"; // Default wallet icon
-  };
-
-  const getSecurityLevel = (category: string) => {
-    if (category === "Cold Wallet") return "High";
-    if (category === "Hot Wallet") return "Medium";
-    return "Medium";
-  };
-
-  const getPopularityScore = (name: string) => {
-        const popularityMap = {
-            Phantom: 95,
-            Solflare: 88,
-      "Trust Wallet": 85,
-            Exodus: 80,
-            Backpack: 75,
-            Coin98: 70,
-            Glow: 65,
-      "Atomic Wallet": 75,
-      "Coinbase Wallet": 80,
-            Ledger: 90,
-            Trezor: 85,
-      MetaMask: 70
-        };
-
-        for (const [key, score] of Object.entries(popularityMap)) {
-            if (name.toLowerCase().includes(key.toLowerCase())) {
-                return score;
-            }
-        }
-        return Math.floor(Math.random() * 40) + 40; // Random score between 40-80 for unknown wallets
-    };
 
   // Modify filtering logic
-    const filteredWallets = wallets.filter((wallet) => {
+  const filteredWallets = wallets.filter((wallet) => {
     // Normalize search term
     const normalizedSearchTerm = searchTerm.toLowerCase().trim();
 
@@ -287,70 +169,58 @@ export default function Page() {
     return matchesSearchTerm && matchesPlatform && matchesCustodyModel && matchesFeature;
   });
 
-  const getSecurityColor = (security: string) => {
-        switch (security) {
-      case "High":
-        return "text-green-400 bg-green-400/10";
-      case "Medium":
-        return "text-yellow-400 bg-yellow-400/10";
-      case "Low":
-        return "text-red-400 bg-red-400/10";
-            default:
-        return "text-gray-400 bg-gray-400/10";
-        }
-    };
-
-    if (loading) {
-        return (
-            <div
+  if (loading) {
+    return (
+      <div
         className="min-h-screen bg-solana-gradient text-white flex items-center justify-center"
-        data-oid="rp5-884">
-
+        data-oid="rp5-884"
+      >
         <div className="text-center" data-oid="1_uki0o">
           <div
             className="w-16 h-16 border-4 border-solana-purple/30 border-t-solana-purple rounded-full animate-spin mx-auto mb-4"
-            data-oid="k1ll:4w">
-          </div>
+            data-oid="k1ll:4w"
+          ></div>
           <p
             className="text-solana-purple text-lg font-medium"
-            data-oid="et94.fa">
+            data-oid="et94.fa"
+          >
+            Loading wallet data...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
-                        Loading wallet data...
-                    </p>
-                </div>
-      </div>);
-
-    }
-
-    return (
+  return (
     <div
       className="min-h-screen bg-solana-gradient text-white overflow-x-hidden print:bg-white"
-      data-oid="7b1mj:z">
-
+      data-oid="7b1mj:z"
+    >
       {/* Animated background - hidden in print */}
       <div
         className="fixed inset-0 bg-gradient-to-br from-background-secondary via-structure-darker to-background-primary print:hidden"
-        data-oid="lf5j-wj">
-
+        data-oid="lf5j-wj"
+      >
         <div
           className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(153,69,255,0.1),transparent_50%)]"
-          data-oid="xxl97z2">
-        </div>
+          data-oid="xxl97z2"
+        ></div>
         <div
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-solana-purple/10 rounded-full blur-3xl animate-pulse"
-          data-oid="w417dql">
-        </div>
+          data-oid="w417dql"
+        ></div>
         <div
           className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-solana-green/10 rounded-full blur-3xl animate-pulse delay-1000"
-          data-oid="w:-vv8a">
-        </div>
-            </div>
+          data-oid="w:-vv8a"
+        ></div>
+      </div>
 
       <div className="relative z-10" data-oid="g8:iw-:">
-                {/* Header */}
-                <header
+        {/* Header */}
+        <header
           className={`backdrop-blur-xl bg-background-card/40 border-border-primary/10 transition-all duration-1000 shadow-sm print:bg-white print:border-slate-300 relative ${isLoaded ? "translate-y-0 opacity-100" : "-translate-y-full opacity-10"}`}
-          data-oid="ufe677_">
+          data-oid="ufe677_"
+        >
           {/* Full header gradient overlay */}
           <div
             className="absolute inset-0 opacity-50 pointer-events-none"
@@ -656,21 +526,21 @@ export default function Page() {
 
               {/* Dropdowns */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Dropdown 
+                <ImportedDropdown 
                   options={platformOptions} 
                   selectedValue={selectedPlatform}
                   onSelect={setSelectedPlatform}
                   placeholder="Platform"
                   label="Platform"
                 />
-                <Dropdown 
+                <ImportedDropdown 
                   options={custodyModelOptions} 
                   selectedValue={selectedCustodyModel}
                   onSelect={setSelectedCustodyModel}
                   placeholder="Custody Model"
                   label="Custody Model"
                 />
-                <Dropdown 
+                <ImportedDropdown 
                   options={featureOptions} 
                   selectedValue={selectedFeature}
                   onSelect={setSelectedFeature}
@@ -687,7 +557,7 @@ export default function Page() {
             data-oid="ys8wlky">
 
             {filteredWallets.map((wallet, index) =>
-              <WalletCard
+              <SolanaWalletCard
                 key={wallet.name}
                 wallet={wallet}
                 index={index}
@@ -968,709 +838,3 @@ export default function Page() {
     </div>);
 
 }
-
-/**
- * WalletAvatar always fills the size of its parent div.
- * To control the avatar size, set width/height on the parent.
- * Example: <div className="w-16 h-16"><WalletAvatar ... /></div>
- */
-function WalletAvatar({
-    walletName,
-    imageUrl,
-  bgColor = "bg-gradient-to-br from-blue-500 to-purple-600",
-  textColor = "text-white"
-
-
-
-
-
-}: { walletName: string; imageUrl?: string; bgColor?: string; textColor?: string; }) {
-  const getInitial = (name: string) => {
-    if (!name) return "?";
-        return name.charAt(0).toUpperCase();
-    };
-
-    return (
-    <div
-      className="relative w-full h-full rounded-xl overflow-hidden"
-      data-oid="0m8tsyl">
-
-      {imageUrl ?
-                <NextImage
-                    src={imageUrl}
-          alt={walletName || "Wallet"}
-          fill
-          className="object-cover"
-          data-oid="1d6sk:p" /> :
-
-
-        <div
-          className={`w-full h-full rounded-full ${bgColor} ${textColor} flex items-center justify-center font-bold select-none`}
-          style={{ fontSize: "2em" }}
-          data-oid="q507zf9">
-
-                    {getInitial(walletName)}
-                </div>
-      }
-    </div>);
-
-}
-
-/**
- * Modern, clean wallet card component with fixed layout and rich dark theme
- */
-function WalletCard({
-  wallet,
-  index,
-  isLoaded
-}: { 
-  wallet: Wallet; 
-  index: number; 
-  isLoaded: boolean; 
-}) {
-  return (
-    <div
-      className={`
-        relative overflow-hidden
-        bg-slate-800/95 border border-slate-700/60 backdrop-blur-sm
-        rounded-2xl shadow-2xl hover:shadow-purple-500/5
-        transition-all duration-300 ease-in-out
-        hover:border-purple-500/20 hover:bg-slate-800/90
-        print:shadow-none print:border-slate-300 print:bg-white
-        h-[429px] flex flex-col group
-        ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}
-      `}
-      style={{ transitionDelay: `${index * 100}ms` }}
-      data-oid="dke03ba">
-
-      {/* Creative Background Pattern - Reduced opacity */}
-      <div className="absolute inset-0 opacity-2" data-oid="wiuhj1l">
-        <div
-          className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-solana-purple/10 to-transparent rounded-full blur-2xl"
-          data-oid=":y.up-3">
-        </div>
-        <div
-          className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-solana-green/8 to-transparent rounded-full blur-xl"
-          data-oid="9:snh3k">
-        </div>
-        <div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-gradient-radial from-solana-purple/5 via-transparent to-transparent rounded-full"
-          data-oid="3fli1kg">
-        </div>
-      </div>
-
-      {/* Animated Grid Pattern - Much more subtle */}
-      <div
-        className="absolute inset-0 opacity-[0.01] group-hover:opacity-[0.02] transition-opacity duration-300"
-        data-oid="2f4x7sz">
-
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: `
-            linear-gradient(rgba(153, 69, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(153, 69, 255, 0.05) 1px, transparent 1px)
-          `,
-            backgroundSize: "20px 20px"
-          }}
-          data-oid="jr-remf">
-        </div>
-      </div>
-
-      {/* Subtle Border Glow - Much reduced */}
-      <div
-        className="absolute inset-0 rounded-2xl bg-gradient-to-r from-solana-purple/5 via-transparent to-solana-green/5 opacity-0 group-hover:opacity-50 transition-opacity duration-300 blur-sm"
-        data-oid="916t:wy">
-      </div>
-
-      {/* Header */}
-      <div className="relative z-10 p-4 pb-1 flex-shrink-0" data-oid="xf74t3x">
-        <div
-          className="flex items-center justify-between mb-6"
-          data-oid="39fq:cp">
-
-          {/* Left: Avatar */}
-          <div className="w-14 h-14 flex-shrink-0" data-oid="i.z--d7">
-            <div
-              className="w-full h-full rounded-full ring-2 ring-slate-700 shadow bg-slate-900 overflow-hidden relative"
-              data-oid="w.zwbjc">
-
-              {/* Avatar glow effect - Much more subtle */}
-              <div
-                className="absolute inset-0 bg-gradient-to-br from-solana-purple/5 to-solana-green/5 opacity-0 group-hover:opacity-60 transition-opacity duration-300 rounded-full"
-                data-oid="-i-:ph7">
-              </div>
-
-              <WalletAvatar
-                walletName={wallet.name}
-                imageUrl={wallet.imageLogo}
-                bgColor="bg-gradient-to-br from-purple-500 to-indigo-600"
-                textColor="text-white"
-                data-oid="np5xvm9" />
-
-            </div>
-          </div>
-          {/* Center: Name and badges */}
-          <div className="flex-1 min-w-0 px-4" data-oid="_rg9k1a">
-            <h3
-              className="text-xl md:text-2xl font-bold text-white truncate mb-1 print:text-slate-900 group-hover:text-solana-green/80 transition-colors duration-300 tracking-tight leading-tight"
-              data-oid="aocl2mb">
-
-              {wallet.name}
-            </h3>
-            <div className="flex items-center space-x-2" data-oid="ny.0duz">
-              <CustodyBadge
-                custodyModel={wallet.custodyModel}
-                data-oid="flvq:gg" />
-
-            </div>
-          </div>
-          {/* Right: Link icon */}
-          <a
-            href={wallet.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-400 hover:text-cyan-300/80 transition-all duration-300 
-                       ml-2 flex items-center justify-center 
-                       group relative"
-
-
-            title="Open website"
-            data-oid="wallet-link"
-            style={{ minWidth: 30, minHeight: 30 }}>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-7 h-7 
-                         group-hover:text-cyan-300/80 
-                         group-hover:drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]
-                         transition-all duration-300 ease-in-out"
-
-
-
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-              data-oid="v-a2bn_">
-
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                data-oid="bgcv:9l" />
-
-            </svg>
-            <span
-              className="absolute inset-0 rounded-full opacity-0 
-                         group-hover:opacity-10 
-                         bg-cyan-500 
-                         animate-ping 
-                         transition-opacity duration-300 ease-in-out"
-
-
-
-
-              data-oid="xmfpp65">
-            </span>
-          </a>
-        </div>
-      </div>
-
-      {/* Platforms Section - flex-shrink-0, single line, horizontal scroll if needed */}
-      <div
-        className="relative z-10 px-6 pt-1 pb-2 flex-shrink-0"
-        data-oid="2.s097g">
-
-        <div
-          className="text-xs font-bold text-slate-300/90 mb-2 uppercase tracking-widest"
-          data-oid="34vk_oq">
-
-          Platforms
-        </div>
-        <div
-          className="flex flex-row gap-2 overflow-x-auto whitespace-nowrap scrollbar-none"
-          style={{ WebkitOverflowScrolling: "touch" }}
-          data-oid="r9lad9o">
-
-          {wallet.platforms.slice(0, 4).map((platform: string) =>
-            <PlatformIcon
-              key={platform}
-              platform={platform}
-              data-oid="_iwpoa:" />
-
-          )}
-          {wallet.platforms.length > 4 &&
-            <div
-              className="px-3 py-1.5 bg-slate-700/80 rounded-lg text-xs text-slate-300 font-medium inline-block"
-              data-oid="1g0ankh">
-
-              +{wallet.platforms.length - 4}
-        </div>
-          }
-        </div>
-      </div>
-
-      {/* Solana Pay QR - flex-shrink-0 */}
-      <div
-        className="relative z-10 px-6 pt-1 pb-2 mt-2 flex-shrink-0"
-        data-oid="hin1omb">
-
-        <div
-          className="bg-gradient-to-r from-slate-700/60 to-slate-600/60 border border-slate-600/80 rounded-xl p-4 backdrop-blur-sm relative overflow-hidden"
-          data-oid="u.lbe2c">
-
-          {/* Subtle background pattern for Solana Pay section - Reduced */}
-          <div className="absolute inset-0 opacity-5" data-oid="u5cc7cq">
-            <div
-              className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-purple-500/15 to-transparent rounded-full blur-lg"
-              data-oid=".fhk3r1">
-            </div>
-          </div>
-
-          <div
-            className="relative z-10 flex items-center justify-between"
-            data-oid="bv_3nk8">
-
-            <div className="flex items-center space-x-3" data-oid="wf1dfus">
-              <div
-                className="w-14 h-9 p-2 bg-black rounded-md flex items-center justify-center relative overflow-hidden"
-                data-oid="0.v5hsq">
-
-                {/* Icon glow effect - Much more subtle */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"
-                  data-oid="lhw603l">
-                </div>
-
-                <span className="relative z-10 text-base" data-oid="qd4cp6k">
-                <NextImage src="/solana-pay-logo-small.svg" width={60} height={25} alt="Solana Pay" className="w-16 h-6"/>
-                </span>
-              </div>
-              <div data-oid="ux-46yz">
-                <div
-                  className="text-sm font-bold text-slate-200 tracking-wide"
-                  data-oid="ba1wqgv">
-
-                  Solana Pay QR
-                </div>
-                <div
-                  className="text-xs text-slate-400/80 font-medium tracking-wide"
-                  data-oid="9:iu4bx">
-
-                  Payment Integration
-                </div>
-              </div>
-            </div>
-            <SolanaPayStatus status={wallet.solanaPayQR} data-oid="weeyua2" />
-          </div>
-        </div>
-      </div>
-
-      {/* Features Grid - flex-shrink-0 */}
-      <div
-        className="relative z-10 px-6 pt-1 pb-1 flex-shrink-0"
-        data-oid="8:1iwau">
-
-        <div
-          className="text-xs font-bold text-slate-300/90 mb-2 uppercase tracking-widest"
-          data-oid="8riozi4">
-
-          Features
-        </div>
-        <div className="grid grid-cols-3 gap-3" data-oid="t7tqh8_">
-          <FeatureItem
-            icon={RefreshCcw}
-            label="DEX"
-            enabled={wallet.inAppDexSwap}
-            compact
-          />
-
-          <FeatureItem
-            icon={ImageIcon}
-            label="NFT"
-            enabled={wallet.nftGallery}
-            compact
-          />
-
-          <FeatureItem
-            icon={Lock}  // Replaced BankIcon with a suitable alternative
-            label="Stake"
-            enabled={wallet.inAppStaking}
-            compact
-          />
-
-          <FeatureItem
-            icon={Wallet}
-            label="Fiat"
-            enabled={wallet.fiatOnOffRamp}
-            compact
-          />
-
-          <FeatureItem
-            icon={Bell}
-            label="Push"
-            enabled={wallet.pushNotifications}
-            compact
-          />
-
-          <FeatureItem
-            icon={Link}
-            label="Multichain"
-            enabled={wallet.multiChain}
-            compact
-          />
-
-        </div>
-      </div>
-
-      {/* Notes - single line, horizontal scroll */}
-      <div
-        className="relative z-10 px-6 pt-1 pb-2 flex-shrink-0"
-        data-oid="mabi7k6">
-
-        <div
-          className="bg-slate-700/40 rounded-lg px-1 py-2 border border-slate-600/60 backdrop-blur-sm flex items-center h-8 relative overflow-hidden"
-          data-oid="2-kppvu">
-
-          {/* Subtle background glow - Much reduced */}
-          <div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-solana-green/2 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            data-oid="9hc0ez6">
-          </div>
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="relative z-10 w-5 h-5 mr-1 text-cyan-400 group-hover:text-cyan-300/80 transition-colors duration-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-            data-oid="7xpj.72">
-
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              data-oid="-t6exkd" />
-
-          </svg>
-          <div
-            className="
-              flex 
-              flex-row 
-              gap-2 
-              overflow-x-auto 
-              whitespace-nowrap 
-              scrollbar-none 
-              w-full
-            "
-            style={{ WebkitOverflowScrolling: "touch" }}
-          >
-            <p
-              className="
-                relative 
-                z-10 
-                text-sm 
-                text-slate-300/90 
-                leading-relaxed 
-                inline-block 
-                flex-shrink-0 
-                font-medium 
-                tracking-wide
-              "
-              data-oid="3iqffc:">
-
-              {wallet.description ||
-                `${wallet.name} is a cryptocurrency wallet supporting various features and platforms.`}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>);
-
-}
-
-/**
- * Custody model badge component
- */
-function CustodyBadge({ custodyModel }: { custodyModel: string; }) {
-  const getStyles = (model: string) => {
-    switch (model) {
-      case "self-custody":
-        return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
-      case "MPC":
-        return "bg-amber-500/20 text-amber-300 border-amber-500/30";
-      case "custodial":
-        return "bg-blue-500/20 text-blue-300 border-blue-500/30";
-      default:
-        return "bg-red-500/20 text-red-300 border-red-500/30";
-    }
-  };
-
-  return (
-    <span
-      className={`px-2 py-0.5 rounded-md text-xs font-medium border ${getStyles(custodyModel)}`}
-      data-oid="o9:y::9">
-
-      {custodyModel}
-    </span>);
-
-}
-
-/**
- * Solana Pay badge component
- */
-function SolanaPayBadge() {
-  return (
-    <span
-      className="px-2 py-0.5 rounded-md text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30"
-      data-oid="yh:d5n8">
-
-      Solana Pay
-    </span>);
-
-}
-
-/**
- * Platform icon component
- */
-function PlatformIcon({ platform }: { platform: string; }) {
-  const getIcon = (platform: string) => {
-    const p = platform.toLowerCase();
-    if (p.includes("ios")) return Smartphone;
-    if (p.includes("android")) return Tablet;
-    if (p.includes("chrome")) return Chrome;
-    if (p.includes("edge") || p.includes("brave")) return Monitor;
-    if (p.includes("hardware")) return Lock;
-    if (p.includes("desktop") || p.includes("windows") || p.includes("mac") || p.includes("linux")) return Monitor;
-    return Monitor; // default
-  };
-
-  const IconComponent = getIcon(platform);
-
-  return (
-    <div
-      className="flex items-center space-x-1 px-2 py-1 bg-gray-700 rounded-md text-xs text-gray-300 border border-gray-600"
-      title={platform}
-    >
-      <IconComponent size={16} strokeWidth={2} className="mr-1" />
-      <span className="truncate max-w-16">{platform}</span>
-    </div>
-  );
-}
-
-/**
- * Feature item component
- */
-function FeatureItem({
-  icon: Icon, 
-  label,
-  enabled,
-  compact = false
-}: { 
-  icon: React.ComponentType<any>, // Change to accept any prop type
-  label: string, 
-  enabled: boolean, 
-  compact?: boolean 
-}) {
-  // Common styles for enabled and disabled states
-  const getBaseStyles = (isEnabled: boolean) => `
-    flex items-center justify-center 
-    p-2 rounded-lg text-center 
-    transition-all duration-300 
-    ${isEnabled 
-      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30" 
-      : "bg-gray-700/50 text-gray-500 border border-gray-600 hover:bg-gray-700/60"}
-  `;
-
-  // Compact version with icon and label
-  if (compact) {
-    return (
-      <div 
-        className={getBaseStyles(enabled)}
-        title={`${label} ${enabled ? 'Supported' : 'Not Supported'}`}
-      >
-        <div className="flex items-center space-x-2">
-          <Icon 
-            size={16} 
-            strokeWidth={2}
-            className={enabled ? "text-emerald-300" : "text-gray-500"} 
-          />
-          <span className="text-xs font-medium leading-tight">
-            {label}
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  // Expanded version with more detailed representation
-  return (
-    <div 
-      className="flex items-center justify-between py-2 group" 
-      data-oid="i7x98ra"
-    >
-      <div className="flex items-center space-x-3" data-oid="28lhl95">
-        <Icon 
-          size={16} 
-          strokeWidth={2}
-          className={`
-            ${enabled ? "text-emerald-400" : "text-gray-500"}
-            transition-colors duration-300 
-            group-hover:scale-110
-          `}
-        />
-        <span 
-          className={`
-            text-sm 
-            ${enabled ? "text-white" : "text-gray-400"}
-            transition-colors duration-300
-            group-hover:text-emerald-300
-          `}
-          data-oid="0.lt8se"
-        >
-          {label}
-        </span>
-      </div>
-      <span
-        className={`
-          text-sm 
-          ${enabled ? "text-emerald-400" : "text-gray-500"}
-          transition-all duration-300
-          group-hover:scale-110
-        `}
-        data-oid="lrfati2"
-      >
-        {enabled ? "✅" : "❌"}
-      </span>
-    </div>
-  );
-}
-
-/**
- * Solana Pay status component
- */
-function SolanaPayStatus({ status }: { status: string; }) {
-  const getStyles = (status: string) => {
-    switch (status) {
-      case "Yes":
-        return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
-      case "Partial":
-        return "bg-amber-500/20 text-amber-300 border-amber-500/30";
-      default:
-        return "bg-red-500/20 text-red-300 border-red-500/30";
-    }
-  };
-
-  return (
-    <span
-      className={`px-2 py-1 rounded-md text-xs font-semibold border ${getStyles(status)}`}
-      data-oid="8d61n8w">
-
-      {status}
-    </span>);
-
-}
-
-// Dropdown component
-const Dropdown = ({
-  options,
-  selectedValue,
-  onSelect,
-  placeholder,
-  label
-}: {
-  options: string[],
-  selectedValue: string | null,
-  onSelect: (value: string | null) => void,
-  placeholder: string,
-  label: string
-}) => (
-  <div className="relative group">
-    <label
-      className="
-        block 
-        mb-2 
-        text-xs 
-        font-semibold 
-        tracking-wide 
-        uppercase
-        bg-gradient-to-r 
-        from-solana-purple 
-        to-solana-green 
-        bg-clip-text 
-        text-transparent
-      "
-    >
-      {label}
-    </label>
-    <div className="absolute inset-0 bg-gradient-to-r from-solana-purple/10 to-solana-green/10 opacity-0 group-hover:opacity-50 rounded-xl transition-opacity duration-300 pointer-events-none"></div>
-    <div className="relative">
-      <select
-        value={selectedValue || ''}
-        onChange={(e) => onSelect(e.target.value || null)}
-        className="
-          relative z-10 
-          w-full 
-          bg-transparent 
-          border 
-          border-solana-purple/30 
-          rounded-xl 
-          px-4 
-          py-2 
-          text-text-primary 
-          appearance-none 
-          focus:outline-none 
-          focus:ring-2 
-          focus:ring-solana-green/50 
-          transition-all 
-          duration-300 
-          group-hover:border-solana-green/50
-          group-hover:text-solana-green
-          pr-8 // Add right padding for the arrow
-        "
-      >
-        <option value="" className="bg-background-card text-text-primary">
-          {placeholder}
-        </option>
-        {options.map((option) => (
-          <option
-            key={option}
-            value={option}
-            className="bg-background-card text-text-primary"
-          >
-            {option}
-          </option>
-        ))}
-      </select>
-      {/* Custom dropdown arrow */}
-      <div className="
-        pointer-events-none 
-        absolute 
-        inset-y-0 
-        right-0 
-        flex 
-        items-center 
-        px-2 
-        text-solana-green
-        font-bold
-      ">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 stroke-[5]"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={3}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </div>
-    </div>
-  </div>
-)

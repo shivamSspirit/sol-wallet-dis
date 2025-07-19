@@ -1,0 +1,20 @@
+export type Wallet = {
+  name: string;
+  category: string;
+  platforms: string[];
+  custodyModel: string;
+  inAppDexSwap: boolean;
+  nftGallery: boolean;
+  inAppStaking: boolean;
+  fiatOnOffRamp: boolean;
+  pushNotifications: boolean;
+  solanaPayQR: string;
+  multiChain: boolean;
+  openSource: boolean;
+  logo: string;
+  description: string;
+  security: string;
+  popularity: number;
+  imageLogo: string;
+  website: string;
+}; 
